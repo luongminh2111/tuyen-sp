@@ -1,0 +1,97 @@
+.signup-wrapper {
+  color: #74758b;
+  font-family:'Gilroy','Helvetica Neue',Helvetica,Roboto,Arial,sans-serif;
+  .head {
+    margin-top: 100px;
+    .title-1 {
+      font-size: 56px;
+      line-height: 64px;
+      margin-bottom: 16px;
+      text-align: center;
+      color: #74758b;
+      font-weight: 500;
+    }
+    .title-2 {
+      font-size: 24px;
+      line-height: 64px;
+      margin-bottom: 48px;
+      font-weight: 400;
+      color: #74758b;
+
+      text-align: center;
+    }
+    .product-logo-list {
+      display: flex;
+      justify-content: center;
+      >div {
+        width: 156px;
+        margin-right: 24px;
+      }
+      img {
+        width: inherit;
+        height: inherit;
+      }
+    }
+  }
+  .signup-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    .signup-form {
+      .title {
+        justify-content: center;
+        margin-bottom: 24px;
+        font-weight: 700;
+        font-size: 18px;
+        color: #74758b;
+      }
+      .mail, .password, .full-name {
+        .MuiTextField-root {
+          min-width: 680px;
+          margin-top: 4px;
+          margin-bottom: 4px;
+        }
+        .MuiInputBase-root  {
+          height: 48px;
+          width: 100%;
+          input, fieldset {
+            height: 100%;
+          }
+        }
+      }
+      .signup-btn {
+        background-color: #745fe6;
+        font-weight: 700;
+        font-size: 16px;
+        color: #FFFFFF;
+        height: 48px;
+        margin-top: 24px;
+        text-transform: capitalize;
+        
+        width: 300px;
+      }
+      .form-field {
+        margin-top: 24px;
+        margin-bottom: 24px;
+        .forgot-pass {
+          a {
+            color: #9e9eae;
+            font-size: 14px;
+          }
+          
+        }
+        label {
+          span {
+            margin-left: 4px;
+          }
+          &:hover {
+            span {
+              color: #745fe6;
+            }
+          }
+        }
+      }
+    
+    }
+  }
+}

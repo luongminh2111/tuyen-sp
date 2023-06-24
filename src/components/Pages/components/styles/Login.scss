@@ -1,0 +1,110 @@
+.signin-wrapper {
+  font-family:'Gilroy','Helvetica Neue',Helvetica,Roboto,Arial,sans-serif;
+  .head {
+    margin-top: 100px;
+    .title-1 {
+      font-size: 56px;
+      line-height: 64px;
+      margin-bottom: 48px;
+      text-align: center;
+    }
+    .product-logo-list {
+      display: flex;
+      justify-content: center;
+      >div {
+        width: 156px;
+        margin-right: 24px;
+      }
+      img {
+        width: inherit;
+        height: inherit;
+      }
+    }
+  }
+  .login-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    .login-form {
+      padding: 32px;
+      width: 384px;
+      border: 1px solid #D3D5D7;
+      border-radius: 4px;
+      .title {
+        justify-content: center;
+        margin-bottom: 24px;
+        font-weight: 700;
+        a {
+          color: #282828 ;
+          margin-left: 4px;
+        }
+      }
+      .mail, .password {
+        .MuiTextField-root {
+          width: 100%;
+          margin-top: 4px;
+        }
+        .MuiInputBase-root  {
+          height: 48px;
+          width: 100%;
+          input, fieldset {
+            height: 100%;
+          }
+        }
+      }
+      .next-btn {
+        background-color: #745fe6;
+        font-weight: 700;
+        font-size: 16px;
+        color: #FFFFFF;
+        width: 100%;
+        height: 48px;
+        margin-top: 24px;
+        text-transform: capitalize;
+      }
+      .form-field {
+        margin-top: 24px;
+        margin-bottom: 24px;
+        .forgot-pass {
+          a {
+            color: #9e9eae;
+            font-size: 14px;
+          }
+          
+        }
+        label {
+          span {
+            margin-left: 4px;
+          }
+          &:hover {
+            span {
+              color: #745fe6;
+            }
+          }
+        }
+      }
+      .btn-action {
+        width: 100%;
+        .back-to-email {
+          display: flex;
+          color: #1e21ef;
+          align-items: center;
+          text-decoration: underline;
+          margin-right: 12px;
+          width: 40px;
+          cursor: pointer;
+        }
+        button {
+          width: calc(100% - 40px);
+          background-color: #745fe6;
+          font-weight: 700;
+          font-size: 16px;
+          color: #FFFFFF;
+          width: 100%;
+          height: 48px;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+}

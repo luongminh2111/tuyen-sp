@@ -1,0 +1,71 @@
+.reminder-wrapper {
+  font-family:'Gilroy','Helvetica Neue',Helvetica,Roboto,Arial,sans-serif;
+  .head {
+    margin-top: 100px;
+    .title-1 {
+      font-size: 32px;
+      line-height: 64px;
+      margin-bottom: 48px;
+      color: #74758b;
+      font-weight: 600;
+      text-align: center;
+    }
+  }
+  .reminder-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    .reminder-form {
+      display: block;
+      .title {
+        justify-content: center;
+        margin-bottom: 24px;
+        font-weight: 400;
+        color: #88899c;
+        font-size: 16px;
+      }
+      .mail {
+        .MuiTextField-root {
+          width: 100%;
+          margin-top: 4px;
+        }
+        .MuiInputBase-root  {
+          height: 48px;
+          width: 100%;
+          input, fieldset {
+            height: 100%;
+          }
+        }
+      }
+      .send-email-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        button {
+          background-color: #74758b;
+          font-weight: 700;
+          font-size: 16px;
+          color: #FFFFFF;
+          min-width: 300px;
+          padding: 12px 30px;
+          height: 52px;
+          height: 48px;
+          margin-top: 24px;
+          text-transform: capitalize;
+        }
+      }
+      .back-to-login-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 24px;
+        button {
+          color: #a794d5;
+          text-decoration: underline;
+          text-transform: capitalize;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}
