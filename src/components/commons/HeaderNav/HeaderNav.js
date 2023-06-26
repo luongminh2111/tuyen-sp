@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useRef } from "react";
 import { useEffect } from "react";
 import ReactTooltip from "react-tooltip";
+import { ORG_IMAGE_DEFAULT } from "../../../commons/image";
 
 function HeaderNav(props) {
   const [showDropDownUser, setShowDropDownUser] = useState(false);
@@ -62,7 +63,7 @@ function HeaderNav(props) {
     <div className="header-nav-wrapper">
       <div className="nav-bar left d-flex">
         <div className="org-icon">
-          <i className="fa-sharp fa-solid fa-building"></i>
+            <img src={ORG_IMAGE_DEFAULT}/>
         </div>
         <div className="dashboard d-flex align-items-center">Dashboard</div>
       </div>

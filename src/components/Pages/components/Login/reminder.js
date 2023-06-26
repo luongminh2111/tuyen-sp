@@ -6,8 +6,7 @@ import Alert from "@mui/material/Alert";
 import "../styles/Reminder.scss";
 import { login } from "../../actions/AccountActionCallApi";
 import { useHistory } from "react-router-dom";
-import { CheckBox } from "@mui/icons-material";
-import Footer from "../../../HomePage/Footer";
+import Footer from "../../../commons/Footer";
 
 function Reminder(props) {
   const [email, setEmail] = useState("");

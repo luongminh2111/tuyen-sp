@@ -1,0 +1,42 @@
+.button-dropdown-wrapper {
+  position: relative;
+  button {
+    width: 200px;
+    border: 1px solid #d3d5d7;
+    background-color: #fff;
+    border-radius: 4px;
+    text-transform: capitalize;
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+    svg {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+  .list-options {
+    position: absolute;
+    height: fit-content;
+    background-color: #fff;
+    width: 200px;
+    border: 1px solid #d3d5d7;
+    border-top: unset;
+    border-radius: 0 0 4px 4px;
+    z-index: 88;
+    padding: 4px;
+    .item {
+      height: 36px;
+      padding: 4px 8px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      cursor: pointer;
+      &:hover {
+        background-color: #f2Fcf9;
+      }
+    }
+  }
+}

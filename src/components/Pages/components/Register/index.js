@@ -4,9 +4,7 @@ import { useDispatch } from "react-redux";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import "../styles/Register.scss";
-import { Close } from "@material-ui/icons";
-import { register } from "../../actions/AccountActionCallApi";
-import Footer from "../../../HomePage/Footer";
+import Footer from "../../../commons/Footer";
 import { CheckBox } from "@mui/icons-material";
 
 function Register(props) {

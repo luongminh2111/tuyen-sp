@@ -1,16 +1,15 @@
-
-
 const initState = {
-  destinationItems: []
+  isExpand : false
 };
 
 const global = (state = initState, action) => {
   switch (action.type) {
-    case 'UPDATE_DESTINATION_ITEMS':
+    case "CHANGE_EXPAND":
       return {
         ...state,
-        destinationItems: action.data,
-      };
+        isExpand: action.value
+      }
+    
     default:
       return state;
   }
