@@ -1,0 +1,17 @@
+.issues-wrapper {
+  color: #333;
+  background-color: #f0f0f0;
+  min-height: 100vh;
+  width: calc(100% - 50px);
+  margin-left: 50px;
+  margin-top: 50px;
+  &.menu-expand {
+    width: calc(100% - 200px);
+    margin-left: 200px;
+  }
+  .issues-wrapper {
+    padding: 30px; 
+    display: flex;
+    justify-content: space-between;
+  }
+}

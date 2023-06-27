@@ -93,20 +93,6 @@ function Register(props) {
     <Box className="signup-wrapper">
       <Box className="head">
         <div className="title-1">Sign up for Project Account</div>
-        <div className="title-2">
-          Manage Backlog, Cacoo, and Typetalk with your Project ID.
-        </div>
-        <div className="product-logo-list">
-          <div>
-            <img src="https://d1lvv0q42gy9jf.cloudfront.net/R20230614_1/assets/img/logo_backlog.svg"></img>
-          </div>
-          <div>
-            <img src="https://d1lvv0q42gy9jf.cloudfront.net/R20230614_1/assets/img/logo_cacoo.svg"></img>
-          </div>
-          <div>
-            <img src="	https://d1lvv0q42gy9jf.cloudfront.net/R20230614_1/assets/img/logo_typetalk.svg"></img>
-          </div>
-        </div>
       </Box>
 
       <div className="signup-container">

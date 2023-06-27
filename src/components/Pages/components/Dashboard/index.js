@@ -8,11 +8,17 @@ import DashboardRight from "./DashboardRight";
 import { useState } from "react";
 import ToggleNav from "../../../../commons/ToggleNav";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 function Dashboard(props) {
   const [isRightZoomOut, setIsRightRoomOut] = useState(false);
 
-  const isExpand = useSelector(state => state.global.isExpand);
+  const history = useHistory();
+
+  useEffect(() => {
+    history.push("/dashboard");
+  }, []);
 
   const handleChangeRightRoom = () => {
     setIsRightRoomOut(!isRightZoomOut);
@@ -20,8 +26,7 @@ function Dashboard(props) {
 
   return (
     <>
-      <ToggleNav />
-      <div className={`dashboard-wrapper ${isExpand ? 'menu-expand' : ''}`}>
+      <div className={`dashboard-wrapper`}>
         <HeaderNav />
         <div className="content-header">
           <div className="content-header__inner">

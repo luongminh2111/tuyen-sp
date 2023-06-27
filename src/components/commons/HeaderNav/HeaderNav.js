@@ -61,7 +61,7 @@ function HeaderNav(props) {
 
   return (
     <div className="header-nav-wrapper">
-      <div className="nav-bar left d-flex">
+      <div className="nav-bar left d-flex" onClick={() => history.push("/dashboard")}>
         <div className="org-icon">
             <img src={ORG_IMAGE_DEFAULT}/>
         </div>

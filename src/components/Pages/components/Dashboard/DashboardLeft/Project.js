@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import "./styles/project.scss";
 import ReactTooltip from "react-tooltip";
 import { ORG_IMAGE_DEFAULT } from "../../../../../commons/image";
+import { useHistory } from "react-router-dom";
 
 function Project(props) {
-  const [isZoomIn, setIsZoomIn] = useState(true);
+  const [isZoomIn, setIsZoomIn] = useState(false);
+
+  const history = useHistory();
 
   return (
     <div className="project-wrapper">
@@ -36,7 +39,7 @@ function Project(props) {
         <div className="list-project">
           {fakeList?.map(item => {
             return (
-              <div className="project-item">
+              <div className="project-item" onClick={() => history.push("/project?name=PMA")}>
                 <div className="icon-pin"></div>
                 <div className="org-icon">
                   <img src={ORG_IMAGE_DEFAULT}></img>

@@ -1,0 +1,24 @@
+.projects-wrapper {
+  color: #333;
+  background-color: #f0f0f0;
+  min-height: 100vh;
+  width: calc(100% - 50px);
+  margin-left: 50px;
+  margin-top: 50px;
+  &.menu-expand {
+    width: calc(100% - 200px);
+    margin-left: 200px;
+  }
+  .content-wrapper {
+    padding: 30px; 
+    display: flex;
+    justify-content: space-between;
+
+    .project-left-wrapper {
+      width: 48%;
+    }
+    .project-right-wrapper {
+      width: 48%;
+    }
+  }
+}

@@ -1,13 +1,9 @@
 .dashboard-wrapper {
   color: #333;
   background-color: #f0f0f0;
-  height: 100vh;
+  min-height: 100vh;
   width: calc(100% - 50px);
   margin-left: 50px;
-  &.menu-expand {
-    width: calc(100% - 200px);
-    margin-left: 200px;
-  }
   .content-header {
     padding-top: 80px;
     border-top: 1px solid #D3D5D7;

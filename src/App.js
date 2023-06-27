@@ -14,6 +14,8 @@ import Reminder from "./components/Pages/components/Login/reminder";
 import Register from "./components/Pages/components/Register";
 import Dashboard from "./components/Pages/components/Dashboard";
 import AddIssue from "./components/Pages/components/AddIssue";
+import Project from "./components/Pages/components/Project/components";
+import Issues from "./components/Pages/components/Issue/components";
 
 function App() {
   const checkAuth = useSelector(state => state?.auth?.positionCallApiCheckAuth);
@@ -41,7 +43,10 @@ function App() {
             <Route exact path="/register" component={Register}></Route> 
             <Route exact path="/reminder" component={Reminder}></Route>  
             <Route exact path="/" component={Dashboard}></Route>   
-            <Route exact path="/add-issue" component={AddIssue}></Route>     
+            <Route exact path="/dashboard" component={Dashboard}></Route>   
+            <Route exact path="/add-issue" component={AddIssue}></Route>   
+            <Route path="/project" component={Project}></Route> 
+            <Route exact path="/issues" component={Issues}></Route>   
           </Switch>
         </React.Fragment> 
        

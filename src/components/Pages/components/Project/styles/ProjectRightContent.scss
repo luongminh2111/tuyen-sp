@@ -1,0 +1,180 @@
+.project-right-wrapper {
+  .status-wrapper {
+    .status-label {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+    .status-content {
+      border: 1px solid #d3d5d7;
+      border-radius: 4px;
+      background: #fff;
+      padding: 12px 16px;
+      .graph--bar {
+        width: 100%;
+        margin-bottom: 24px;
+        .graph--bar__fig {
+          display: block;
+          .graph--process {
+            width: 100%;
+            height: 12px;
+            background: #ed8077;
+          }
+          .graph--bar__numbers {
+            text-align: end;
+            margin-top: 8px;
+            font-size: 13px;
+          }
+        }
+      }
+      .graph--bar__info {
+        display: flex;
+        .graph--bar__info-wrapper {
+          width: calc(100% / 4);
+          height: 56px;
+          > div {
+            display: flex;
+            justify-content: center;
+          }
+          .label {
+            font-size: 13px;
+            margin-bottom: 8px;
+          }
+          .graph--bar__info-number {
+            p {
+              text-align: center;
+              color: #fff;
+              width: 90%;
+              height: 22px;
+              background: #ed8077;
+              border-radius: 20px;
+            }
+            display: flex;
+            justify-content: center;
+          }
+          &.in-progress {
+            .graph--bar__info-number {
+              p {
+                background: #4488c5;
+              }
+            }
+          }
+          &.resolved {
+            .graph--bar__info-number {
+              p {
+                background: #5eb5a6;
+              }
+            }
+          }
+          &.closed {
+            .graph--bar__info-number {
+              p {
+                background: #a1af2f;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .milestone-wrapper {
+    margin-top: 30px;
+    .milestone-label {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+    .milestone-content {
+      border: 1px solid #d3d5d7;
+      border-radius: 4px;
+      background: #fff;
+      padding: 12px 16px;
+      .graph--bar {
+        width: 100%;
+        border-bottom: 1px solid #d3d5d7;
+        padding-bottom: 16px;
+        padding-top: 16px;
+        &:first-child {
+          padding-top: unset;
+        }
+         &:last-child {
+          border-bottom:  unset;
+         }
+        .graph--bar-label {
+          font-size: 13px;
+          margin-top: 8px;
+          margin-bottom: 8px;
+          color: #4caf93;
+          font-weight: 600;
+        }
+        .graph--bar__fig {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .graph--process {
+            width: calc(100% - 120px);
+            height: 12px;
+            background: #ed8077;
+          }
+          .graph--bar__numbers {
+            width: 100px;
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
+  .category-wrapper {
+    margin-top: 30px;
+    .category-label {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+    .category-content {
+      border: 1px solid #d3d5d7;
+      border-radius: 4px;
+      background: #fff;
+      padding: 12px 16px;
+      .graph--bar {
+        width: 100%;
+        border-bottom: 1px solid #d3d5d7;
+        padding-bottom: 16px;
+        padding-top: 16px;
+        &:first-child {
+          padding-top: unset;
+        }
+         &:last-child {
+          border-bottom:  unset;
+         }
+        .graph--bar-label {
+          font-size: 13px;
+          margin-top: 8px;
+          margin-bottom: 8px;
+          color: #4caf93;
+          font-weight: 600;
+        }
+        .graph--bar__fig {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .graph--process {
+            width: calc(100% - 120px);
+            height: 12px;
+            background: #ed8077;
+          }
+          .graph--bar__numbers {
+            width: 100px;
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
+}
