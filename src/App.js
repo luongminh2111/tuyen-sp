@@ -16,6 +16,8 @@ import Dashboard from "./components/Pages/components/Dashboard";
 import AddIssue from "./components/Pages/components/AddIssue";
 import Project from "./components/Pages/components/Project/components";
 import Issues from "./components/Pages/components/Issue/components";
+import Files from "./components/Pages/components/Files/components";
+import ProjectSetting from "./components/Pages/components/ProjectSetting/components";
 
 function App() {
   const checkAuth = useSelector(state => state?.auth?.positionCallApiCheckAuth);
@@ -47,6 +49,8 @@ function App() {
             <Route exact path="/add-issue" component={AddIssue}></Route>   
             <Route path="/project" component={Project}></Route> 
             <Route exact path="/issues" component={Issues}></Route>   
+            <Route exact path="/files" component={Files}></Route> 
+            <Route exact path="/project-setting" component={ProjectSetting}></Route> 
           </Switch>
         </React.Fragment> 
        
