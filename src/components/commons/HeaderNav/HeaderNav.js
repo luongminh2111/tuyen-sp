@@ -32,9 +32,9 @@ function HeaderNav(props) {
     return (
       <div className="dropdown-user-wrapper">
         <div>Hello + User Name</div>
-        <div>Activity</div>
-        <div>Personal Settings</div>
-        <div>Space Settings</div>
+        <div onClick={() => history.push("/my-profile")}>My Profile</div>
+        <div onClick={() => history.push("/project-setting")}>Personal Settings</div>
+        <div onClick={() => history.push("/sign-in")}>Logout</div>
       </div>
     );
   };

@@ -8,8 +8,8 @@
     align-items: center;
     &.zoom-in {
       .header-left {
-        .search-condition { 
-          .collapse-icon { 
+        .search-condition {
+          .collapse-icon {
             transform: rotate(0);
           }
         }
@@ -39,19 +39,12 @@
           border: 1px solid #d3d5d7;
           min-width: 120px;
           font-weight: 600;
-          &:first-child {
-            background: #4caf93;
-            color: #fff;
-          }
-          &:last-child {
-            background: #fff;
-            color: #0F1824;
-            font-weight: 500;
-          }
+          border-radius: 6px;
+          background: #4caf93;
+          color: #fff;
         }
       }
     }
- 
   }
   .filter-expand {
     margin-top: 30px;
@@ -83,7 +76,7 @@
     .filter-select-list {
       display: flex;
       margin-top: 24px;
-      >div {
+      > div {
         margin-right: 16px;
       }
       .label {
@@ -109,13 +102,12 @@
           input {
             height: 100%;
             width: 100%;
-            color: #0F1824;
-           
+            color: #0f1824;
           }
           fieldset {
             height: 44px;
             width: 100%;
-            color: #0F1824;
+            color: #0f1824;
           }
         }
       }

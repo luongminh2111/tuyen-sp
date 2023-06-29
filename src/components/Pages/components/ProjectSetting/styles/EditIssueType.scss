@@ -1,0 +1,127 @@
+.add-issue-type-content-wrapper {
+  width: calc(100% - 100px);
+  background: #fff;
+  height: 100%;
+  min-height: 100vh;
+  .title {
+    font-size: 16px;
+    font-weight: 600;
+    i {
+      font-size: 18px;
+      margin-left: 12px;
+    }
+  }
+  .back-to-edit {
+    cursor: pointer;
+    width: 150px;
+    height: 36px;
+    i {
+      margin-right: 10px;
+    }
+    margin-bottom: 16px;
+    &:hover {
+      font-weight: 600;
+      color: #2c9a7a;
+    }
+  }
+
+}
+
+.add-issue-content {
+  margin-top: 24px;
+  .exist-item {
+    .label {
+      font-size: 16px;
+      font-weight: 600;
+      width: 200px;
+      margin-bottom: 10px;
+    }
+    .list-issue-exist {
+      border: 1px solid #d3d5d7;
+      border-radius: 4px;
+      padding: 24px;
+      background: #f0f0f0;
+      display: flex;
+      .item {
+        padding: 3px 6px;
+        background-color: orange;
+        color: #fff;
+        border-radius: 16px;
+        min-width: 80px;
+        width: fit-content;
+        text-align: center;
+        margin-right:  16px;
+      }
+    }
+  }
+
+}
+.submit-btn {
+  margin-top: 40px;
+  button {
+    width: 150px;
+    padding: 4px 12px;
+    background: #2c9a7a;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    border: 1px solid #d3d5d7;
+    font-weight: 500;
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+  
+}
+.add-item {
+  .input-name {
+    .label {
+      display: flex;
+      font-size: 13px;
+      font-weight: 500;
+      color: #222;
+      >span {
+        &:nth-child(2) {
+          margin-left: 4px;
+          color: red;
+          font-size: 18px;
+        }
+      }
+
+    }
+    input {
+      padding: 4px 12px;
+      height: 36px;
+      width: 350px;
+      font-size: 14px;
+      border-radius: 4px;
+      outline: none;
+      border-color: #d3d5d7;
+    }
+    .note {
+      color: #222;
+      font-weight: 400;
+      margin-top: 4px;
+      font-size: 13px;
+    }
+  }
+  .list-color {
+    >div {
+      >div {
+        display: flex;
+        align-items: center;
+        margin-right: 30px;
+        input {
+          margin-right: 8px;
+          width: 18px;
+          height: 18px;
+        }
+        >div {
+          border: 1px solid #d3d5d7;
+          border-radius: 16px;
+          padding: 3px 6px;
+          width: fit-content;
+        }
+      }
+    }
+  }
+}

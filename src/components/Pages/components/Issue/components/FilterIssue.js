@@ -22,13 +22,7 @@ function FilterIssue(props) {
               <div className="title">Search conditions</div>
             </div>
             <div className="search-buttons">
-              <Button>Search</Button>
-              <Button>Advanced- search</Button>
-            </div>
-          </div>
-          <div className="header-right">
-            <div className="search">
-              <i class="fa-solid fa-magnifying-glass"></i>
+              <button>Search</button>
             </div>
           </div>
         </div>

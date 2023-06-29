@@ -1,0 +1,85 @@
+.add-mile-content-wrapper {
+  width: calc(100% - 100px);
+  background: #fff;
+  height: 100%;
+  min-height: 100vh;
+  .title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    i {
+      font-size: 18px;
+      margin-left: 12px;
+    }
+  }
+  .back-to-edit {
+    cursor: pointer;
+    width: 150px;
+    height: 36px;
+    i {
+      margin-right: 10px;
+    }
+    margin-bottom: 16px;
+    &:hover {
+      font-weight: 600;
+      color: #2c9a7a;
+    }
+  }
+
+}
+
+.add-item {
+  .input-name, .input-date {
+    .label {
+      display: flex;
+      font-size: 13px;
+      font-weight: 00;
+      color: #222;
+      >span {
+        &:nth-child(2) {
+          margin-left: 4px;
+          color: red;
+          font-size: 18px;
+        }
+      }
+
+    }
+    input {
+      padding: 4px 12px;
+      height: 36px;
+      width: 350px;
+      font-size: 14px;
+      border-radius: 4px;
+      outline: none;
+      border-color: #d3d5d7;
+    }
+    .note {
+      color: #222;
+      font-weight: 400;
+      margin-top: 4px;
+      font-size: 13px;
+    }
+  }
+
+}
+.description {
+  margin-top: 24px;
+  .label {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .area-input-desc {
+    width: 100%;
+    min-height: 120px;
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      color: #222;
+      padding: 8px 12px;
+      outline: none;
+      border: 1px solid #222;
+      border-radius: 6px;
+    }
+  }
+}

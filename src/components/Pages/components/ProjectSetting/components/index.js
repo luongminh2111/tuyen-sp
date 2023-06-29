@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import ToggleNav from "../../../../../commons/ToggleNav";
 import HeaderNav from "../../../../commons/HeaderNav/HeaderNav";
@@ -11,6 +11,9 @@ import SettingContent from "./SettingContent";
 
 function ProjectSetting(props) {
   const isExpand = useSelector((state) => state.global.isExpand);
+
+  const [settingSelect, setSettingSelect] = useState('');
+
   return (
     <>
       <ToggleNav />
@@ -31,8 +34,8 @@ function ProjectSetting(props) {
           <div className="project-header__actions"></div>
         </div>
         <div className="project-setting-container d-flex">
-          <SubMenu />
-          <SettingContent />
+          <SubMenu setSettingSelect={setSettingSelect}/>
+          <SettingContent settingSelect={settingSelect}/>
         </div>
       </div>
     </>
