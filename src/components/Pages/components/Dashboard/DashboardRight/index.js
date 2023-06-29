@@ -66,9 +66,6 @@ function DashboardRight(props) {
                       <div className="file">Files</div>
                     </div>
                   </div>
-                  <div className="setting-icon">
-                    <i className="fa-solid fa-gear"></i>
-                  </div>
                 </div>
               );
             })}

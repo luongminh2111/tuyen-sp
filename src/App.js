@@ -19,6 +19,7 @@ import Issues from "./components/Pages/components/Issue/components";
 import Files from "./components/Pages/components/Files/components";
 import ProjectSetting from "./components/Pages/components/ProjectSetting/components";
 import MyProfile from "./components/Pages/components/MyProfile/components";
+import Board from "./components/Pages/components/Board/components";
 
 function App() {
   const checkAuth = useSelector(state => state?.auth?.positionCallApiCheckAuth);
@@ -53,6 +54,7 @@ function App() {
             <Route exact path="/files" component={Files}></Route> 
             <Route exact path="/project-setting" component={ProjectSetting}></Route> 
             <Route exact path="/my-profile" component={MyProfile}></Route> 
+            <Route exact path="/board" component={Board}></Route> 
           </Switch>
         </React.Fragment> 
        
