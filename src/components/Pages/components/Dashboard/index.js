@@ -10,6 +10,7 @@ import ToggleNav from "../../../../commons/ToggleNav";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { PATH_WORKPLACE_SETTING } from "../../../../contains/pathDefault";
 
 function Dashboard(props) {
   const [isRightZoomOut, setIsRightRoomOut] = useState(false);
@@ -43,7 +44,7 @@ function Dashboard(props) {
                   data-tip=""
                   data-for="space-setting"
                 >
-                  <a href="">
+                  <a href={`${PATH_WORKPLACE_SETTING}`}>
                     <i class="fa-solid fa-gear"></i>
                   </a>
                 </span>
@@ -55,6 +56,44 @@ function Dashboard(props) {
                 >
                   Space setting
                 </ReactTooltip>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="workplace-empty d-flex">
+          <div className="item-add project">
+            <div className="item-icon">
+              <i class="fa-solid fa-folder-tree"></i>
+            </div>
+            <div className="item-content">
+              <div>Add Project</div>
+              <div className="sub-text">First, add a project that you would like to work on</div>
+              <div>
+                <button onClick={() => history.push(`${PATH_WORKPLACE_SETTING}`)}>Add</button>
+              </div>
+            </div>
+          </div>
+          <div className="item-add user">
+            <div className="item-icon">
+              <i class="fa-solid fa-user-plus"></i>
+            </div>
+            <div className="item-content">
+              <div>Add User</div>
+              <div className="sub-text">Invite members to this Space to work on your project with you</div>
+              <div>
+                <button onClick={() => history.push(`${PATH_WORKPLACE_SETTING}?id=staff`)}>Add</button>
+              </div>
+            </div>
+          </div>
+          <div className="item-add issue">
+            <div className="item-icon">
+              <i class="fa-sharp fa-solid fa-list-ul"></i>
+            </div>
+            <div className="item-content">
+              <div>Add Issue</div>
+              <div className="sub-text">Please add a project first</div>
+              <div>
+                <button disabled >Add</button>
               </div>
             </div>
           </div>

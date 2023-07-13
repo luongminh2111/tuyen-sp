@@ -82,18 +82,8 @@ function AddIssue(props) {
                     <ButtonDropDown options={priorityOptions} />
                   </div>
                 </div>
-                <div className="ticket__properties-item -versions">
-                  <label>Version</label>
-                  <div className="ticket__properties-value">
-                    <ButtonDropDown options={priorityOptions} />
-                  </div>
-                </div>
               </div>
             </div>
-          </div>
-          <div className="notify-input">
-            <div className="label">Notify:</div>
-            <TextField placeholder="Search user" />
           </div>
           <div className="list-btn">
             <Button className="preview-btn">Preview</Button>

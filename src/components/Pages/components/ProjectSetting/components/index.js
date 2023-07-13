@@ -34,7 +34,7 @@ function ProjectSetting(props) {
           <div className="project-header__actions"></div>
         </div>
         <div className="project-setting-container d-flex">
-          <SubMenu setSettingSelect={setSettingSelect}/>
+          <SubMenu settingSelect={settingSelect} setSettingSelect={setSettingSelect}/>
           <SettingContent settingSelect={settingSelect}/>
         </div>
       </div>

@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/subMenu.scss";
 
 function SubMenu(props) {
-  const {setSettingSelect} = props;
+  const { settingSelect, setSettingSelect } = props;
 
   const handleSelectSetting = (value) => {
     setSettingSelect(value);
@@ -17,10 +17,10 @@ function SubMenu(props) {
         <div>Project Settings</div>
       </div>
       <div className="menu-items">
-        <div className="item" onClick={() => handleSelectSetting("")}>General</div>
-        <div className="item" onClick={() => handleSelectSetting("Members")}>Members</div>
-        <div className="item" onClick={() => handleSelectSetting("Issue Type")}>Issue Type</div>
-        <div className="item" onClick={() => handleSelectSetting("Milestones")}>Milestones</div>
+        <div className={`item ${settingSelect === "" ? "active" : ''}`} onClick={() => handleSelectSetting("")}>General</div>
+        <div className={`item ${settingSelect === "Members" ? "active" : ''}`} onClick={() => handleSelectSetting("Members")}>Members</div>
+        <div className={`item ${settingSelect === "Issue Type" ? "active" : ''}`} onClick={() => handleSelectSetting("Issue Type")}>Issue Type</div>
+        <div className={`item ${settingSelect === "Milestones" ? "active" : ''}`} onClick={() => handleSelectSetting("Milestones")}>Milestones</div>
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/TaskInStatus.scss";
 
 function TaskInStatus(props) {
   const { status } = props;

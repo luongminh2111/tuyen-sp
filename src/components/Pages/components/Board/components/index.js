@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useSelector } from "react-redux";
 import ToggleNav from "../../../../../commons/ToggleNav";
 import HeaderNav from "../../../../commons/HeaderNav/HeaderNav";
@@ -6,9 +6,25 @@ import { ORG_IMAGE_DEFAULT } from "../../../../../commons/image";
 import "../styles/index.scss";
 import BoardFilter from "./BoardFilter";
 import TaskInStatus from "./TaskInStatus";
+import DragTaskItem from "./DragTaskItem";
+import { defaultGroupsTask } from "../commons/DataCommons";
 
 function Board(props) {
   const isExpand = useSelector((state) => state.global.isExpand);
+  const dragItem = useRef();
+  const dragOverItem = useRef();
+   
+  const dragStart = (e, position) => {
+    dragItem.current = position;
+    console.log(e.target.innerHTML);
+  };
+ 
+  const dragEnter = (e, position) => {
+    dragOverItem.current = position;
+    console.log(e.target.innerHTML);
+  };
+ 
+
   return (
     <>
       <ToggleNav />
@@ -31,10 +47,11 @@ function Board(props) {
         <div className="board-container">
           <BoardFilter />
           <div className="list-status">
-            <TaskInStatus status="Open" />
+            {/* <TaskInStatus status="Open" />
             <TaskInStatus status="In-Progress" />
             <TaskInStatus status="Resolved" />
-            <TaskInStatus status="Closed" />
+            <TaskInStatus status="Closed" /> */}
+            <DragTaskItem data={defaultGroupsTask} />
           </div>
         </div>
       </div>

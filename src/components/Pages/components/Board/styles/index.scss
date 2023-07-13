@@ -43,96 +43,91 @@
       padding: 0 30px;
       display: flex;
       justify-content: space-between;
-
-      .status-wrapper {
-        width: calc(100% / 4 - 8px);
-
-        height: fit-content;
-        .status-title {
-          margin-bottom: 8px;
-          font-size: 14px;
-          font-weight: 600;
-          color: #222;
-          &.Open {
-            i {
-              color: #ed8077;
-              margin-right: 8px;
-            }
-          }
-          &.In-Progress {
-            i {
-              color: #4488c5;
-              margin-right: 8px;
-            }
-          }
-          &.Resolved {
-            i {
-              color: #5eb5a6;
-              margin-right: 8px;
-            }
-          }
-          &.Closed {
-            i {
-              color: #a1af2f;
-              margin-right: 8px;
-            }
+      .status-title {
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #222;
+        &.Open {
+          i {
+            color: #ed8077;
+            margin-right: 8px;
           }
         }
-        .list-issue {
-          background: #fff;
-          padding: 12px 16px;
-          border: 1px solid #d3d5d7;
-          border-radius: 4px;
-          min-height: 600px;
-          .list-task {
-            .task-item {
-              min-height: 120px;
-              height: fit-content;
-              border: 1px solid #d3d5d7;
-              border-radius: 4px;
+        &.In-Progress {
+          i {
+            color: #4488c5;
+            margin-right: 8px;
+          }
+        }
+        &.Resolved {
+          i {
+            color: #5eb5a6;
+            margin-right: 8px;
+          }
+        }
+        &.Closed {
+          i {
+            color: #a1af2f;
+            margin-right: 8px;
+          }
+        }
+      }
+      .list-issue {
+        background: #fff;
+        padding: 12px 16px;
+        border: 1px solid #d3d5d7;
+        border-radius: 4px;
+        min-height: 600px;
+          .task-item {
+            width: 100%;
+            min-height: 120px;
+            height: fit-content;
+            border: 1px solid #d3d5d7;
+            border-radius: 4px;
 
-              padding: 0 10px;
-              .row-1 {
-                font-size: 14px;
+            padding: 0 10px;
+            .row-1 {
+              font-size: 14px;
+              display: flex;
+              justify-content: space-between;
+              ._left {
                 display: flex;
-                justify-content: space-between;
-                ._left {
+                .type {
+                  margin-right: 10px;
+                  font-size: 11px;
+                  background: #a1af2f;
+                  border-radius: 18px;
+                  padding: 2px 6px;
+                  height: 20px;
+                  color: #fff;
                   display: flex;
-                  .type {
-                    margin-right: 10px;
-                    font-size: 11px;
-                    background: #a1af2f;
-                    border-radius: 18px;
-                    padding: 2px 6px;
-                    height: 20px;
-                    color: #fff;
-                    display: flex;
-                    align-items: center;
-                  }
-                  .prj-name {
-                    color: #57a09e;
-                  }
+                  align-items: center;
                 }
-                ._right {
-                  .dots {
-                    display: flex;
-                    align-items: center;
-                    height: 20px;
-                    cursor: pointer;
-                    .dot {
-                      width: 4px;
-                      height: 4px;
-                      border-radius: 50%;
-                      background: #848484;
-                      margin: 0 2px;
-                    }
+                .prj-name {
+                  color: #57a09e;
+                }
+              }
+              ._right {
+                .dots {
+                  display: flex;
+                  align-items: center;
+                  height: 20px;
+                  cursor: pointer;
+                  .dot {
+                    width: 4px;
+                    height: 4px;
+                    border-radius: 50%;
+                    background: #848484;
+                    margin: 0 2px;
                   }
                 }
               }
             }
           }
-        }
+        
       }
+    
     }
   }
 }

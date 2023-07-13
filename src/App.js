@@ -4,8 +4,7 @@ import jwt_decode from "jwt-decode";
 import {
   BrowserRouter as Router,
   Route,
-  Switch,
-  Redirect
+  Switch
 } from "react-router-dom";
 import { useSelector, Provider, useDispatch } from "react-redux";
 import { updateUser } from "./components/Pages/actions/AccountActionRedux";
@@ -20,6 +19,7 @@ import Files from "./components/Pages/components/Files/components";
 import ProjectSetting from "./components/Pages/components/ProjectSetting/components";
 import MyProfile from "./components/Pages/components/MyProfile/components";
 import Board from "./components/Pages/components/Board/components";
+import Workplace from "./components/Pages/components/Workplace/components";
 
 function App() {
   const checkAuth = useSelector(state => state?.auth?.positionCallApiCheckAuth);
@@ -55,6 +55,7 @@ function App() {
             <Route exact path="/project-setting" component={ProjectSetting}></Route> 
             <Route exact path="/my-profile" component={MyProfile}></Route> 
             <Route exact path="/board" component={Board}></Route> 
+            <Route exact path="/workplace-setting" component={Workplace}></Route>
           </Switch>
         </React.Fragment> 
        

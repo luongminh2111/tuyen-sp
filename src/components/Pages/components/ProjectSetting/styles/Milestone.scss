@@ -11,18 +11,21 @@
       margin-left: 12px;
     }
   }
-  button {
-    width: 150px;
-    padding: 4px 12px;
-    background: #2c9a7a;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 16px;
-    border: 1px solid #d3d5d7;
-    font-weight: 500;
-    margin-top: 16px;
-    margin-bottom: 24px;
+  .edit-btn {
+    button {
+      width: 150px;
+      padding: 4px 12px;
+      background: #2c9a7a;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 16px;
+      border: 1px solid #d3d5d7;
+      font-weight: 500;
+      margin-top: 16px;
+      margin-bottom: 24px;
+    }
   }
+ 
 }
 .milestone-result-table {
 

@@ -45,7 +45,8 @@
       .options {
         cursor: pointer;
         position: relative;
-        width: max-content;
+        min-width: 110px;
+        max-width: max-content;
         padding: 4px 12px;
         font-weight: 600;
         font-size: 13px;
