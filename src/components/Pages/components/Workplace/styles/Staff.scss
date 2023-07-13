@@ -12,6 +12,14 @@
       margin-left: 12px;
     }
   }
+  .btn-add-user {
+    width: 180px;
+    margin-bottom: 20px;
+    button {
+      width: 100%;
+      background-color: #4caf93;
+    }
+  }
 }
 
 .filter-member {
@@ -120,6 +128,30 @@
       &:hover {
         color: #ff4d4d;
       }
+    }
+  }
+}
+
+.add-user-content-wrapper {
+  .back-to-edit {
+    margin-bottom: 12px;
+
+      color: #4caf93;
+      cursor: pointer;
+    
+  }
+  .add-user-content {
+    .info {
+      font-size: 18px;
+      margin-bottom: 16px;
+      font-weight: 600;
+      color: #555;
+    }
+    .avatar {
+      img {
+        border-radius: 50%;
+      }
+
     }
   }
 }
