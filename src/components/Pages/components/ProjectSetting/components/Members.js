@@ -11,9 +11,9 @@ function MemberSetting(props) {
       <div className="filter-member d-flex">
         <div className="text-1">Filter users</div>
         <div className="search-input d-flex">
-          <i class="fa-solid fa-magnifying-glass"></i>
+          <i className="fa-solid fa-magnifying-glass"></i>
           <input type="text" />
-          <i class="fa-solid fa-x"></i>
+          <i className="fa-solid fa-x"></i>
         </div>
         <div className="role-btn">
           <ButtonDropDown options={["a", "b"]} />
@@ -39,7 +39,7 @@ function MemberSetting(props) {
                 <div className="role">Administrator</div>
                 <div className="join">Aug. 25, 2022</div>
                 <div className="remove">
-                  <i class="fa-solid fa-x"></i>
+                  <i className="fa-solid fa-x"></i>
                 </div>
               </div>
             );

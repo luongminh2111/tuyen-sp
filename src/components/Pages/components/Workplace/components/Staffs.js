@@ -17,11 +17,11 @@ function Staffs(props) {
         <div className="title d-flex" style={{color: '#666', fontWeight: '600'}}>
           <div>Edit User </div>
           <div>
-            <i class="fa-sharp fa-solid fa-circle-question"></i>
+            <i className="fa-sharp fa-solid fa-circle-question"></i>
           </div>
         </div>
         <div className="back-to-edit" onClick={() => setIsEdit(false)} style={{marginTop: '12px', fontSize: '13px'}}>
-          <i class="fa-sharp fa-solid fa-arrow-left" style={{marginRight: '8px'}}></i>
+          <i className="fa-sharp fa-solid fa-arrow-left" style={{marginRight: '8px'}}></i>
           Back
         </div>
         <hr />
@@ -88,9 +88,9 @@ function Staffs(props) {
       <div className="filter-member d-flex">
         <div className="text-1">Filter staff</div>
         <div className="search-input d-flex">
-          <i class="fa-solid fa-magnifying-glass"></i>
+          <i className="fa-solid fa-magnifying-glass"></i>
           <input type="text" />
-          <i class="fa-solid fa-x"></i>
+          <i className="fa-solid fa-x"></i>
         </div>
       </div>
       <div className="filter-result-table">
@@ -110,7 +110,7 @@ function Staffs(props) {
                 <div className="role">Administrator</div>
                 <div className="join">Aug. 25, 2022</div>
                 <div className="remove">
-                  <i class="fa-solid fa-x"></i>
+                  <i className="fa-solid fa-x"></i>
                 </div>
               </div>
             );

@@ -1,0 +1,13 @@
+
+.MuiSnackbar-root {
+
+  height: 48px;
+  > .MuiPaper-root {
+    width: 500px;
+    height: unset;
+    background-image: none;
+    background-size: unset;
+    display: flex;
+    justify-content: center;
+  }
+}

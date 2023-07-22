@@ -17,7 +17,7 @@ function IssueType(props) {
       <div className="title d-flex">
         <div>Edit Issue Types </div>
         <div>
-          <i class="fa-sharp fa-solid fa-circle-question"></i>
+          <i className="fa-sharp fa-solid fa-circle-question"></i>
         </div>
       </div>
       <div className="edit-btn">
@@ -39,7 +39,7 @@ function IssueType(props) {
                 </div>
                 <div className="template">Register</div>
                 <div className="delete">
-                  <i class="fa-solid fa-x"></i>
+                  <i className="fa-solid fa-x"></i>
                 </div>
               </div>
             );

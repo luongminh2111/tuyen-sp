@@ -9,13 +9,13 @@ function MyIssue(props) {
       <div className={`header ${isZoomIn ? "zoom-in" : ""}`}>
         <div className="header-left">
           <div className="collapse-icon" onClick={() => setIsZoomIn(!isZoomIn)}>
-            <i class="fa-solid fa-chevron-up"></i>
+            <i className="fa-solid fa-chevron-up"></i>
           </div>
           <div className="title">My Issues</div>
         </div>
         <div className="header-right">
           <div className="search">
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <i className="fa-solid fa-magnifying-glass"></i>
           </div>
         </div>
       </div>

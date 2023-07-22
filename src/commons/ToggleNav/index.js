@@ -32,7 +32,7 @@ function ToggleNav(props) {
         >
           {changeMenuBar ? (
             isExpand ? (
-              <i class="fa-solid fa-arrow-left"></i>
+              <i className="fa-solid fa-arrow-left"></i>
             ) : (
               <i className="fa-sharp fa-solid fa-arrow-right"></i>
             )
@@ -67,7 +67,7 @@ function ToggleNav(props) {
       </div>
       <div className="menu-item file d-flex" onClick={() => history.push("/files")}>
         <span className="icon">
-          <i class="fa-solid fa-folder"></i>
+          <i className="fa-solid fa-folder"></i>
         </span>
         {isExpand ? <span className="text">Files</span> : null}
       </div>

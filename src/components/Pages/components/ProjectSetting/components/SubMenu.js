@@ -12,7 +12,7 @@ function SubMenu(props) {
     <div className="submenu-wrapper">
       <div className="title" onClick={() => handleSelectSetting("")}>
         <div>
-          <i class="fa-solid fa-gear"></i>
+          <i className="fa-solid fa-gear"></i>
         </div>
         <div>Project Settings</div>
       </div>

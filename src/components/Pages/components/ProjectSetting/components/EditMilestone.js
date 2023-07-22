@@ -7,13 +7,13 @@ function EditMilestone(props) {
   return (
     <div className="add-mile-content-wrapper">
       <div className="back-to-edit" onClick={() => setEdit(false)}>
-        <i class="fa-sharp fa-solid fa-arrow-left"></i>
+        <i className="fa-sharp fa-solid fa-arrow-left"></i>
         Back
       </div>
       <div className="title d-flex">
         <div>Add milestone </div>
         <div>
-          <i class="fa-sharp fa-solid fa-circle-question"></i>
+          <i className="fa-sharp fa-solid fa-circle-question"></i>
         </div>
       </div>
       <div className="add-mile-content">

@@ -62,7 +62,7 @@ function FileLeftContent(props) {
         <div className="list-actions">
           <div className="add-folder">
             <span>
-              <i class="fa-solid fa-file-circle-plus"></i>
+              <i className="fa-solid fa-file-circle-plus"></i>
             </span>
             <span>Add Files</span>
           </div>

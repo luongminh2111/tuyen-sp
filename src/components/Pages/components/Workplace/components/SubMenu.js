@@ -31,13 +31,13 @@ function SubMenu(props) {
         </div>
         <div className={`item ${settingSelect === "staff" ? "active" : ''}`} onClick={() => handleSelectSetting("staff")}>
           <span>
-          <i class="fa-solid fa-user-secret"></i>
+          <i className="fa-solid fa-user-secret"></i>
           </span>
           <span>Staffs</span>
         </div>
         <div className={`item ${settingSelect === "projects" ? "active" : ''}`} onClick={() => handleSelectSetting("projects")}>
           <span>
-          <i class="fa-solid fa-diagram-project"></i>
+          <i className="fa-solid fa-diagram-project"></i>
           </span>
           <span>List Project</span>
         </div>

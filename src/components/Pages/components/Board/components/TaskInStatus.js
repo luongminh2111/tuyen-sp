@@ -7,7 +7,7 @@ function TaskInStatus(props) {
     <div className="status-wrapper">
       <div className={`status-title ${status}`}>
         <span>
-          <i class="fa-solid fa-circle"></i>
+          <i className="fa-solid fa-circle"></i>
         </span>
         <span>{status || "Open"}</span>
         <span style={{marginLeft: '8px'}}>({3})</span>
@@ -16,7 +16,7 @@ function TaskInStatus(props) {
         {status === "Open" ? (
           <div className="add-issue-btn mb-3">
             <span>
-              <i class="fa-solid fa-plus"></i>
+              <i className="fa-solid fa-plus"></i>
             </span>
             <span>Add Issue...</span>
           </div>

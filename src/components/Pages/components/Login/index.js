@@ -1,42 +1,30 @@
 import React, { useState } from "react";
 import { Button, TextField, Box, FormControlLabel } from "@mui/material";
 import { useDispatch } from "react-redux";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 import "../styles/Login.scss";
 import { login } from "../../actions/AccountActionCallApi";
 import { useHistory } from "react-router-dom";
-import { CheckBox } from "@mui/icons-material";
+import Checkbox from "@mui/material/Checkbox";
 import Footer from "../../../commons/Footer";
+import { updateUser } from "../../actions/AccountActionRedux";
+import Alerts from "../../../../commons/Alert";
+import { getWorkSpace} from "../Workplace/actions/WorkplaceActionCallApi";
 
-function Login(props) {
-
+function Login() {
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMail, setErrorMail] = useState(false);
   const [errorPass, setErrorPass] = useState(false);
   const [messageMail, setMessageMail] = useState("");
   const [messagePass, setMessagePass] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
   const [showInputPass, setShowInputPass] = useState(false);
+  const [textAlert, setTextAlert] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [statusAlert, setStatusAlert] = useState(false);
 
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const [showSnackbar, setShowSnackbar] = useState(false);
-  const onCloseClickHandler = (event) => {
-    setShowSnackbar(false);
-  };
-
-  const CustomSnackbar = (props) => (
-    <Snackbar
-      autoHideDuration={2000}
-      open={showSnackbar}
-      onClose={onCloseClickHandler}
-      anchorOrigin={{ horizontal: "center", vertical: "top" }}
-      children={props.children}
-    ></Snackbar>
-  );
 
   const handleChangePass = (value) => {
     setPassword(value);
@@ -72,26 +60,31 @@ function Login(props) {
     if (password.length === 0) {
       setErrorPass(true);
       setMessagePass("Password cannot be blank");
-    } else if (password?.length < 6) {
-      setErrorPass(true);
-      setMessagePass("Password must not be less than 6 characters");
     } else {
       setErrorPass(false);
       setMessagePass("");
-      const loginRequest = {}
+      const loginRequest = {
+        email,
+        password,
+      };
       dispatch(login(loginRequest)).then((json) => {
-        console.log("check json :", json);
-        if (json) {
-          setTimeout(() => {
-            history.push("/");
-          }, [1000]);
-        } else {
-          setShowSnackbar(true);
-          setShowAlert(true);
+        if (json?.data) {
+          setOpenAlert(true);
+          setTextAlert(json?.data?.message);
+          if (json?.data?.user && json?.data?.token && json?.status === 201) {
+            sessionStorage.setItem("token_admin", json.data.token);
+            setStatusAlert("success");
+            dispatch(updateUser(json.data.user));
+            dispatch(getWorkSpace());
+            setTimeout(() => {
+              history.push("/dashboard");
+            }, [1000]);
+          } else {
+            setStatusAlert("error");
+          }
         }
       });
     }
-    
   };
 
   return (
@@ -105,9 +98,7 @@ function Login(props) {
           <div className="title d-flex">
             <span>Log in or</span>
             <span>
-              <a href="/register">
-                create an account
-              </a>
+              <a href="/register">create an account</a>
             </span>
           </div>
           {!showInputPass ? (
@@ -139,20 +130,20 @@ function Login(props) {
                   type="password"
                   variant="outlined"
                   placeholder="Enter password"
-                  error={errorMail}
-                  helperText={messageMail}
+                  value={password}
+                  error={errorPass}
+                  helperText={messagePass}
                   onChange={(e) => handleChangePass(e.target.value)}
                 />
               </Box>
               <div className="d-flex justify-content-between form-field">
                 <FormControlLabel
-                  control={<CheckBox />}
-                  label={`Remember me`}
+                  required
+                  control={<Checkbox />}
+                  label="Remember me"
                 />
                 <div className="forgot-pass">
-                  <a href="/reminder" >
-                    Forgot password?
-                  </a>
+                  <a href="/reminder">Forgot password?</a>
                 </div>
               </div>
               <div className="d-flex btn-action">
@@ -168,7 +159,7 @@ function Login(props) {
                 <Button
                   variant="outlined"
                   className="login-btn"
-                  onClick={() => handleNextStep()}
+                  onClick={() => handleLogin()}
                 >
                   Log in
                 </Button>
@@ -176,13 +167,16 @@ function Login(props) {
             </>
           )}
         </Box>
-        {showAlert ? (
-          <CustomSnackbar>
-            <Alert severity="error">Đăng nhập thất bại, vui lòng thử lại</Alert>
-          </CustomSnackbar>
-        ) : null}
       </div>
       <Footer />
+      {openAlert ? (
+        <Alerts
+          text={textAlert}
+          status={statusAlert}
+          open={openAlert}
+          setOpen={setOpenAlert}
+        />
+      ) : null}
     </Box>
   );
 }

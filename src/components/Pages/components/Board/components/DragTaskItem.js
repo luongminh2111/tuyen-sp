@@ -68,7 +68,7 @@ function DragTaskItem({ data }) {
               style={{ marginBottom: "16px" }}
             >
               <span>
-                <i class="fa-solid fa-circle"></i>
+                <i className="fa-solid fa-circle"></i>
               </span>
               <span>{item?.status || "Open"}</span>
               <span style={{ marginLeft: "8px" }}>({3})</span>

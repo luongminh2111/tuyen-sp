@@ -20,7 +20,7 @@ function DashboardRight(props) {
               handleChangeRightRoom();
             }}
           >
-            <i class="fa-solid fa-chevron-up"></i>
+            <i className="fa-solid fa-chevron-up"></i>
           </div>
           <div className="title"> Recent Updates</div>
         </div>

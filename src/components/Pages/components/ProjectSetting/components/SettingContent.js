@@ -17,12 +17,12 @@ function SettingContent(props) {
         <div className="title d-flex">
           <div>General</div>
           <div>
-            <i class="fa-sharp fa-solid fa-circle-question"></i>
+            <i className="fa-sharp fa-solid fa-circle-question"></i>
           </div>
         </div>
         <div className="back-to-project">
           <div>
-            <i class="fa-solid fa-rotate-left"></i>
+            <i className="fa-solid fa-rotate-left"></i>
           </div>
           <div>Go to project</div>
         </div>

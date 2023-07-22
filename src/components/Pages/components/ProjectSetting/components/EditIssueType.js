@@ -7,13 +7,13 @@ function EditIssueType(props) {
   return (
     <div className="add-issue-type-content-wrapper">
       <div className="back-to-edit" onClick={() => setEdit(false)}>
-        <i class="fa-sharp fa-solid fa-arrow-left"></i>
+        <i className="fa-sharp fa-solid fa-arrow-left"></i>
         Back
       </div>
       <div className="title d-flex">
         <div>Add Issue Types </div>
         <div>
-          <i class="fa-sharp fa-solid fa-circle-question"></i>
+          <i className="fa-sharp fa-solid fa-circle-question"></i>
         </div>
       </div>
       <div className="add-issue-content">

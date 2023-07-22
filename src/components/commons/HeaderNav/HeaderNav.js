@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import "../styles/HeaderNav/HeaderNav.scss";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
 import { useEffect } from "react";
 import ReactTooltip from "react-tooltip";
 import { ORG_IMAGE_DEFAULT } from "../../../commons/image";
+import { logout } from "../../Pages/actions/AccountActionCallApi";
 
 function HeaderNav(props) {
   const [showDropDownUser, setShowDropDownUser] = useState(false);
 
   const userRef = useRef();
+  const dispatch = useDispatch();
 
   const account = useSelector((state) => state.auth.account);
 
@@ -28,13 +30,24 @@ function HeaderNav(props) {
     }
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+      // () => {
+      //   sessionStorage.removeItem("token_admin");
+      //   history.push("/sign-in");
+      // }
+        sessionStorage.removeItem("token_admin");
+        history.push("/sign-in");
+
+  }
+
   const renderDropdownUser = () => {
     return (
       <div className="dropdown-user-wrapper">
-        <div>Hello + User Name</div>
+        <div>Hello {` + ${account?.name}`}</div>
         <div onClick={() => history.push("/my-profile")}>My Profile</div>
         <div onClick={() => history.push("/project-setting")}>Personal Settings</div>
-        <div onClick={() => history.push("/sign-in")}>Logout</div>
+        <div onClick={() => handleLogout()}>Logout</div>
       </div>
     );
   };
@@ -98,7 +111,7 @@ function HeaderNav(props) {
           onClick={() => setShowDropDownUser(!showDropDownUser)}
         >
           <i className="fa-solid fa-user"></i>
-          <i class="fa-solid fa-caret-down"></i>
+          <i className="fa-solid fa-caret-down"></i>
           <ReactTooltip
             type="dark"
             effect="solid"

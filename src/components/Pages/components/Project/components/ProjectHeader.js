@@ -21,7 +21,7 @@ function ProjectHeader(props) {
         <span className="other-user">+3</span>
         <span className="invite-users">Invite Users</span>
         <span className="search">
-          <i class="fa-solid fa-magnifying-glass"></i>
+          <i className="fa-solid fa-magnifying-glass"></i>
         </span>
       </div>
     </div>

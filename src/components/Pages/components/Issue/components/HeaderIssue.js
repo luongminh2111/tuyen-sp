@@ -17,7 +17,7 @@ function HeaderIssue(props) {
         </div>
         <div className="issues-header_right">
           <span className="search">
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <i className="fa-solid fa-magnifying-glass"></i>
           </span>
         </div>
       </div>

@@ -36,11 +36,11 @@ function ProjectLeftContent(props) {
                 </div>
                 <div className="btn-actions d-flex align-items-end">
                   <div className="comment " style={{ marginRight: "12px" }}>
-                    <i class="fa-solid fa-message"></i>
+                    <i className="fa-solid fa-message"></i>
                   </div>
                   <div className="rate">
                     <span>
-                      <i class="fa-solid fa-star"></i>
+                      <i className="fa-solid fa-star"></i>
                     </span>
                     <span>0</span>
                   </div>
@@ -76,11 +76,11 @@ function ProjectLeftContent(props) {
                 </div>
                 <div className="btn-actions d-flex align-items-end">
                   <div className="comment " style={{ marginRight: "12px" }}>
-                    <i class="fa-solid fa-message"></i>
+                    <i className="fa-solid fa-message"></i>
                   </div>
                   <div className="rate">
                     <span>
-                      <i class="fa-solid fa-star"></i>
+                      <i className="fa-solid fa-star"></i>
                     </span>
                     <span>0</span>
                   </div>
@@ -116,11 +116,11 @@ function ProjectLeftContent(props) {
                 </div>
                 <div className="btn-actions d-flex align-items-end">
                   <div className="comment " style={{ marginRight: "12px" }}>
-                    <i class="fa-solid fa-message"></i>
+                    <i className="fa-solid fa-message"></i>
                   </div>
                   <div className="rate">
                     <span>
-                      <i class="fa-solid fa-star"></i>
+                      <i className="fa-solid fa-star"></i>
                     </span>
                     <span>0</span>
                   </div>

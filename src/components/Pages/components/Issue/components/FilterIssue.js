@@ -17,7 +17,7 @@ function FilterIssue(props) {
                 className="collapse-icon"
                 onClick={() => setIsZoomIn(!isZoomIn)}
               >
-                <i class="fa-solid fa-chevron-up"></i>
+                <i className="fa-solid fa-chevron-up"></i>
               </div>
               <div className="title">Search conditions</div>
             </div>

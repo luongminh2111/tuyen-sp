@@ -101,7 +101,7 @@ function Reminder(props) {
             </Button>
           </div>
           <div className="back-to-login-btn">
-            <Button variant="text" onClick={() => history.push("/signin")}>
+            <Button variant="text" onClick={() => history.push("/sign-in")}>
               Back to Login
             </Button>
           </div>

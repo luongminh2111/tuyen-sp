@@ -15,7 +15,7 @@ function BoardFilter(props) {
           <div className="filter-buttons">
             <button onClick={() => setIsZoomIn(!isZoomIn)}>
               <span>
-                <i class="fa-solid fa-filter"></i>
+                <i className="fa-solid fa-filter"></i>
               </span>
               <span>{isZoomIn ? "Hide Filter" : "Show Filter"}</span>
             </button>
@@ -25,7 +25,7 @@ function BoardFilter(props) {
           <div className="filter-save">
             <button>
               <span>
-                <i class="fa-solid fa-filter"></i>
+                <i className="fa-solid fa-filter"></i>
               </span>
               <span>Save as Filter</span>
             </button>

@@ -14,16 +14,16 @@ function Project(props) {
       <div className={`header ${isZoomIn ? "zoom-in" : ""}`}>
         <div className="header-left">
           <div className="collapse-icon" onClick={() => setIsZoomIn(!isZoomIn)}>
-            <i class="fa-solid fa-chevron-up"></i>
+            <i className="fa-solid fa-chevron-up"></i>
           </div>
           <div className="title">Projects</div>
         </div>
         <div className="header-right">
           <div className="add-project" data-tip="" data-for="icon-add-project">
-            <i class="fa-solid fa-plus"></i>
+            <i className="fa-solid fa-plus"></i>
           </div>
           <div className="search">
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <i className="fa-solid fa-magnifying-glass"></i>
           </div>
           <ReactTooltip
             id="icon-add-project"

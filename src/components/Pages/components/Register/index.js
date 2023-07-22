@@ -145,7 +145,7 @@ function Register(props) {
 
           <div className="back-login d-flex justify-content-center ">
             <span>Already have Account?</span>&nbsp;
-            <span> <a href="/signin" style={{color: '#745fe6'}}>Log in from here</a></span>
+            <span> <a href="/sign-in" style={{color: '#745fe6'}}>Log in from here</a></span>
           </div>
         </Box>
         {showAlert ? (

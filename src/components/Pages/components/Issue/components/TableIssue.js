@@ -35,7 +35,7 @@ function TableIssue(props) {
        <div className="item_assignee">ohaiyou</div>
        <div className="item_status"><div>open</div></div>
        <div className="item_category">Category</div>
-       <div className="item_priority"><i class="fa-solid fa-arrow-right"></i></div>
+       <div className="item_priority"><i className="fa-solid fa-arrow-right"></i></div>
        <div className="item_version"></div>
        <div className="item_milestone">Milestone 1</div>
        <div className="item_created">Auth 26, 2023</div>

@@ -6,14 +6,16 @@ import ReactTooltip from "react-tooltip";
 import DashboardLeft from "./DashboardLeft";
 import DashboardRight from "./DashboardRight";
 import { useState } from "react";
-import ToggleNav from "../../../../commons/ToggleNav";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { PATH_WORKPLACE_SETTING } from "../../../../contains/pathDefault";
+import { USER_ROLE } from "../../../../commons/Commons";
 
 function Dashboard(props) {
   const [isRightZoomOut, setIsRightRoomOut] = useState(false);
+
+  const account = useSelector(state => state.auth.account);
 
   const history = useHistory();
 
@@ -45,7 +47,7 @@ function Dashboard(props) {
                   data-for="space-setting"
                 >
                   <a href={`${PATH_WORKPLACE_SETTING}`}>
-                    <i class="fa-solid fa-gear"></i>
+                    <i className="fa-solid fa-gear"></i>
                   </a>
                 </span>
                 <ReactTooltip
@@ -60,10 +62,11 @@ function Dashboard(props) {
             </div>
           </div>
         </div>
+        {account?.role === USER_ROLE.WORKSPACE_ADMIN ?
         <div className="workplace-empty d-flex">
           <div className="item-add project">
             <div className="item-icon">
-              <i class="fa-solid fa-folder-tree"></i>
+              <i className="fa-solid fa-folder-tree"></i>
             </div>
             <div className="item-content">
               <div>Add Project</div>
@@ -75,7 +78,7 @@ function Dashboard(props) {
           </div>
           <div className="item-add user">
             <div className="item-icon">
-              <i class="fa-solid fa-user-plus"></i>
+              <i className="fa-solid fa-user-plus"></i>
             </div>
             <div className="item-content">
               <div>Add User</div>
@@ -87,7 +90,7 @@ function Dashboard(props) {
           </div>
           <div className="item-add issue">
             <div className="item-icon">
-              <i class="fa-sharp fa-solid fa-list-ul"></i>
+              <i className="fa-sharp fa-solid fa-list-ul"></i>
             </div>
             <div className="item-content">
               <div>Add Issue</div>
@@ -97,7 +100,7 @@ function Dashboard(props) {
               </div>
             </div>
           </div>
-        </div>
+        </div> : null }
         <div className="dashboard-contents">
           <DashboardLeft isRightZoomOut={isRightZoomOut} />
           <DashboardRight
