@@ -45,3 +45,17 @@ export const updateWorkSpace = (request) => (dispatch, getState) => {
     }
   })
 }
+
+export const createProject = (request) => (dispatch) => {
+
+  const options = {
+    method: 'POST',
+    data: JSON.stringify(request)
+  }
+  const endPoint = `${BASE_URL}/api/project`;
+  return callApi(endPoint, options).then(json => {
+    if(json?.status === 200 && json?.data?.data) {
+      console.log("check create project:", json.data.data);
+    }
+  })
+}

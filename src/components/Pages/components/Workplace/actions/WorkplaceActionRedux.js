@@ -9,3 +9,8 @@ export const updateWorkspaceRedux = (value) => ({
   type: actionType.UPDATE_WORKSPACE_PROPERTIES,
   value
 });
+
+export const saveProjectRedux = (value) => ({
+  type: actionType.CREATE_NEW_PROJECT,
+  value
+});

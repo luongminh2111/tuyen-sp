@@ -1,7 +1,12 @@
 import React from "react";
 import "../styles/ListProjects.scss";
+import { useState } from "react";
+import CreateNewProject from "./modals/CreateProjectModal";
 
 function ListProject(props) {
+
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <div className="list-project-content-wrapper">
       <div className="title d-flex">
@@ -11,7 +16,7 @@ function ListProject(props) {
           </div>
       </div>
       <div className="btn-add-project">
-       <button>Add Project</button>
+       <button onClick={() => setOpenModal(true)}>Add Project</button>
       </div>
       <div className="filter-project d-flex">
         <div className="text-1">Filter project</div>
@@ -39,6 +44,12 @@ function ListProject(props) {
           })}
         </div>
       </div>
+      {openModal ?
+       <CreateNewProject 
+       open={openModal} 
+       handleClose={() => setOpenModal(false)}
+       /> 
+       : null}
     </div>
   );
 }
