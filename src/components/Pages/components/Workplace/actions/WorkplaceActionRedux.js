@@ -11,6 +11,16 @@ export const updateWorkspaceRedux = (value) => ({
 });
 
 export const saveProjectRedux = (value) => ({
-  type: actionType.CREATE_NEW_PROJECT,
+  type: actionType.ADD_NEW_PROJECT,
   value
 });
+
+export const createNewMember = (value) => ({
+  type: actionType.CREATE_NEW_MEMBER,
+  value
+});
+
+export const addNewProject = (item) => ({
+  type: actionType.ADD_NEW_PROJECT,
+  item
+})

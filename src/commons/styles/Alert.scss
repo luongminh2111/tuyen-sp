@@ -1,10 +1,9 @@
 
 .MuiSnackbar-root {
-
-  height: 48px;
+  height: 48px !important;
   > .MuiPaper-root {
     width: 500px;
-    height: unset;
+    height: unset !important;
     background-image: none;
     background-size: unset;
     display: flex;

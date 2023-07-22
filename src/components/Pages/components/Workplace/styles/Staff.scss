@@ -141,6 +141,15 @@
     
   }
   .add-user-content {
+    input {
+      padding: 4px 12px;
+      height: 36px;
+      width: 350px;
+      font-size: 14px;
+      border-radius: 4px;
+      outline: none;
+      border-color: #d3d5d7;
+    }
     .info {
       font-size: 18px;
       margin-bottom: 16px;
@@ -152,6 +161,33 @@
         border-radius: 50%;
       }
 
+    }
+    .input-role {
+      margin-top: 16px;
+      label {
+        >span {
+          &:last-child {
+            color: #ff4d4d;
+            margin-left: 3px
+          }
+        }
+        margin-right: 62px;
+      }
+      select {
+        width: 250px;
+        padding: 4px 12px;
+        height: 36px;
+        font-size: 14px;
+        border-radius: 4px;
+        outline: none;
+        border-color: #d3d5d7;
+        >option {
+          width: 250px;
+          padding: 4px 12px;
+          height: 36px;
+          font-size: 14px;
+        }
+      }
     }
   }
 }

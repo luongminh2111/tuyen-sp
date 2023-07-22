@@ -4,12 +4,12 @@ const initState = {
   items: []
 };
 
-const projects = (state = initState, action) => {
+const staffs = (state = initState, action) => {
   switch (action.type) {
     case actionsType.ADD_NEW_PROJECT:
       return {
         ...state,
-        items: [...state.items, action.item]
+        items: [...state.items, action.value]
       }
     
     default:
@@ -17,4 +17,4 @@ const projects = (state = initState, action) => {
   }
 };
 
-export default projects;
+export default staffs;

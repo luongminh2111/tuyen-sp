@@ -98,11 +98,30 @@
         .name {
           text-align: left;
         }
+        .key {
+          text-align: left;
+        }
+        .desc {
+          width: 350px;
+          max-width: 350px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          word-break: break-all;
+        }
       }
     }
     .name {
-      width: calc(100% - 100px);
-      text-align: center;
+      width: calc(100% - 700px);
+      text-align: left;
+    }
+    .key {
+      width: 250px;
+      text-align: left;
+    }
+    .desc {
+      width: 350px;
+      text-align: left;
     }
     .remove {
       width: 100px;

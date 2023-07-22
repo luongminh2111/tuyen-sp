@@ -1,9 +1,10 @@
 import { Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
-import React, { useMemo } from "react";
+import React from "react";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import "../../styles/modals/CreateNewProjectStyle.scss";
 import { createProject } from "../../actions/WorkplaceActionCallApi";
+import Alerts from "../../../../../../commons/Alert";
 
 function CreateNewProject(props) {
   const { open, handleClose } = props;
@@ -12,6 +13,10 @@ function CreateNewProject(props) {
   const [name, setName] = useState("");
   const [key, setKey] = useState("");
   const [description, setDescription] = useState("");
+  
+  const [textAlert, setTextAlert] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [statusAlert, setStatusAlert] = useState(false);
 
   const handleCreate = () => {
     const request = {
@@ -19,7 +24,23 @@ function CreateNewProject(props) {
       project_key: key,
       description
     }
-    dispatch(createProject(request));
+    dispatch(createProject(request)).then(res => {
+      console.log("check res :", res);
+      if(res){
+        console.log("check vao day ne");
+        setTextAlert(res);
+        setOpenAlert(true);
+        setStatusAlert("error");
+      } else {
+        setTextAlert("Create new project success !");
+        setOpenAlert(true);
+        setStatusAlert("success");
+        setTimeout(() => {
+          handleClose();
+        }, [1500]);
+      }
+ 
+    });
   };
 
   return (
@@ -69,6 +90,14 @@ function CreateNewProject(props) {
         <button onClick={() => handleClose()}>Cancel</button>
         <button onClick={() => handleCreate()}>Save</button>
       </div>
+      {openAlert ? (
+        <Alerts
+          text={textAlert}
+          status={statusAlert}
+          open={openAlert}
+          setOpen={setOpenAlert}
+        />
+      ) : null}
     </Dialog>
   );
 }
