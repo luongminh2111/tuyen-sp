@@ -41,12 +41,13 @@ const projects = (state = initState, action) => {
         ...state,
         milestone: [...state.milestone, action.item],
       };
-    case projectType.UPDATE_MEMBER_IN_PROJECT:
-      const newMembers = [...state.members, action.members];
-      return {
-        ...state,
-        members: newMembers
-      };
+    // case projectType.UPDATE_MEMBER_IN_PROJECT:
+    //   const newMembers = state.members.concat(action.members);
+    //   console.log("check newMembers :", newMembers);
+    //   return {
+    //     ...state,
+    //     members: newMembers
+    //   };
     case projectType.GET_LIST_MEMBER_IN_PROJECT:
       return {
         ...state,

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { getListMemberInWorkspace, getListMemberOfProject } from "../actions/ProjectActionCallApi";
 import { useState } from "react";
 import AddMemberModal from "./AddMemberModal";
+import { USER_ROLE_TEXT } from "../../../../../commons/Commons";
 
 function MemberSetting(props) {
 
@@ -13,6 +14,7 @@ function MemberSetting(props) {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
   const members = useSelector(state => state.projects.members);
+  const hasIds = members?.map(e => e.id);
 
   console.log("check members :", members);
 
@@ -48,13 +50,13 @@ function MemberSetting(props) {
           <div className="remove">Remove</div>
         </div>
         <div className="body">
-          {members?.map((e) => {
+          {members?.map((e, index) => {
             return (
-              <div className="item">
-                <div className="name">Vu Duc Tuyen</div>
-                <div className="mail">vutuyenkt2000@gmail.com</div>
-                <div className="role">Administrator</div>
-                <div className="join">Aug. 25, 2022</div>
+              <div className="item" key={index}>
+                <div className="name">{e?.name}</div>
+                <div className="mail">{e?.email}</div>
+                <div className="role">{USER_ROLE_TEXT[e?.role]}</div>
+                <div className="join">{e?.created_at?.substring(0, 10)}</div>
                 <div className="remove">
                   <i className="fa-solid fa-x"></i>
                 </div>
@@ -64,7 +66,7 @@ function MemberSetting(props) {
         </div>
       </div>
       {openModal ? 
-      <AddMemberModal open={openModal} handleClose={() => setOpenModal(false)} projectId={projectId} /> : null}
+      <AddMemberModal open={openModal} handleClose={() => setOpenModal(false)} projectId={projectId} hasIds={hasIds} /> : null}
     </div>
   );
 }

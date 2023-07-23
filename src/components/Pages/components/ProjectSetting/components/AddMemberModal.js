@@ -2,16 +2,15 @@ import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Alerts from "../../../../../commons/Alert";
 import "../styles/AddMemberModalStyle.scss";
 import { USER_ROLE, USER_ROLE_TEXT } from "../../../../../commons/Commons";
 import { addMemberToProject } from "../actions/ProjectActionCallApi";
 
 function AddMemberModal(props) {
-  const { open, handleClose, projectId } = props;
+  const { open, handleClose, projectId, hasIds } = props;
 
   const staffs = useSelector((state) => state.staffs.items);
-  const members = staffs?.filter((e) => e.role !== USER_ROLE.WORKSPACE_ADMIN);
+  const members = staffs?.filter((e) => e.role !== USER_ROLE.WORKSPACE_ADMIN && !hasIds?.includes(e.id));
 
   const [ids, setIds] = useState([]);
   console.log("check ids :", ids);
