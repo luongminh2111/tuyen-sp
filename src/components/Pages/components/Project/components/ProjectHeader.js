@@ -1,8 +1,10 @@
 import React from "react";
 import "../styles/ProjectHeader.scss";
 import { ORG_IMAGE_DEFAULT } from "../../../../../commons/image";
-
+import { memo } from "react";
 function ProjectHeader(props) {
+  const { item } = props;
+
   return (
     <div className="project-header">
       <div className="project-header_left">
@@ -10,8 +12,8 @@ function ProjectHeader(props) {
           <img src={ORG_IMAGE_DEFAULT}></img>
         </div>
         <div className="project-name">
-          <span >PMA_web</span>
-          <span>(PMA_WEB)</span>
+          <span>{item?.name}</span>
+          <span>({item?.project_key})</span>
         </div>
       </div>
       <div className="project-header_right">
@@ -27,4 +29,4 @@ function ProjectHeader(props) {
     </div>
   );
 }
-export default ProjectHeader;
+export default memo(ProjectHeader);

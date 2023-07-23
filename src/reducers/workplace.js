@@ -1,7 +1,7 @@
 import * as actionsType from "../components/Pages/components/Workplace/actions/WorkplaceActionType";
 
 const initState = {
-  workspace: {}
+  workspace: {},
 };
 
 const workplace = (state = initState, action) => {
@@ -9,13 +9,13 @@ const workplace = (state = initState, action) => {
     case actionsType.GET_WORKSPACE:
       return {
         ...state,
-        workspace: action.value
-      }
+        workspace: action.value,
+      };
     case actionsType.UPDATE_WORKSPACE_PROPERTIES:
       return {
         ...state,
-        workspace: action.value
-      }
+        workspace: action.value,
+      };
     default:
       return state;
   }

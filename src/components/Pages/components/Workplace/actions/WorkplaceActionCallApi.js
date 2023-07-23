@@ -1,6 +1,6 @@
 import { BASE_URL } from "../../../../../contains/config";
 import callApi from "../../../../../ulti/callApi";
-import { addNewProject, saveWorkspace, updateWorkspaceRedux } from "./WorkplaceActionRedux";
+import { addNewProject, saveWorkspace, updateListProject, updateWorkspaceRedux } from "./WorkplaceActionRedux";
 
 export const getWorkSpace = () => (dispatch, getState) => {
   const {
@@ -40,6 +40,9 @@ export const updateWorkSpace = (request) => (dispatch, getState) => {
   return callApi(endPoint, options).then(json => {
     if(json?.status === 200 && json?.data?.data) {
       dispatch(updateWorkspaceRedux(json.data.data));
+      return null;
+    } else {
+      return json?.data?.message;
     }
   })
 }
@@ -57,13 +60,12 @@ export const createProject = (request) => (dispatch) => {
         dispatch(addNewProject(json.data.data));
         return null;
     } else {
-      console.log("check json :", json);
       return json?.data?.message;
     }
   })
 }
 
-export const createMemberForWorkspace = (request) => async (dispatch) => {
+export const createMemberForWorkspace = (request) => (dispatch) => {
 
   const options = {
     method: 'POST',
@@ -72,11 +74,7 @@ export const createMemberForWorkspace = (request) => async (dispatch) => {
   const endPoint = `${BASE_URL}/api/register`;
 
   return callApi(endPoint, options).then(json => {
-    console.log("check create member:", json);
-    if(json?.status === 200 && json) {
-      
-      return json?.data;
-    }
+    return json;
   })
 };
 
@@ -92,9 +90,24 @@ export const getListProject = () => (dispatch, getState) => {
   const options = {
     method: 'GET',
   }
-  const endPoint = `${BASE_URL}/api/project/${workspace_id}`;
+  const endPoint = `${BASE_URL}/api/get_projects_by_workspace/${workspace_id}`;
   return callApi(endPoint, options).then(json => {
+    console.log("check json :", json);
     if(json?.status === 200 && json?.data?.data) {
+      dispatch(updateListProject(json.data.data));
     }
   })
 };
+
+export const getAllUserInWorkspace = () => {
+  const options = {
+    method: 'GET',
+  }
+  const endPoint = `${BASE_URL}/api/member_workspace`;
+  return callApi(endPoint, options).then(json => {
+    if(json?.status === 200 && json?.data?.data) {
+      return null;
+    }
+  })
+};
+

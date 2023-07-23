@@ -63,7 +63,7 @@
         margin-right: 10px;
       }
     }
-    .project-name, .project-key {
+    .project-name, .project-key, .input-date {
       .label {
         font-size:  13px;
         margin-bottom: 6px;
@@ -83,25 +83,21 @@
         padding: 4px 12px;
       }
     }
-    .rule {
-      font-size: 13px;
-    }
-    .en-priority, .en-git, .en-subversion, .en-archive, .en-admin-prj, .en-file {
-      input {
-        width: 16px;
-        height: 16px;
-        margin-right: 16px;
+    .prj-description {
+      .label {
+        margin-top: 12px;
       }
-      .text {
-        >div {
-          &:nth-child(2) {
-            margin-top: 6px;
-            font-size: 12px;
-          }
-          &:nth-child(3) {
-            margin-top: 4px;
-            font-size: 12px;
-          }
+      textarea {
+        min-height: 80px;
+        width: 50%;
+        margin-bottom: 16px;
+        border-radius: 4px;
+        padding: 8px 12px;
+        border: 1px solid #d3d5d7;
+        outline: none;
+        &:focus {
+          border: 1px solid #0088ff;
+        
         }
       }
     }

@@ -3,19 +3,26 @@ import "../styles/Staff.scss";
 import { useState } from "react";
 import { ORG_IMAGE_DEFAULT } from "../../../../../commons/image";
 import { useHistory } from "react-router-dom";
-import { USER_ROLE } from "../../../../../commons/Commons";
-import { useDispatch } from "react-redux";
+import { USER_ROLE, USER_ROLE_TEXT } from "../../../../../commons/Commons";
+import { useDispatch, useSelector } from "react-redux";
 import { createMemberForWorkspace } from "../actions/WorkplaceActionCallApi";
 import Alerts from "../../../../../commons/Alert";
+import { useEffect } from "react";
+import { createNewMember } from "../actions/WorkplaceActionRedux";
+import { getListMemberInWorkspace } from "../../ProjectSetting/actions/ProjectActionCallApi";
 
 function Staffs(props) {
+
+  const staffs = useSelector(state => state.staffs.items);
+  console.log("check staffs :", staffs);
+
   const history = useHistory();
   const dispatch = useDispatch();
 
   const [isEdit, setIsEdit] = useState(false);
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
-  const [passWord, setPassWord] = useState("");
+  const [password, setPassWord] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [role, setRole] = useState(USER_ROLE.MEMBER);
 
@@ -23,6 +30,10 @@ function Staffs(props) {
   const [textAlert, setTextAlert] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
   const [statusAlert, setStatusAlert] = useState(false);
+
+  useEffect(() => {
+    dispatch(getListMemberInWorkspace());
+  }, []);
 
   const handleValidateEmail = (mail) => {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -33,7 +44,7 @@ function Staffs(props) {
   };
 
   const handleAddUser = () => {
-    if(passWord !== rePassword) {
+    if(password !== rePassword) {
       setOpenAlert(true);
       setTextAlert("password incorrect, try again!");
       setStatusAlert("error");
@@ -48,12 +59,25 @@ function Staffs(props) {
     const request = {
       name: userName,
       email,
-      passWord,
+      password,
       password_confirmation: rePassword,
       role
     };
     dispatch(createMemberForWorkspace(request)).then(res => {
       console.log("check res :", res);
+      if(res?.status === 201 && res?.data?.user) {
+        setOpenAlert(true);
+        setStatusAlert("success");
+        setTextAlert(res.data.message);
+        dispatch(createNewMember(res.data.user));
+        setTimeout(() => {
+          setIsEdit(false);
+        }, [1500]);
+      } else {
+        setOpenAlert(true);
+        setStatusAlert("error");
+        setTextAlert(res.data.message);
+      }
     });
   }
 
@@ -118,7 +142,7 @@ function Staffs(props) {
               <div>
                 <input
                   type="password"
-                  value={passWord}
+                  value={password}
                   onChange={(e) => setPassWord(e.target.value)}
                 />
               </div>
@@ -161,7 +185,7 @@ function Staffs(props) {
           </div>
         </div>
         <div className="d-flex justify-content-center submit-btn">
-          <button onClick={() => handleAddUser()}>Create new member</button>
+          <button onClick={() => handleAddUser()} style={{width: '200px'}}>Create new member</button>
         </div>
       </div>
     );
@@ -196,13 +220,13 @@ function Staffs(props) {
           <div className="remove">Remove</div>
         </div>
         <div className="body">
-          {[0, 1, 2, 3]?.map((e) => {
+          {staffs?.map((e, index) => {
             return (
-              <div className="item" onClick={() => history.push("/my-profile")}>
-                <div className="name">Vu Duc Tuyen</div>
-                <div className="mail">vutuyenkt2000@gmail.com</div>
-                <div className="role">Administrator</div>
-                <div className="join">Aug. 25, 2022</div>
+              <div className="item" onClick={() => history.push("/my-profile")} key={index}>
+                <div className="name">{e?.name}</div>
+                <div className="mail">{e?.email}</div>
+                <div className="role">{USER_ROLE_TEXT[e?.role]}</div>
+                <div className="join">{e?.created_at?.substring(0, 10)}</div>
                 <div className="remove">
                   <i className="fa-solid fa-x"></i>
                 </div>

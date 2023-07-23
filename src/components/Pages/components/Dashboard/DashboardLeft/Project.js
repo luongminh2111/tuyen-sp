@@ -1,13 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles/project.scss";
 import ReactTooltip from "react-tooltip";
 import { ORG_IMAGE_DEFAULT } from "../../../../../commons/image";
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { showDetailProject } from "../../Workplace/actions/WorkplaceActionRedux";
 
 function Project(props) {
+
   const [isZoomIn, setIsZoomIn] = useState(false);
 
+  const projects = useSelector(state => state.projects.items);
+
+  const dispatch = useDispatch();
+
   const history = useHistory();
+
+  const handleGoToProject = (item) => {
+    dispatch(showDetailProject(item?.id));
+    history.push(`/project?name=${item?.name}`)
+  }
 
   return (
     <div className="project-wrapper">
@@ -37,19 +49,19 @@ function Project(props) {
       </div>
       {!isZoomIn ? (
         <div className="list-project">
-          {fakeList?.map(item => {
+          {projects?.map((item, index) => {
             return (
-              <div className="project-item" onClick={() => history.push("/project?name=PMA")}>
+              <div className="project-item" onClick={() => handleGoToProject(item)} key={index}>
                 <div className="icon-pin"></div>
                 <div className="org-icon">
                   <img src={ORG_IMAGE_DEFAULT}></img>
                 </div>
                 <div className="project-info">
                   <div className="info-top">
-                    <div className="project-name">PMA_web</div>
+                    <div className="project-name">{item?.name}</div>
                   </div>
                   <div className="sub-name">
-                    PMA_web
+                    {item?.project_key}
                   </div>
                   <div className="info-bottom">
                     <div className="add-issue">Add issue</div>
@@ -71,5 +83,3 @@ function Project(props) {
   );
 }
 export default Project;
-
-const fakeList = [1, 2, 3 ,4]

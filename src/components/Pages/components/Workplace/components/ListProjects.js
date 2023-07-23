@@ -3,13 +3,26 @@ import "../styles/ListProjects.scss";
 import { useState } from "react";
 import CreateNewProject from "./modals/CreateProjectModal";
 import { useDispatch, useSelector } from "react-redux";
+import { getListProject } from "../actions/WorkplaceActionCallApi";
+import { useHistory } from "react-router-dom";
+import { showDetailProject } from "../actions/WorkplaceActionRedux";
 
 function ListProject(props) {
   
   const projects = useSelector(state => state.projects.items);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    dispatch(getListProject());
+  }, []);
+
+  const handleGoToProject = (item) => {
+    dispatch(showDetailProject(item?.id));
+    history.push(`/project?name=${item?.name}`);
+  }
 
   return (
     <div className="list-project-content-wrapper">
@@ -40,7 +53,7 @@ function ListProject(props) {
         <div className="body">
           {projects?.map((e, index) => {
             return (
-              <div className="item" key={index}>
+              <div className="item" key={index} onClick={() => handleGoToProject(e)}>
                 <div className="name">{e?.name}</div>
                 <div className="key">{e?.project_key}</div>
                 <div className="desc">{e?.description}</div>

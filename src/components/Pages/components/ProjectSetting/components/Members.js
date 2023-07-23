@@ -1,12 +1,35 @@
 import React from "react";
-import ButtonDropDown from "../../../../../commons/Button/ButtonDropdown";
 import "../styles/Member.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getListMemberInWorkspace, getListMemberOfProject } from "../actions/ProjectActionCallApi";
+import { useState } from "react";
+import AddMemberModal from "./AddMemberModal";
 
 function MemberSetting(props) {
+
+  const { projectId } = props;
+
+  const dispatch = useDispatch();
+  const [openModal, setOpenModal] = useState(false);
+  const members = useSelector(state => state.projects.members);
+
+  console.log("check members :", members);
+
+
+  useEffect(() => {
+    dispatch(getListMemberInWorkspace());
+    dispatch(getListMemberOfProject(projectId));
+  }, []);
+
+
   return (
     <div className="member-content-wrapper">
       <div className="title d-flex">
         <div>Project Members (1 members)</div>
+      </div>
+      <div className="add-member-btn">
+        <button onClick={() => setOpenModal(true)}>Add member</button>
       </div>
       <div className="filter-member d-flex">
         <div className="text-1">Filter users</div>
@@ -14,12 +37,6 @@ function MemberSetting(props) {
           <i className="fa-solid fa-magnifying-glass"></i>
           <input type="text" />
           <i className="fa-solid fa-x"></i>
-        </div>
-        <div className="role-btn">
-          <ButtonDropDown options={["a", "b"]} />
-        </div>
-        <div className="user-btn">
-          <ButtonDropDown options={["a", "b"]} />
         </div>
       </div>
       <div className="filter-result-table">
@@ -31,7 +48,7 @@ function MemberSetting(props) {
           <div className="remove">Remove</div>
         </div>
         <div className="body">
-          {[0, 1, 2, 3]?.map((e) => {
+          {members?.map((e) => {
             return (
               <div className="item">
                 <div className="name">Vu Duc Tuyen</div>
@@ -46,6 +63,8 @@ function MemberSetting(props) {
           })}
         </div>
       </div>
+      {openModal ? 
+      <AddMemberModal open={openModal} handleClose={() => setOpenModal(false)} projectId={projectId} /> : null}
     </div>
   );
 }

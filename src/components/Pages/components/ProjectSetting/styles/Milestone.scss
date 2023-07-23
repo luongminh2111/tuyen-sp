@@ -41,8 +41,16 @@
       color: #0f1824 !important;
     }
     .name {
-      text-align: center;
+      text-align: left;
       color: #0f1824 !important;
+    }
+    .ml-desc {
+      width: 300px;
+      max-width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+      word-break: break-all;
     }
   }
   .body {
@@ -56,7 +64,7 @@
     }
   }
   .name {
-    width: calc(100% - 600px);
+    width: calc(100% - 700px);
     >span {
       &:nth-child(1) {
         margin-right: 24px;
@@ -76,9 +84,13 @@
     }
     color: #2c9a7a;
   }
-  .description {
-    width: 200px;
-    text-align: center;
+  .ml-desc {
+    width: 300px;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-all;
     font-weight: 13px;
     color: #222;
   }

@@ -11,7 +11,8 @@ import SettingContent from "./SettingContent";
 
 function ProjectSetting(props) {
   const isExpand = useSelector((state) => state.global.isExpand);
-
+  const curProject = useSelector(state => state.projects.itemDetail);
+  
   const [settingSelect, setSettingSelect] = useState('');
 
   return (
@@ -27,15 +28,15 @@ function ProjectSetting(props) {
               </a>
             </div>
             <div className="header-icon-set__text">
-              <span className="header-icon-set__name">PMA_web</span>
-              <span className="header-icon-set__key">(PMA_web)</span>
+              <span className="header-icon-set__name">{curProject?.name}</span>
+              <span className="header-icon-set__key">({curProject?.project_key})</span>
             </div>
           </div>
           <div className="project-header__actions"></div>
         </div>
         <div className="project-setting-container d-flex">
           <SubMenu settingSelect={settingSelect} setSettingSelect={setSettingSelect}/>
-          <SettingContent settingSelect={settingSelect}/>
+          <SettingContent settingSelect={settingSelect} project={curProject}/>
         </div>
       </div>
     </>

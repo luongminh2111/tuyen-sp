@@ -12,6 +12,17 @@
       margin-left: 12px;
     }
   }
+  .add-member-btn {
+    margin-bottom: 24px;
+    button {
+      width: max-content;
+      background-color: #4caf93;
+      height: 40px;
+      border-radius: 4px;
+      border: 1px solid #d3d5d7;
+    }
+  
+  }
 }
 
 .filter-member {
@@ -59,19 +70,6 @@
         }
       }
     }
-  }
-  .role-btn,
-  .user-btn {
-    width: 100px !important;
-    > div {
-      button {
-        height: 36px !important;
-        width: 100% !important;
-      }
-    }
-  }
-  .role-btn {
-    margin-right: 10px;
   }
 }
 

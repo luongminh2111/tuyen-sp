@@ -1,15 +1,52 @@
-import { TextField } from "@material-ui/core";
 import React from "react";
 import { Button } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import MemberSetting from "./Members";
 import IssueType from "./IssueType";
 import Milestone from "./Milestone";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateProject } from "../actions/ProjectActionCallApi";
+import Alerts from "../../../../../commons/Alert";
+import { updateProjectDetail } from "../actions/ProjectActionRedux";
 
 function SettingContent(props) {
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  const { settingSelect } = props;
+  const { settingSelect, project } = props;
+  console.log("check project :", project);
+  const [name, setName] = useState(project.name);
+  const [key, setKey] = useState(project.project_key);
+  const [description, setDescription] = useState(project?.description);
+  const [startDate, setStartDate] = useState( new Date(project?.start_date));
+  const [dueDate, setDueDate] = useState(new Date(project?.due_date));
+
+
+  const [textAlert, setTextAlert] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [statusAlert, setStatusAlert] = useState(false);
+
+  const handleUpdateProject = () => {
+    const request = {
+      name,
+      description,
+      start_date: startDate,
+      due_date: dueDate,
+    };
+    dispatch(updateProject(request, project.id)).then((res) => {
+      if (res?.status === 200 && res?.data?.data) {
+        setOpenAlert(true);
+        setStatusAlert("success");
+        setTextAlert(res.data?.message);
+        dispatch(updateProjectDetail(res.data.data));
+      } else {
+        setOpenAlert(true);
+        setStatusAlert("error");
+        setTextAlert(res.data?.message);
+      }
+    });
+  };
 
   const renderGeneralSetting = () => {
     return (
@@ -32,7 +69,11 @@ function SettingContent(props) {
             <span>*</span>
           </div>
           <div>
-            <input type="text" />
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
         </div>
         <div className="project-key mt-3">
@@ -41,57 +82,51 @@ function SettingContent(props) {
             <span>*</span>
           </div>
           <div>
-            <input type="text" />
+            <input type="text" value={key} disabled />
           </div>
         </div>
-        <hr />
-        <div className="en-subversion mt-4 d-flex">
+        <div className="input-date mt-2">
+          <div className="label">
+            <span>Start date</span>
+            <span>*</span>
+          </div>
           <div>
-            <input type="checkbox" />
+            <input
+              type="date"
+              data-date=""
+              data-date-format="YYYY MM DD"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
           </div>
-          <div className="text">Enable Subversion</div>
         </div>
-        <div className="en-git mt-4 d-flex">
+        <div className="input-date mt-3">
+          <div className="label">
+            <span>Due date</span>
+            <span>*</span>
+          </div>
           <div>
-            <input type="checkbox" />
-          </div>
-          <div className="text">Enable Git</div>
-        </div>
-        <div className="en-file mt-4 d-flex">
-          <div>
-            <input type="checkbox" />
-          </div>
-          <div className="text">
-            <div>Enable File</div>
-            <div>Check the box to use files for this project.</div>
-            <div>
-              If you uncheck the box when there is already data in the file, the
-              remaining files will be saved as storage space.
-            </div>
+            <input
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
           </div>
         </div>
-        <div className="en-admin-prj mt-4 d-flex">
-          <div>
-            <input type="checkbox" />
-          </div>
-          <div className="text">
-            Allow project administrators to manage each other.
-          </div>
+        <div className="prj-description col-12">
+          <div className="label mb-1">Project description</div>
+          <textarea
+            id="input-comment"
+            name="w3review"
+            maxLength={2000}
+            value={description}
+            type="text"
+            onChange={(e) => setDescription(e.target.value)}
+          ></textarea>
         </div>
-        <div className="en-archive mt-4 d-flex">
-          <div>
-            <input type="checkbox" />
-          </div>
-          <div className="text">
-            <div>Archive this project</div>
-            <div>
-              Note: If checked, this project will no longer appear on the
-              Dashboard, but you will still see it in gray in the project list.
-            </div>
-          </div>
-        </div>
+
         <div className="d-flex justify-content-center save-btn">
-          <Button>Save</Button>
+          <Button onClick={() => handleUpdateProject()}>Save</Button>
         </div>
       </>
     );
@@ -102,12 +137,20 @@ function SettingContent(props) {
       {!settingSelect ? (
         renderGeneralSetting()
       ) : settingSelect === "Members" ? (
-        <MemberSetting />
+        <MemberSetting projectId={project.id} />
       ) : settingSelect === "Issue Type" ? (
         <IssueType />
       ) : (
-        <Milestone />
+        <Milestone projectId={project.id} />
       )}
+      {openAlert ? (
+        <Alerts
+          text={textAlert}
+          status={statusAlert}
+          open={openAlert}
+          setOpen={setOpenAlert}
+        />
+      ) : null}
     </div>
   );
 }

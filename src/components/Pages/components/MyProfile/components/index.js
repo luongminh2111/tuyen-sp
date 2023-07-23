@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { getMyProfile, updateMyProfile } from "../actions/MyProflesActionsCallApi";
 import { useState } from "react";
 import Alerts from "../../../../../commons/Alert";
+import { USER_ROLE_TEXT } from "../../../../../commons/Commons";
 
 function MyProfile(props) {
 
@@ -66,6 +67,10 @@ function MyProfile(props) {
           <div className="email mt-4">
             <div className="label">Email</div>
             <div><input type="text" value={account?.email} disabled/></div>
+          </div>
+          <div className="email mt-4">
+            <div className="label">Role</div>
+            <div><input type="text" value={USER_ROLE_TEXT[account?.role]} disabled/></div>
           </div>
           <div className="d-flex justify-content-center mt-5">
             <button onClick={() => handleUpdateProfile()}>Update</button>
