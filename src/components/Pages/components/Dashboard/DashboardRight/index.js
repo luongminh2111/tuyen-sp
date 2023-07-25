@@ -6,8 +6,6 @@ import "./style/index.scss";
 function DashboardRight(props) {
   const { handleChangeRightRoom, isRightZoomOut } = props;
 
-  console.log("check props :", isRightZoomOut);
-
   return (
     <div
       className={`dashboard-right-wrapper ${isRightZoomOut ? "zoom-in" : ""}`}

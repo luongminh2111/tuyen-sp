@@ -24,7 +24,6 @@ export const login = (loginRequest) => (dispatch) => {
 
 
 export const logout = () => (dispatch) => {
-
   const url = `${BASE_URL}/api/logout`;
   const options = {
     method: "POST",

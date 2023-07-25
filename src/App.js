@@ -1,79 +1,54 @@
 import React, { useEffect, useState } from "react";
-import store from "./store/store";
-import jwt_decode from "jwt-decode";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect,
 } from "react-router-dom";
-import { redirect } from "react-router-dom";
-import { useSelector, Provider, useDispatch } from "react-redux";
-import { updateUser } from "./components/Pages/actions/AccountActionRedux";
+import CryptoJS from "crypto-js";
+import { useDispatch } from "react-redux";
 import Login from "./components/Pages/components/Login";
-import Reminder from "./components/Pages/components/Login/reminder";
-import Register from "./components/Pages/components/Register";
-import Dashboard from "./components/Pages/components/Dashboard";
-import AddIssue from "./components/Pages/components/AddIssue";
-import Project from "./components/Pages/components/Project/components";
-import Issues from "./components/Pages/components/Issue/components";
-import Files from "./components/Pages/components/Files/components";
-import ProjectSetting from "./components/Pages/components/ProjectSetting/components";
-import MyProfile from "./components/Pages/components/MyProfile/components";
-import Board from "./components/Pages/components/Board/components";
-import Workplace from "./components/Pages/components/Workplace/components";
 import { getWorkSpace } from "./components/Pages/components/Workplace/actions/WorkplaceActionCallApi";
+import { secretPass } from "./commons/Commons";
+import { updateUser } from "./components/Pages/actions/AccountActionRedux";
+import PrivateRoute from "./auth/PrivateRouteComponent";
+import Main from "./main";
 
 function App() {
-  const { account } = useSelector(
-    (state) => state?.auth
-  );
+  
   const dispatch = useDispatch();
+
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     try {
-      if (account) {
-        const workspaceId = localStorage.getItem("workspace_id");
-        console.log("check workspaceId :", workspaceId);
-        if (workspaceId) {
+      const userSave = localStorage.getItem("user");
+      if (userSave) {
+        const bytes = CryptoJS.AES.decrypt(userSave, secretPass);
+        const data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+        if(data?.user && data?.token){
+          setUser(data.user);
+          sessionStorage.setItem("token_admin", data.token);
+          dispatch(updateUser(data.user));
           dispatch(getWorkSpace());
         }
       }
     } catch (e) {
-      console.log("Error get workspace");
+      console.log("Error App: ", e);
     }
   }, []);
 
   return (
-    <Provider store={store}>
-      <Router>
-        <React.Fragment>
-          <Switch>
-            <Route exact path="/sign-in" component={Login}></Route>
-            <Route exact path="/register" component={Register}></Route>
-            <Route exact path="/reminder" component={Reminder}></Route>
-            <Route exact path="/" component={Dashboard}></Route>
-            <Route exact path="/dashboard" component={Dashboard}></Route>
-            <Route exact path="/add-issue" component={AddIssue}></Route>
-            <Route path="/project" component={Project}></Route>
-            <Route exact path="/issues" component={Issues}></Route>
-            <Route exact path="/files" component={Files}></Route>
-            <Route
-              exact
-              path="/project-setting"
-              component={ProjectSetting}
-            ></Route>
-            <Route exact path="/my-profile" component={MyProfile}></Route>
-            <Route exact path="/board" component={Board}></Route>
-            <Route
-              exact
-              path="/workplace-setting"
-              component={Workplace}
-            ></Route>
-          </Switch>
-        </React.Fragment>
-      </Router>
-    </Provider>
+    <Router>
+      <React.Fragment>
+        <Switch>
+          <Route exact path="/sign-in" component={Login}></Route>
+          <PrivateRoute path="/">
+            <Main />
+          </PrivateRoute>
+
+        </Switch>
+      </React.Fragment>
+    </Router>
   );
 }
 

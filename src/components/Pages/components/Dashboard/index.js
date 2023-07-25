@@ -19,10 +19,6 @@ function Dashboard(props) {
 
   const history = useHistory();
 
-  useEffect(() => {
-    history.push("/dashboard");
-  }, []);
-
   const handleChangeRightRoom = () => {
     setIsRightRoomOut(!isRightZoomOut);
   };

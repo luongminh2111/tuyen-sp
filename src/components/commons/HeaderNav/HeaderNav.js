@@ -32,21 +32,24 @@ function HeaderNav(props) {
 
   const handleLogout = () => {
     dispatch(logout());
-      // () => {
-      //   sessionStorage.removeItem("token_admin");
-      //   history.push("/sign-in");
-      // }
-        sessionStorage.removeItem("token_admin");
-        history.push("/sign-in");
-
-  }
+    // () => {
+    //   sessionStorage.removeItem("token_admin");
+    //   history.push("/sign-in");
+    // }
+    dispatch({ type: "RESET_AUTH" });
+    sessionStorage.removeItem("token_admin");
+    localStorage.removeItem("user");
+    history.push("/sign-in");
+  };
 
   const renderDropdownUser = () => {
     return (
       <div className="dropdown-user-wrapper">
         <div>Hello {` + ${account?.name}`}</div>
         <div onClick={() => history.push("/my-profile")}>My Profile</div>
-        <div onClick={() => history.push("/project-setting")}>Personal Settings</div>
+        <div onClick={() => history.push("/project-setting")}>
+          Personal Settings
+        </div>
         <div onClick={() => handleLogout()}>Logout</div>
       </div>
     );
@@ -74,9 +77,12 @@ function HeaderNav(props) {
 
   return (
     <div className="header-nav-wrapper">
-      <div className="nav-bar left d-flex" onClick={() => history.push("/dashboard")}>
+      <div
+        className="nav-bar left d-flex"
+        onClick={() => history.push("/dashboard")}
+      >
         <div className="org-icon">
-            <img src={ORG_IMAGE_DEFAULT}/>
+          <img src={ORG_IMAGE_DEFAULT} />
         </div>
         <div className="dashboard d-flex align-items-center">Dashboard</div>
       </div>

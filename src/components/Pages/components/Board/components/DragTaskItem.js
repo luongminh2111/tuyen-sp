@@ -34,7 +34,6 @@ function DragTaskItem({ data }) {
           )[0]
         );
         dragItem.current = targetItem;
-        localStorage.setItem("List", JSON.stringify(newList));
         return newList;
       });
     }

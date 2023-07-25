@@ -1,17 +1,24 @@
 import React, { useState } from "react";
-import { Button, TextField, Box, FormControlLabel } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { Button, TextField, Box } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import "../styles/Login.scss";
 import { login } from "../../actions/AccountActionCallApi";
 import { useHistory } from "react-router-dom";
-import Checkbox from "@mui/material/Checkbox";
+import CryptoJS from "crypto-js";
 import Footer from "../../../commons/Footer";
 import { updateUser } from "../../actions/AccountActionRedux";
 import Alerts from "../../../../commons/Alert";
 import { getWorkSpace} from "../Workplace/actions/WorkplaceActionCallApi";
+import { secretPass } from "../../../../commons/Commons";
+import { useEffect } from "react";
 
 function Login() {
-  
+
+  const account = useSelector(state => state.auth.account);
+  console.log("check account :", account);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [remember, setRemember] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMail, setErrorMail] = useState(false);
@@ -25,6 +32,16 @@ function Login() {
 
   const dispatch = useDispatch();
   const history = useHistory();
+
+  useEffect(() => {
+    if(account.id){
+      history.push("/");
+      return;
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
+  
 
   const handleChangePass = (value) => {
     setPassword(value);
@@ -72,6 +89,14 @@ function Login() {
           setOpenAlert(true);
           setTextAlert(json?.data?.message);
           if (json?.data?.user && json?.data?.token && json?.status === 201) {
+            if(remember){
+              const saveUser = {
+                user: json.data.user,
+                token: json.data.token,
+              };
+              const secretUser = CryptoJS.AES.encrypt(JSON.stringify(saveUser), secretPass).toString();
+              localStorage.setItem("user", secretUser);
+            }
             sessionStorage.setItem("token_admin", json.data.token);
             setStatusAlert("success");
             dispatch(updateUser(json.data.user));
@@ -85,6 +110,14 @@ function Login() {
         }
       });
     }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center w-100 h-100">
+          <div className="loader"></div>
+      </div>
+    );
   };
 
   return (
@@ -110,6 +143,7 @@ function Login() {
                   variant="outlined"
                   placeholder="Email@example.com"
                   error={errorMail}
+                  value={email}
                   helperText={messageMail}
                   onChange={(e) => handleChangeMail(e.target.value)}
                 />
@@ -137,11 +171,10 @@ function Login() {
                 />
               </Box>
               <div className="d-flex justify-content-between form-field">
-                <FormControlLabel
-                  required
-                  control={<Checkbox />}
-                  label="Remember me"
-                />
+                <div className="remember-inp d-flex">
+                  <input type="checkbox" checked={remember} onChange={(e) => setRemember(!remember)} ></input>
+                  <div className="label">Remember me</div>
+                </div>
                 <div className="forgot-pass">
                   <a href="/reminder">Forgot password?</a>
                 </div>

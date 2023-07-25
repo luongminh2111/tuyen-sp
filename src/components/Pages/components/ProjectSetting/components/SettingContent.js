@@ -95,6 +95,7 @@ function SettingContent(props) {
               type="date"
               data-date=""
               data-date-format="YYYY MM DD"
+              defaultValue={startDate}
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
             />

@@ -17,7 +17,6 @@ export const getWorkSpace = () => (dispatch, getState) => {
   const endPoint = `${BASE_URL}/api/workspace/${workspace_id}`;
   return callApi(endPoint, options).then(json => {
     if(json?.status === 200 && json?.data?.data) {
-      localStorage.setItem("workspace_id", json.data.data.id);
       dispatch(saveWorkspace(json.data.data));
     }
   })

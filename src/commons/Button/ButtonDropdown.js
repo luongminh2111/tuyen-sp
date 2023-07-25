@@ -8,7 +8,6 @@ import { useEffect } from "react";
 
 function ButtonDropDown(props) {
   const { options } = props;
-  console.log("Check options :", options);
   const [show, setShow] = useState(false);
 
   const [optionSelect, setOptionSelect] = useState(options?.[0]);

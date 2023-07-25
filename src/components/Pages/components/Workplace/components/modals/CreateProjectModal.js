@@ -25,9 +25,7 @@ function CreateNewProject(props) {
       description
     }
     dispatch(createProject(request)).then(res => {
-      console.log("check res :", res);
       if(res){
-        console.log("check vao day ne");
         setTextAlert(res);
         setOpenAlert(true);
         setStatusAlert("error");

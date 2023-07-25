@@ -1,20 +1,18 @@
 const initState = {
   account: {},
-  positionCallApiCheckAuth: false,
+  isAuthenticated: false,
 };
 
 const auth = (state = initState, action) => {
   console.log("check action: ", action);
   switch (action.type) {
-    case "CHANGE_POSITION_CALL_API_CHECK_AUTH":
-      return {
-        ...state,
-        positionCallApiCheckAuth: action.status,
-      };
+    case "RESET_AUTH":
+      return initState;
     case "UPDATE_PROPERTIES_USER":
       return {
         ...state,
-        account: action.account
+        account: action.account,
+        isAuthenticated: true
       }
     
     default:

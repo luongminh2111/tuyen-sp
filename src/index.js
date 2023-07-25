@@ -6,8 +6,9 @@ import "./styles/index.scss";
 import store from "./store/store";
 import { Provider } from "react-redux";
 import { createTheme, ThemeProvider } from "@mui/material";
-import 'bootstrap/dist/css/bootstrap.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import "bootstrap/dist/css/bootstrap.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import { BrowserRouter } from "react-router-dom";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const theme = createTheme({
@@ -16,9 +17,11 @@ const theme = createTheme({
   },
 });
 root.render(
-  <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
-  </Provider>
+  <BrowserRouter>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </Provider>
+  </BrowserRouter>
 );
