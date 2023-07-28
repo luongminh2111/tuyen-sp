@@ -17,7 +17,15 @@ export const login = (loginRequest) => (dispatch) => {
 
   const url = `${BASE_URL}/api/login`;
 
-  return axios.post(url , loginRequest).then( 
+  const options = {
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+
+  return axios.post(url , loginRequest, options).then( 
     (response) => { return response}, 
     (error) => { return error?.response})
 };
