@@ -56,55 +56,62 @@ function SettingContent(props) {
           </div>
         </div>
         <div className="workplace-info mt-4">
-          <div className="label d-flex">
-            <span>Organization Name</span>
-            <span>*</span>
+          <div className="info-left">
+            <div className="label d-flex">
+              <span>Organization Name</span>
+              <span>*</span>
+            </div>
+            <div>
+              <input
+                type="text"
+                value={organizationName}
+                onChange={(e) => setOrganizationName(e.target.value)}
+              />
+            </div>
+            <div className="label d-flex">
+              <span>Name</span>
+              <span>*</span>
+            </div>
+            <div className="w-100">
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="label d-flex">
+              <span>Space logo</span>
+              <span>*</span>
+            </div>
+            <div className="logo-company">
+              <img src={ORG_IMAGE_DEFAULT || avatar}></img>
+            </div>
+            <div className="label d-flex">
+              <span>Organization Domain</span>
+              <span>*</span>
+            </div>
+            <div>
+              <input
+                type="text"
+                value={domain}
+                onChange={(e) => setDomain(e.target.value)}
+              />
+            </div>
           </div>
-          <div>
-            <input
-              type="text"
-              value={organizationName}
-              onChange={(e) => setOrganizationName(e.target.value)}
-            />
-          </div>
-          <div className="label d-flex">
-            <span>Name</span>
-            <span>*</span>
-          </div>
-          <div>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="label d-flex">
-            <span>Space logo</span>
-            <span>*</span>
-          </div>
-          <div className="logo-company">
-            <img src={ORG_IMAGE_DEFAULT || avatar}></img>
-          </div>
-          <div className="label d-flex">
-            <span>Organization Domain</span>
-            <span>*</span>
-          </div>
-          <div>
-            <input
-              type="text"
-              value={domain}
-              onChange={(e) => setDomain(e.target.value)}
-            />
-          </div>
-          <div className="label d-flex">
-            <span>Description</span>
-          </div>
-          <div>
-            <input
-              type="text"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
+          <div className="info-right">
+            <div className="label d-flex">
+              <span>Description</span>
+            </div>
+            <div>
+              <textarea
+                id="input-comment"
+                name="w3review"
+                maxLength={2000}
+                type="text"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></textarea>
+            </div>
           </div>
         </div>
 

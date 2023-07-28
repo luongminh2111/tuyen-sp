@@ -10,6 +10,7 @@
     }
   }
   .workplace-info {
+    display: flex;
     .label {
       margin-bottom: 6px;
     }
@@ -18,7 +19,7 @@
       border-radius: 4px;
       margin-bottom: 16px;
       outline: none;
-      min-width: 400px;
+      min-width: 500px;
       border-color: #d3d5d7;
       height: 40px;
       padding: 4px 12px;
@@ -33,6 +34,22 @@
         height: 100%;
       }
     }
+    .info-right {
+      margin-left: 60px;
+      min-width: 500px;
+      textarea {
+        min-height: 330px;
+        width: 100%;
+        margin-bottom: 16px;
+        border-radius: 4px;
+        padding: 8px 12px;
+        border: 1px solid #d3d5d7;
+        outline: none;
+        &:focus {
+          border: 1px solid #0088ff;
+        }
+      }
+    }
   }
   button {
     width: 90px;
@@ -42,5 +59,7 @@
     background-color: #0088FF;
     color: #FFF;
     font-size: 16px;
+    margin-top: 30px;
   }
+ 
 }

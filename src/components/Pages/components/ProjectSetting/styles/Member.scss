@@ -84,6 +84,8 @@
     padding: 4px 12px;
   }
   .body {
+    max-height: 500px;
+    overflow-y: auto;
     .item {
       display: flex;
       height: 40px;

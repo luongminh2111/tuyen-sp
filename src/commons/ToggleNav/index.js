@@ -9,15 +9,17 @@ function ToggleNav(props) {
 
   const menuBarRef = useRef();
   const dispatch = useDispatch();
-
   const history = useHistory();
+  console.log("check history :", history);
 
   const handleChangeExpand = () => {
     dispatch({
       type : 'CHANGE_EXPAND',
       value : !isExpand
     })
-  }
+  };
+
+  const pathName = history.location.pathname;
 
   const [changeMenuBar, setChangeMenuBar] = useState(false);
 
@@ -47,31 +49,31 @@ function ToggleNav(props) {
         </span>
         {isExpand ? <span className="text">Home</span> : null}
       </div>
-      <div className="menu-item add-issue d-flex" onClick={() => history.push("/add-issue")}>
+      <div className={`menu-item add-task d-flex ${pathName === "/add-task" ? 'active' : ''}`} onClick={() => history.push("/add-task")}>
         <span className="icon">
           <i className="fa-solid fa-plus"></i>
         </span>
-        {isExpand ? <span className="text">Add Issue</span> : null}
+        {isExpand ? <span className="text">Add Task</span> : null}
       </div>
-      <div className="menu-item issue d-flex" onClick={() => history.push("/issues")}>
+      <div className={`menu-item issue d-flex ${pathName === "/tasks" ? 'active' : ''}`} onClick={() => history.push("/tasks")}>
         <span className="icon">
           <i className="fa-solid fa-list"></i>
         </span>
-        {isExpand ? <span className="text">Issue</span> : null}
+        {isExpand ? <span className="text">Task</span> : null}
       </div>
-      <div className="menu-item board d-flex" onClick={() => history.push("/board")}>
+      <div className={`menu-item board d-flex ${pathName === "/board" ? 'active' : ''}`} onClick={() => history.push("/board")}>
         <span className="icon">
           <i className="fa-solid fa-chart-simple"></i>
         </span>
         {isExpand ? <span className="text">Board</span> : null}
       </div>
-      <div className="menu-item file d-flex" onClick={() => history.push("/files")}>
+      <div className={`menu-item file d-flex ${pathName === "/files" ? 'active' : ''}`} onClick={() => history.push("/files")}>
         <span className="icon">
           <i className="fa-solid fa-folder"></i>
         </span>
         {isExpand ? <span className="text">Files</span> : null}
       </div>
-      <div className="menu-item setting d-flex" onClick={() => history.push("/project-setting")}>
+      <div className={`menu-item setting d-flex ${pathName === "/project-setting" ? 'active' : ''}`} onClick={() => history.push("/project-setting")}>
         <span className="icon">
           <i className="fa-solid fa-gear"></i>
         </span>

@@ -40,7 +40,7 @@
     padding: 3px 12px;
 
     border-radius: 20px;
-    width: calc(100% - 300px);
+    width: calc(100% - 100px);
     input {
       width: 100%;
       height: 36px;
@@ -48,6 +48,7 @@
       border: 1px solid #d3d5d7;
       border-radius: 20px;
       background: #fff;
+      padding: 3px 36px;
     }
     i {
       cursor: pointer;
@@ -94,6 +95,8 @@
     padding: 4px 12px;
   }
   .body {
+    max-height: 500px;
+    overflow-y: auto;
     .item {
       display: flex;
       height: 40px;
@@ -107,13 +110,24 @@
     }
   }
   .name {
-    width: calc(100% - 650px);
+    width: calc(100% - 800px);
   }
   .mail {
     width: 250px;
   }
   .role {
+    width: 180px;
+  }
+  .active {
     width: 150px;
+  }
+  .activated {
+    width: 150px;
+    color: #0088FF;
+  }
+  .unactivated {
+    width: 150px;
+    color: #ff4d4d;
   }
   .join {
     width: 150px;

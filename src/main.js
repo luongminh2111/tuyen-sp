@@ -27,9 +27,9 @@ function Main(props) {
             <Route exact path="/" component={Dashboard}></Route>
             <Route exact path="/reminder" component={Reminder}></Route>
             <Route exact path="/dashboard" component={Dashboard}></Route>
-            <Route exact path="/add-issue" component={AddIssue}></Route>
+            <Route exact path="/add-task" component={AddIssue}></Route>
             <Route path="/project" component={Project}></Route>
-            <Route exact path="/issues" component={Issues}></Route>
+            <Route exact path="/tasks" component={Issues}></Route>
             <Route exact path="/files" component={Files}></Route>
             <Route
               exact

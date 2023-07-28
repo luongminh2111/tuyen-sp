@@ -7,7 +7,6 @@ import DashboardLeft from "./DashboardLeft";
 import DashboardRight from "./DashboardRight";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { PATH_WORKPLACE_SETTING } from "../../../../contains/pathDefault";
 import { USER_ROLE } from "../../../../commons/Commons";
@@ -16,6 +15,8 @@ function Dashboard(props) {
   const [isRightZoomOut, setIsRightRoomOut] = useState(false);
 
   const account = useSelector(state => state.auth.account);
+
+  const projects = useSelector(state => state.projects.items);
 
   const history = useHistory();
 
@@ -42,9 +43,9 @@ function Dashboard(props) {
                   data-tip=""
                   data-for="space-setting"
                 >
-                  <a href={`${PATH_WORKPLACE_SETTING}`}>
+                  <div className="link" onClick={() => history.push(`/${PATH_WORKPLACE_SETTING}`)}>
                     <i className="fa-solid fa-gear"></i>
-                  </a>
+                  </div>
                 </span>
                 <ReactTooltip
                   type="dark"
@@ -58,7 +59,7 @@ function Dashboard(props) {
             </div>
           </div>
         </div>
-        {account?.role === USER_ROLE.WORKSPACE_ADMIN ?
+        {account?.role === USER_ROLE.WORKSPACE_ADMIN && projects?.length === 0 ?
         <div className="workplace-empty d-flex">
           <div className="item-add project">
             <div className="item-icon">
@@ -81,18 +82,6 @@ function Dashboard(props) {
               <div className="sub-text">Invite members to this Space to work on your project with you</div>
               <div>
                 <button onClick={() => history.push(`${PATH_WORKPLACE_SETTING}?id=staff`)}>Add</button>
-              </div>
-            </div>
-          </div>
-          <div className="item-add issue">
-            <div className="item-icon">
-              <i className="fa-sharp fa-solid fa-list-ul"></i>
-            </div>
-            <div className="item-content">
-              <div>Add Issue</div>
-              <div className="sub-text">Please add a project first</div>
-              <div>
-                <button disabled >Add</button>
               </div>
             </div>
           </div>

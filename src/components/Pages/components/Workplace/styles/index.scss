@@ -1,6 +1,6 @@
 .workplace-setting-wrapper {
   width: calc(100%);
-  min-height: 1200px;
+  min-height: 100vh;
   margin-top: 50px;
   font-size: 14px;
   .content-header {
@@ -34,6 +34,7 @@
     }
   }
   .workplace-setting-container {
+    min-height: 100vh;
     .setting-content-wrapper {
       width: calc(100% - 300px);
       background-color: #FFF;

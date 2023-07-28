@@ -31,7 +31,7 @@ function Project(props) {
           <div className="title">Projects</div>
         </div>
         <div className="header-right">
-          <div className="add-project" data-tip="" data-for="icon-add-project">
+          <div className="add-project" data-tip="" data-for="icon-add-project" onClick={() => history.push(`/workplace-setting?id=projects`)}>
             <i className="fa-solid fa-plus"></i>
           </div>
           <div className="search">
@@ -64,8 +64,8 @@ function Project(props) {
                     {item?.project_key}
                   </div>
                   <div className="info-bottom">
-                    <div className="add-issue">Add issue</div>
-                    <div className="issues">Issues</div>
+                    <div className="add-task">Create task</div>
+                    <div className="tasks">Task</div>
                     <div className="board">Board</div>
                     <div className="file">Files</div>
                   </div>

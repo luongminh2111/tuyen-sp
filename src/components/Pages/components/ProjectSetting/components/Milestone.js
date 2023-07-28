@@ -38,7 +38,7 @@ function Milestone(props) {
       </div>
       <div className="milestone-result-table">
         <div className="header">
-          <div className="name">Milestone Title</div>
+          <div className="name">Milestone name</div>
           <div className="from">Start date</div>
           <div className="to">Due date</div>
           <div className="ml-desc">Description</div>

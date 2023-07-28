@@ -14,7 +14,6 @@ import { getListMemberInWorkspace } from "../../ProjectSetting/actions/ProjectAc
 function Staffs(props) {
 
   const staffs = useSelector(state => state.staffs.items);
-  console.log("check staffs :", staffs);
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -198,7 +197,7 @@ function Staffs(props) {
   return (
     <div className="staff-content-wrapper">
       <div className="title d-flex">
-        <div>Staffs (4 members)</div>
+        <div>Staffs ({staffs?.length || 0} members)</div>
       </div>
       <div className="btn-add-user">
         <button onClick={() => setIsEdit(true)}>Add User</button>
@@ -213,9 +212,10 @@ function Staffs(props) {
       </div>
       <div className="filter-result-table">
         <div className="header">
-          <div className="name">Nick Name</div>
+          <div className="name">Username</div>
           <div className="mail">Email Address</div>
           <div className="role">Role</div>
+          <div className="active">Active status</div>
           <div className="join">Join on</div>
           <div className="remove">Remove</div>
         </div>
@@ -226,6 +226,7 @@ function Staffs(props) {
                 <div className="name">{e?.name}</div>
                 <div className="mail">{e?.email}</div>
                 <div className="role">{USER_ROLE_TEXT[e?.role]}</div>
+                <div className={e?.is_active === 1 ? 'activated' : 'unactivated'}>{e?.is_active === 1 ? 'activated' : 'unactivated'}</div>
                 <div className="join">{e?.created_at?.substring(0, 10)}</div>
                 <div className="remove">
                   <i className="fa-solid fa-x"></i>

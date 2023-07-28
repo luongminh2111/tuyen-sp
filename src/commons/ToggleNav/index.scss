@@ -3,7 +3,7 @@
   top: 50px;
   left: 0;
   width: 50px;
-  background: #4caf93;
+  background: #578DC7;
   z-index: 9999;
   height: 100vh;
   &.expand {
@@ -39,6 +39,15 @@
       margin-left: 8px;
       font-weight: 700;
       color: #fff;
+    }
+    &.active {
+      background-color: #FFF;
+      .text {
+        color: #0088FF;
+      }
+      i {
+        color: #0088FF;
+      }
     }
   }
   .icon {
