@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import ReactTooltip from "react-tooltip";
 import ButtonDropDown from "../../../../../commons/Button/ButtonDropdown";
 import { useMemo } from "react";
+import CreateSubTaskModal from "./CreateSubTaskModal";
 
 function TaskDetail(props) {
   const { task, setShowDetail, milestones, isExpand } = props;
@@ -11,8 +12,8 @@ function TaskDetail(props) {
   const [comment, setComment] = useState("");
   const [showComment, setShowComment] = useState(false);
   const [userSelect, setUserSelect] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
 
-  console.log("check userSelect :", userSelect);
   const members = useSelector((state) => state.projects.members);
 
   const getCurrentMember = (id) => {
@@ -165,7 +166,10 @@ function TaskDetail(props) {
               </div>
               <div className="comment-content">Test comment {index}</div>
               <div className="edit-comment">
-                <i className="fa-solid fa-pen-to-square" style={{marginRight: '12px'}}></i>
+                <i
+                  className="fa-solid fa-pen-to-square"
+                  style={{ marginRight: "12px" }}
+                ></i>
                 <i className="fa-solid fa-trash"></i>
               </div>
             </div>
@@ -177,14 +181,22 @@ function TaskDetail(props) {
 
   return (
     <div className="task-detail-wrapper">
-      <div
-        className="go-back d-flex w-100"
-        onClick={() => setShowDetail(false)}
-      >
-        <div>
-          <i className="fa-solid fa-rotate-left"></i>
+      <div className="go-back d-flex w-100">
+        <div
+          className="col-md-6 col-lg-6 col-sm-6 d-flex"
+          onClick={() => setShowDetail(false)}
+        >
+          <div>
+            <i className="fa-solid fa-rotate-left"></i>
+          </div>
+          <div className="text">Back to {task?.name}</div>
         </div>
-        <div className="text">Back to {task?.name}</div>
+        <div
+          className="col-md-6 col-lg-6 col-sm-6 d-flex justify-content-end"
+          onClick={() => setOpenModal(true)}
+        >
+          <button className="btn-create-sub-task">Create sub task</button>
+        </div>
         <hr />
       </div>
       <div className="content-wrapper">
@@ -202,7 +214,9 @@ function TaskDetail(props) {
                 </div>
               </div>
             </div>
-            <div className="task-name" style={{fontSize: '14px'}}>{task?.name}</div>
+            <div className="task-name" style={{ fontSize: "14px" }}>
+              {task?.name}
+            </div>
             <div className="line-item d-flex">
               <div className="text-1">Priority</div>
               <div className="value d-flex">
@@ -284,6 +298,16 @@ function TaskDetail(props) {
           ></input>
         </div>
       )}
+      {openModal ? (
+        <CreateSubTaskModal
+          members={members}
+          milestoneId={task?.milestone_id}
+          milestones={milestones}
+          parentTaskId={task?.id}
+          open={openModal}
+          handleClose={() => setOpenModal(false)}
+        />
+      ) : null}
     </div>
   );
 }

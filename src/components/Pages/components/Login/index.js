@@ -123,17 +123,11 @@ function Login() {
   return (
     <Box className="signin-wrapper">
       <Box className="head">
-        <div className="title-1">Log in to your Nulab Account</div>
+        <div className="title-1">Log in to your Account</div>
       </Box>
 
       <div className="login-container">
         <Box className="login-form">
-          <div className="title d-flex">
-            <span>Log in or</span>
-            <span>
-              <a href="/register">create an account</a>
-            </span>
-          </div>
           {!showInputPass ? (
             <>
               <Box className="mail form-input">
