@@ -8,6 +8,10 @@ function TableIssue(props) {
 
   const members = useSelector((state) => state.projects.members);
 
+  const [showDetailIds, setShowDetailIds] = useState([]);
+
+  console.log("check tasks :", tasks);
+
   const getCurrentMember = (id) => {
     return members?.find((e) => e.id === id)?.name;
   };
@@ -31,6 +35,15 @@ function TableIssue(props) {
     );
   };
 
+  const handleChangeShowDetailIds = (value) => {
+    if (showDetailIds?.includes(value)) {
+      setShowDetailIds(showDetailIds?.filter((e) => e !== value));
+    } else {
+      setShowDetailIds(showDetailIds?.concat(value));
+    }
+  };
+  console.log("check show ids :", showDetailIds);
+
   const renderHeader = () => {
     return (
       <div className="table-header">
@@ -48,19 +61,31 @@ function TableIssue(props) {
     );
   };
 
-  const renderItem = (e, index) => {
+  const renderItem = (e, index, isSubTask, parentId) => {
     return (
       <>
-        <div
-          className="issue-item"
-          key={index}
-          onClick={() => handleShowDetail(e.id)}
-        >
-          <div className="item_key">{e?.task_key}</div>
+        <div className="issue-item" key={index}>
+          <div className="item_key">
+            {e?.sub_tasks?.length > 0 ? (
+              <span
+                style={{ marginRight: "6px" }}
+                onClick={() => handleChangeShowDetailIds(e?.id)}
+              >
+                <i className="fa-solid fa-right-to-bracket"></i>
+              </span>
+            ) : null}
+            {isSubTask ? (
+              <span>
+               <i className="fa-solid fa-arrow-right" style={{transform: 'rotate(45deg)', color: '#d3d5d7', marginRight: "8px"}}></i>
+              </span>
+            ) : null}
+            <span> {e?.task_key}</span>
+          </div>
           <div
             className="item_subject"
             data-for={`item_subject_${index}`}
             data-tip=""
+            onClick={() => {handleShowDetail(isSubTask ? parentId : e.id)}}
           >
             {e?.name}
             <ReactTooltip
@@ -95,7 +120,9 @@ function TableIssue(props) {
               <i className="fa-solid fa-arrow-right"></i>
             ) : null}
           </div>
-          <div className="item_milestone">{getCurrentMilestone(e?.milestone_id)}</div>
+          <div className="item_milestone">
+            {getCurrentMilestone(e?.milestone_id)}
+          </div>
           <div className="item_created">{e?.created_at?.substring(0, 10)}</div>
           <div className="item_due-date">{e?.end_time?.substring(0, 10)}</div>
           <div className="item_updateAt">{e?.updated_at?.substring(0, 10)}</div>
@@ -114,7 +141,16 @@ function TableIssue(props) {
       ) : (
         <div className="table-content">
           {tasks?.map((e, index) => {
-            return renderItem(e, index);
+            return (
+              <>
+                {renderItem(e, index)}
+                {e?.sub_tasks?.length > 0 && showDetailIds?.includes(e.id)
+                  ? e?.sub_tasks?.map((et, index1) => {
+                      return renderItem(et, index1, true, e.id);
+                    })
+                  : null}
+              </>
+            );
           })}
         </div>
       )}

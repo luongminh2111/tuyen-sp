@@ -40,7 +40,6 @@
     font-size: 13px;
     padding: 6px 8px;
     display: flex;
-    cursor: pointer;
 
     border-radius: 4px 4px 0 0;
     >div {
@@ -56,6 +55,11 @@
     }
     .item_key {
       justify-content: flex-start;
+      cursor: pointer;
+      &:hover {
+        color: #0088FF;
+        text-decoration: underline;
+      }
     }
     .item_subject {
       width: 180px;
@@ -65,6 +69,11 @@
       white-space: nowrap;
       word-break: break-word;
       justify-content: flex-start;
+      cursor: pointer;
+      &:hover {
+        color: #0088FF;
+        text-decoration: underline;
+      }
     }
     .item_assignee {
       width: 150px;
