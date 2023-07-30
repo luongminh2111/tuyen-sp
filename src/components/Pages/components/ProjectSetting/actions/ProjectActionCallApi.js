@@ -1,7 +1,7 @@
 import { BASE_URL } from "../../../../../contains/config"
 import callApi from "../../../../../ulti/callApi";
 import { getListMemberOfWorkspace } from "../../Workplace/actions/WorkplaceActionRedux";
-import { getListMemberForProject, getListMileStone, updateMemberForProject } from "./ProjectActionRedux";
+import { getListMemberForProject, getListMileStone } from "./ProjectActionRedux";
 
 export const updateProject = (request, id) => (dispatch) => {
   const endPoint = `${BASE_URL}/api/project/${id}`;
@@ -20,7 +20,6 @@ export const getListMileStoneInProject = (projectId) => (dispatch) => {
     method: 'GET',
   }
   return callApi(endPoint, options).then( res => {
-    console.log("check res :", res);
     if(res.status === 200) {
       dispatch(getListMileStone(res.data.data));
     } else {

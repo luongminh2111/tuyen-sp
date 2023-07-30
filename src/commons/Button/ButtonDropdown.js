@@ -1,13 +1,10 @@
+import React, { useState, useRef, useEffect } from "react";
 import { Box, Button } from "@mui/material";
-import React from "react";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
-import { useState } from "react";
 import "./button.scss";
-import { useRef } from "react";
-import { useEffect } from "react";
 
 function ButtonDropDown(props) {
-  const { options } = props;
+  const { options, onChangeOption } = props;
   const [show, setShow] = useState(false);
 
   const [optionSelect, setOptionSelect] = useState(options?.[0]);
@@ -17,6 +14,18 @@ function ButtonDropDown(props) {
   const handleShow = () => {
     setShow(!show);
   };
+
+  useEffect(() => {
+    if(onChangeOption){
+      onChangeOption(options?.[0]);
+    }
+  }, []);
+
+  const handleSelect = (value) => {
+    onChangeOption(value);
+    setOptionSelect(value);
+    setShow(false);
+  }
 
   const useOutsideAccount = (buttonRef) => {
     useEffect(() => {
@@ -48,7 +57,7 @@ function ButtonDropDown(props) {
         <Box className="list-options">
           {options?.map((option, index) => {
             return (
-              <Box key={index} className="item" onClick={() => {setOptionSelect(option); setShow(false) }}>
+              <Box key={index} className="item" onClick={() => handleSelect(option)}>
                 {option?.value}
               </Box>
             );

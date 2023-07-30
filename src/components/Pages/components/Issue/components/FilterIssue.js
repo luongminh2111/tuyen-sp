@@ -1,71 +1,84 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import "../styles/Filter.scss";
-import { useState } from "react";
-import { Button, TextField } from "@mui/material";
 import ButtonDropDown from "../../../../../commons/Button/ButtonDropdown";
 import { taskOptions } from "../../AddIssue/commons/DataCommon";
+import { useSelector } from "react-redux";
 
 function FilterIssue(props) {
-  const [isZoomIn, setIsZoomIn] = useState(false);
+  const [key, setKey] = useState("");
+  const [status, setStatus] = useState({});
+  const [milestone, setMilestone] = useState({});
+  const [assignee, setAssignee] = useState({});
+  const members = useSelector(state => state.projects.members);
+  const milestones = useSelector(state => state.projects.milestone);
+
+  
+  const memberOptions = useMemo(() => {
+    const newMembers = members?.map(e => {
+      return {
+        ...e, 
+        value: e?.name
+      }
+    });
+    return newMembers;
+  }, [members]);
+
+  
+  const mileStoneOptions = useMemo(() => {
+    const newMileStones = milestones?.map(e => {
+      return {
+        ...e, 
+        value: e?.name
+      }
+    });
+    return newMileStones;
+  }, [milestones]);
+
   return (
-    <>
-      <div className="issues-filter-wrapper">
-        <div className={`filter-header ${isZoomIn ? "zoom-in" : ""}`}>
-          <div className="header-left">
-            <div className="search-condition">
-              <div
-                className="collapse-icon"
-                onClick={() => setIsZoomIn(!isZoomIn)}
-              >
-                <i className="fa-solid fa-chevron-up"></i>
-              </div>
-              <div className="title">Search conditions</div>
-            </div>
-            <div className="search-buttons">
-              <button>Search</button>
-            </div>
-          </div>
+    <div className="issues-filter-wrapper">
+      <div className="filter-select-list d-flex">
+        <div className="issue-type" style={{marginRight: '16px'}}>
+          <div className="label mb-1">Status</div>
+          <ButtonDropDown options={statusOptions} onChangeOption={setStatus} />
         </div>
-        {isZoomIn ? (
-          <div className="filter-expand">
-            <div className="filter-status">
-              <div className="label">Status: </div>
-              <div className="status-item">
-                <div className="text all">All</div>
-                <div className="text open">Open</div>
-                <div className="text in-progress">In Progress</div>
-                <div className="text resolved">Resolved</div>
-                <div className="text closed">Closed</div>
-                <div className="text not-closed">Not Closed</div>
-              </div>
-            </div>
-            <div className="filter-select-list">
-              <div className="issue-type">
-                <div className="label">Issue Type</div>
-                <ButtonDropDown options={taskOptions} />
-              </div>
-              <div className="category">
-              <div className="label">Category</div>
-                <ButtonDropDown options={taskOptions} />
-              </div>
-              <div className="milestone">
-              <div className="label">Milestone</div>
-                <ButtonDropDown options={taskOptions} />
-              </div>
-              <div className="assignee">
-              <div className="label">Assignee</div>
-                <ButtonDropDown options={taskOptions} />
-              </div>
-            </div>
-            <div className="keyword-input">
-              <div className="lable">Keyword</div>
-              <TextField  placeholder="Enter keyword"/>
-            </div>
-          </div>
-        ) : null}
+        <div className="milestone" style={{marginRight: '16px'}}>
+          <div className="label mb-1">Milestone</div>
+          <ButtonDropDown options={mileStoneOptions} onChangeOption={setMilestone} />
+        </div>
+        <div className="assignee" style={{marginRight: '16px'}}>
+          <div className="label mb-1">Assignee</div>
+          <ButtonDropDown options={memberOptions} onChangeOption={setAssignee} />
+        </div>
+        <div className="keyword-input">
+          <div className="label mb-1">Keyword</div>
+          <input
+            type="text"
+            value={key}
+            onChange={(e) => setKey(e.target.value)}
+            placeholder="Enter keyword"
+          />
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 export default FilterIssue;
 
+const statusOptions = [
+  {
+    id: 1,
+    value: "Open",
+  },
+  {
+    id: 2,
+    value: "In Progress",
+  },
+  {
+    id: 3,
+    value: "Resolve",
+  },
+  {
+    id: 4,
+    value: "Closed",
+  },
+];

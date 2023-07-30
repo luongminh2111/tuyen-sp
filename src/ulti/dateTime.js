@@ -13,4 +13,14 @@ export const getTimeForTrip = (start, end) => {
   const minuteEnd = new Date(end).getMinutes(); 
 
   return `${ hourStart - hourEnd}hour ${minuteStart - minuteEnd}minutes`
+};
+
+export const parseDateToString = (day) => {
+  if (!day) return null;
+  const fullYear = new Date(day).getFullYear();
+  const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+  const month = months[new Date(day).getMonth()];
+  const curDay = new Date(day).getDate();
+  console.log("check 555:", `${fullYear}-${month}-${curDay}`);
+  return `${fullYear}-${month}-${curDay}`
 }

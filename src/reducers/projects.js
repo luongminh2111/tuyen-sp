@@ -7,6 +7,7 @@ const initState = {
   itemDetail: {},
   milestone: [],
   members: [],
+  tasks: [],
 };
 
 const projects = (state = initState, action) => {
@@ -39,19 +40,22 @@ const projects = (state = initState, action) => {
     case projectType.CREATE_NEW_MILESTONE:
       return {
         ...state,
-        milestone: [...state.milestone, action.item],
+        milestone: [action.item, ...state.milestone],
       };
-    // case projectType.UPDATE_MEMBER_IN_PROJECT:
-    //   const newMembers = state.members.concat(action.members);
-    //   console.log("check newMembers :", newMembers);
-    //   return {
-    //     ...state,
-    //     members: newMembers
-    //   };
     case projectType.GET_LIST_MEMBER_IN_PROJECT:
       return {
         ...state,
         members: action.members,
+      };
+    case projectType.GET_LIST_TASK_IN_PROJECT:
+      return {
+        ...state,
+        tasks: action.items,
+      };
+    case projectType.CREATE_TASK_IN_PROJECT:
+      return {
+        ...state,
+        tasks: [action?.item, ...state.tasks],
       };
     default:
       return state;

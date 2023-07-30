@@ -20,15 +20,15 @@ export const taskOptions = [
 export const priorityOptions = [
   {
     id: 1,
-    value: 'Normal'
+    value: 'NORMAL'
   },
   {
     id: 2,
-    value: 'Hight'
+    value: 'HIGHT'
   },
   {
     id: 3,
-    value: 'Low'
+    value: 'LOW'
   },
 
 ]

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState, useMemo} from "react";
 import "./styles/index.scss";
 import HeaderNav from "../../../commons/HeaderNav/HeaderNav";
 import { ORG_IMAGE_DEFAULT } from "../../../../commons/image";
@@ -6,10 +6,83 @@ import { Button, TextField } from "@mui/material";
 import ButtonDropDown from "../../../../commons/Button/ButtonDropdown";
 import { priorityOptions, taskOptions } from "./commons/DataCommon";
 import ToggleNav from "../../../../commons/ToggleNav";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { parseDateToString } from "../../../../ulti/dateTime";
+import { getListMemberOfProject, getListMileStoneInProject } from "../ProjectSetting/actions/ProjectActionCallApi";
+import { createTask } from "./actions/CreateTaskCallApi";
+import Alerts from "../../../../commons/Alert";
+import { createTaskForProject } from "../ProjectSetting/actions/ProjectActionRedux";
 
 function AddIssue(props) {
   const isExpand = useSelector((state) => state.global.isExpand);
+  const curProject = useSelector(state => state.projects.itemDetail);
+  const members = useSelector(state => state.projects.members);
+  const milestones = useSelector(state => state.projects.milestone);
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [startTime, setStartTime] = useState(parseDateToString(new Date()));
+  const [endTime, setEndTime] = useState(parseDateToString(new Date()));
+  const [milestone, setMilestone] = useState({});
+  const [priority, setPriority] = useState({});
+  const [assignee, setAssignee] = useState({});
+  const [textAlert, setTextAlert] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [statusAlert, setStatusAlert] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const memberOptions = useMemo(() => {
+    const newMembers = members?.map(e => {
+      return {
+        ...e, 
+        value: e?.name
+      }
+    });
+    return newMembers;
+  }, [members]);
+
+  
+  const mileStoneOptions = useMemo(() => {
+    const newMileStones = milestones?.map(e => {
+      return {
+        ...e, 
+        value: e?.name
+      }
+    });
+    return newMileStones;
+  }, [milestones]);
+
+
+  useEffect(()=> {
+    dispatch(getListMemberOfProject(curProject.id));
+    dispatch(getListMileStoneInProject(curProject.id));
+  }, []);
+
+  const handleCreateTask = () => {
+    const request = {
+      name,
+      description,
+      start_time: startTime,
+      end_time: endTime,
+      project_id: curProject?.id,
+      milestone_id: milestone?.id || null,
+      status: 'OPEN',
+      priority: priority?.value,
+      assignee: assignee?.id,
+    }
+    dispatch(createTask(request)).then(res => {
+      if (res?.status === 200 && res?.data?.data) {
+        setOpenAlert(true);
+        setStatusAlert("success");
+        setTextAlert(res.data?.message);
+        dispatch(createTaskForProject(res.data.data));
+      } else {
+        setOpenAlert(true);
+        setStatusAlert("error");
+        setTextAlert(res.data?.message);
+      }
+    });
+  }
 
   return (
     <>
@@ -24,25 +97,24 @@ function AddIssue(props) {
               </a>
             </div>
             <div className="header-icon-set__text">
-              <span className="header-icon-set__name">PMA_web</span>
-              <span className="header-icon-set__key">(PMA_web)</span>
+              <span className="header-icon-set__name">{curProject?.name}</span>
+              <span className="header-icon-set__key">({curProject?.project_key})</span>
             </div>
           </div>
           <div className="project-header__actions"></div>
         </div>
         <div className="contents-main">
           <div className="title-issue">
-            <h3>Add Issue</h3>
-          </div>
-          <div className="btn-type">
-            <ButtonDropDown options={taskOptions} />
+            <h3>Create task</h3>
           </div>
           <div className="text-input-sbj">
-            <TextField placeholder="Subject" />
+            <div className="label">Name</div>
+            <div className="input-text"><input type="text" value={name} onChange={(e) => setName(e.target.value)} /></div>
           </div>
           <div className="card card--default ticket__content">
             <div className="area-input-ticket">
-              <textarea placeholder="Add a description, use @ mentor to notify a colleague.." />
+              <textarea placeholder="Add a description, use @ mentor to notify a colleague.."
+               value={description} onChange={(e) => setDescription(e.target.value)} />
             </div>
             <div className="card-content">
               <div className="card-left">
@@ -53,19 +125,19 @@ function AddIssue(props) {
                 <div className="ticket__properties-item -priority">
                   <label>Priority</label>
                   <div className="ticket__properties-value">
-                    <ButtonDropDown options={priorityOptions} />
-                  </div>
-                </div>
-                <div className="ticket__properties-item -category">
-                  <label>Category</label>
-                  <div className="ticket__properties-value">
-                    <ButtonDropDown options={priorityOptions} />
+                    <ButtonDropDown options={priorityOptions} onChangeOption={setPriority} />
                   </div>
                 </div>
                 <div className="ticket__properties-item -limit-date">
-                  <label>Due Date</label>
-                  <div className="ticket__properties-value">
-                    <ButtonDropDown options={priorityOptions} />
+                  <label>Start time</label>
+                  <div className="input-time">
+                    <input type="date" value={startTime} onChange={(e) => {setStartTime(e.target.value)}} />
+                  </div>
+                </div>
+                <div className="ticket__properties-item -limit-date">
+                  <label>End time</label>
+                  <div className="input-time">
+                    <input type="date" value={endTime} onChange={(e) => {setEndTime(e.target.value)}} />
                   </div>
                 </div>
               </div>
@@ -73,13 +145,13 @@ function AddIssue(props) {
                 <div className="ticket__properties-item -assigner">
                   <label>Assignee</label>
                   <div className="ticket__properties-value">
-                    <ButtonDropDown options={priorityOptions} />
+                    <ButtonDropDown options={memberOptions} onChangeOption={setAssignee} />
                   </div>
                 </div>
                 <div className="ticket__properties-item -milestones">
                   <label>Milestone</label>
                   <div className="ticket__properties-value">
-                    <ButtonDropDown options={priorityOptions} />
+                    <ButtonDropDown options={mileStoneOptions} onChangeOption={setMilestone} />
                   </div>
                 </div>
               </div>
@@ -87,10 +159,18 @@ function AddIssue(props) {
           </div>
           <div className="list-btn">
             <Button className="preview-btn">Preview</Button>
-            <Button className="add-btn">Add</Button>
+            <Button className="add-btn" onClick={() => handleCreateTask()}>Add</Button>
           </div>
         </div>
       </div>
+      {openAlert ? (
+        <Alerts
+          text={textAlert}
+          status={statusAlert}
+          open={openAlert}
+          setOpen={setOpenAlert}
+        />
+      ) : null}
     </>
   );
 }

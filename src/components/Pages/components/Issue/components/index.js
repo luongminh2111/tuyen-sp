@@ -1,24 +1,58 @@
-import React from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import ToggleNav from "../../../../../commons/ToggleNav";
 import HeaderNav from "../../../../commons/HeaderNav/HeaderNav";
 import HeaderIssue from "./HeaderIssue";
 import FilterIssue from "./FilterIssue";
 import TableIssue from "./TableIssue";
 import "../styles/index.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getListTask } from "../actions/TaskCallApi";
+import { getListMemberOfProject } from "../../ProjectSetting/actions/ProjectActionCallApi";
+import TaskDetail from "./Detail";
 
 function Issues(props) {
+  const isExpand = useSelector((state) => state.global.isExpand);
+  const tasks = useSelector((state) => state.projects.tasks);
+  const curProject = useSelector((state) => state.projects.itemDetail);
+  const milestones = useSelector(state => state.projects.milestone);
+  
 
-  const isExpand = useSelector(state => state.global.isExpand);
+  const [showDetail, setShowDetail] = useState(false);
+
+  const [id, setId] = useState("");
+
+  const getCurrentTask = useMemo(() => {
+    return tasks?.find((e) => e.id === id);
+  }, [id]);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getListTask());
+    dispatch(getListMemberOfProject(curProject?.id));
+  }, []);
+
   return (
     <>
       <ToggleNav />
-      <div className={`issues-wrapper ${isExpand ? 'menu-expand' : ''}`}>
+      <div className={`issues-wrapper ${isExpand ? "menu-expand" : ""}`}>
         <HeaderNav />
         <div className="issues-content">
-          <HeaderIssue />
-          <FilterIssue />
-          <TableIssue />
+          <HeaderIssue item={curProject} />
+          {showDetail ? (
+            <TaskDetail task={getCurrentTask} setShowDetail={setShowDetail} milestones={milestones} isExpand={isExpand}/>
+          ) : (
+            <>
+              <FilterIssue />
+              <TableIssue
+                tasks={tasks}
+                id={id}
+                setId={setId}
+                setShowDetail={setShowDetail}
+                milestones={milestones}
+              />
+            </>
+          )}
         </div>
       </div>
     </>

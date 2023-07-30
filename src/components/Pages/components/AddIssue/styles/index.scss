@@ -51,26 +51,39 @@
       background: #fff;
       margin-top: 16px;
       margin-bottom: 16px;
-      height: 40px;
-      .MuiFormControl-root {
-        height: 100%;
-        width: 100%;
-        .MuiInputBase-root {
-          height: 100%;
+      .label {
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+      .input-text {
+        input {
           width: 100%;
-          input {
-            height: 100%;
-            width: 100%;
-            color: #0F1824;
-           
-          }
-          fieldset {
-            height: 44px;
-            width: 100%;
-            color: #0F1824;
+          border: 1px solid #d3d5d7;
+          border-radius: 4px;
+          margin-bottom: 12px;
+          outline: none;
+          height: 40px;
+          padding: 4px 16px;
+          &:focus {
+            border-color: #0088FF;
           }
         }
+
       }
+    }
+    .input-time {
+      input {
+        width: 200px;
+        height: 40px;
+        padding: 4px 16px;
+        border: 1px solid #d3d5d7;
+        border-radius: 4px;
+        outline: none;
+        &:focus {
+          border-color: #0088FF;
+        }
+      }
+     
     }
     .card--default {
       min-height: 400px;

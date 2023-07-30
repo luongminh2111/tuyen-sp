@@ -48,7 +48,7 @@ function Milestone(props) {
           {milestones?.map((e, index) => {
             return (
               <div className="item" key={index}>
-                <div className="name">{e?.title}</div>
+                <div className="name">{e?.name}</div>
                 <div className="from">{e?.start_date}</div>
                 <div className="to">{e?.due_date}</div>
                 <div className="ml-desc">{e?.description}</div>

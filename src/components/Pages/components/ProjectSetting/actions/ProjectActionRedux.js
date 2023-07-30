@@ -23,4 +23,14 @@ export const updateMemberForProject = (members) => ({
 export const getListMemberForProject = (members) => ({
   type: actionType.GET_LIST_MEMBER_IN_PROJECT,
   members
-})
+});
+
+export const getListTaskForProject = (items) => ({
+  type: actionType.GET_LIST_TASK_IN_PROJECT,
+  items
+});
+
+export const createTaskForProject = (item) => ({
+  type: actionType.CREATE_TASK_IN_PROJECT,
+  item
+});
