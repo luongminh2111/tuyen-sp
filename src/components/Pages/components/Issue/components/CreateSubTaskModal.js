@@ -7,11 +7,11 @@ import { priorityOptions } from "../../AddIssue/commons/DataCommon";
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createTask } from "../../AddIssue/actions/CreateTaskCallApi";
-import { createTaskForProject } from "../../ProjectSetting/actions/ProjectActionRedux";
+import { createSubTaskForProject } from "../../ProjectSetting/actions/ProjectActionRedux";
 import Alerts from "../../../../../commons/Alert";
 
 function CreateSubTaskModal(props) {
-  const { open, handleClose, members, milestoneId, milestones, parentTaskId } = props;
+  const { open, handleClose, members, milestoneId, milestones, parentTaskId, setTaskItem, taskItem } = props;
 
   const curProject = useSelector((state) => state.projects.itemDetail);
 
@@ -46,10 +46,10 @@ function CreateSubTaskModal(props) {
         setOpenAlert(true);
         setStatusAlert("success");
         setTextAlert(res.data?.message);
-        setTimeout(() => {
-          handleClose()
-        }, [2000]);
-        // dispatch(createTaskForProject(res.data.data));
+        const newSubTask = taskItem?.sub_tasks?.concat(res?.data?.data);
+        const newTask = {...taskItem, sub_tasks: newSubTask};
+        setTaskItem(newTask);
+        handleClose();
       } else {
         setOpenAlert(true);
         setStatusAlert("error");

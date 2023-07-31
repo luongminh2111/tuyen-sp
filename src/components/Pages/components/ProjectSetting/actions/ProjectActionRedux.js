@@ -34,3 +34,8 @@ export const createTaskForProject = (item) => ({
   type: actionType.CREATE_TASK_IN_PROJECT,
   item
 });
+
+export const createSubTaskForProject = (item) => ({
+  type: actionType.CREATE_SUB_TASK_IN_PROJECT,
+  item
+});

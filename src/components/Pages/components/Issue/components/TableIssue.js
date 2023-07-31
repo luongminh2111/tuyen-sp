@@ -42,7 +42,6 @@ function TableIssue(props) {
       setShowDetailIds(showDetailIds?.concat(value));
     }
   };
-  console.log("check show ids :", showDetailIds);
 
   const renderHeader = () => {
     return (

@@ -13,6 +13,7 @@ function TaskDetail(props) {
   const [showComment, setShowComment] = useState(false);
   const [userSelect, setUserSelect] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [taskItem, setTaskItem] = useState(task);
 
   const members = useSelector((state) => state.projects.members);
 
@@ -189,7 +190,7 @@ function TaskDetail(props) {
           <div>
             <i className="fa-solid fa-rotate-left"></i>
           </div>
-          <div className="text">Back to {task?.name}</div>
+          <div className="text">Back to {taskItem?.name}</div>
         </div>
         <div
           className="col-md-6 col-lg-6 col-sm-6 d-flex justify-content-end"
@@ -200,54 +201,54 @@ function TaskDetail(props) {
         <hr />
       </div>
       <div className="content-wrapper">
-        <div className="task-name">{task?.name}</div>
+        <div className="task-name">{taskItem?.name}</div>
         <div className="task-info d-flex">
           <div className="info-left col-md-6 col-sm-6 col-lg-6 d-block">
             <div className="created_by d-flex">
               <div className="image">
-                <div>{getCurrentMember(task?.asignee_id)?.substring(0, 1)}</div>
+                <div>{getCurrentMember(taskItem?.asignee_id)?.substring(0, 1)}</div>
               </div>
               <div className="user">
-                <div className="name">{getCurrentMember(task?.asignee_id)}</div>
+                <div className="name">{getCurrentMember(taskItem?.asignee_id)}</div>
                 <div className="time">
-                  Created at: {task?.created_at?.substring(0, 10)}
+                  Created at: {taskItem?.created_at?.substring(0, 10)}
                 </div>
               </div>
             </div>
             <div className="task-name" style={{ fontSize: "14px" }}>
-              {task?.name}
+              {taskItem?.name}
             </div>
             <div className="line-item d-flex">
               <div className="text-1">Priority</div>
               <div className="value d-flex">
                 <div>
-                  {task?.priority === "LOW" ? (
+                  {taskItem?.priority === "LOW" ? (
                     <i
                       className="fa-solid fa-arrow-down"
                       style={{ color: "#2c9a7a" }}
                     ></i>
                   ) : null}
-                  {task?.priority === "HIGHT" ? (
+                  {taskItem?.priority === "HIGHT" ? (
                     <i
                       className="fa-solid fa-arrow-up"
                       style={{ color: "#FF4D4D" }}
                     ></i>
                   ) : null}
-                  {task?.priority === "NORMAL" ? (
+                  {taskItem?.priority === "NORMAL" ? (
                     <i className="fa-solid fa-arrow-right"></i>
                   ) : null}
                 </div>
-                <div style={{ marginLeft: "16px" }}>{task?.priority}</div>
+                <div style={{ marginLeft: "16px" }}>{taskItem?.priority}</div>
               </div>
             </div>
             <div className="line-item d-flex">
               <div className="text-1">Assignee</div>
-              <div className="value">{getCurrentMember(task?.asignee_id)}</div>
+              <div className="value">{getCurrentMember(taskItem?.asignee_id)}</div>
             </div>
             <div className="line-item d-flex">
               <div className="text-1">Milestone</div>
               <div className="value">
-                {getCurrentMilestone(task?.milestone_id)}
+                {getCurrentMilestone(taskItem?.milestone_id)}
               </div>
             </div>
           </div>
@@ -266,11 +267,11 @@ function TaskDetail(props) {
             <div className="updateAt">Update At</div>
             <div className="register">Created By</div>
           </div>
-          {task?.sub_tasks?.length === 0 ? (
+          {taskItem?.sub_tasks?.length === 0 ? (
             renderEmptyList()
           ) : (
             <div className="table-content">
-              {task?.sub_tasks?.map((e, index) => {
+              {taskItem?.sub_tasks?.map((e, index) => {
                 return renderItem(e, index);
               })}
             </div>
@@ -306,6 +307,8 @@ function TaskDetail(props) {
           parentTaskId={task?.id}
           open={openModal}
           handleClose={() => setOpenModal(false)}
+          setTaskItem={setTaskItem}
+          taskItem={taskItem}
         />
       ) : null}
     </div>

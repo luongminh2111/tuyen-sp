@@ -57,6 +57,20 @@ const projects = (state = initState, action) => {
         ...state,
         tasks: [action?.item, ...state.tasks],
       };
+    // case projectType.CREATE_SUB_TASK_IN_PROJECT: 
+    //   const { tasks } = state;
+    //   const newTask = tasks?.map(e => {
+    //     if (e.id === action?.item?.parent_task_id) {
+    //       return {
+    //         ...e, ...action.item
+    //       }
+    //     }
+    //     return e;
+    //   });
+    //   return {
+    //     ...state,
+    //     tasks: newTask
+    //   }
     default:
       return state;
   }
