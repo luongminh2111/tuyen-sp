@@ -6,48 +6,87 @@ import { parseDateToString } from "../../../../../ulti/dateTime";
 import { priorityOptions } from "../../AddIssue/commons/DataCommon";
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createTask } from "../../AddIssue/actions/CreateTaskCallApi";
+import { updateTask } from "../../AddIssue/actions/CreateTaskCallApi";
 import Alerts from "../../../../../commons/Alert";
+import { useEffect } from "react";
 
-function CreateSubTaskModal(props) {
-  const { open, handleClose, members, milestoneId, milestones, parentTask, setTaskItem, taskItem } = props;
-
+function EditTaskModal(props) {
+  const {
+    open,
+    handleClose,
+    members,
+    milestoneId,
+    milestones,
+    parentTask,
+    setTaskItem,
+    taskItem,
+  } = props;
+  
   const curProject = useSelector((state) => state.projects.itemDetail);
-
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [startTime, setStartTime] = useState(parseDateToString(new Date()));
-  const [endTime, setEndTime] = useState(parseDateToString(new Date()));
+  console.log("check taskItem :", taskItem);
+  const [name, setName] = useState(taskItem?.name);
+  const [description, setDescription] = useState(taskItem?.description);
+  const [startTime, setStartTime] = useState(
+    parseDateToString(taskItem?.start_time || new Date())
+  );
+  const [endTime, setEndTime] = useState(
+    parseDateToString(taskItem?.end_time || new Date())
+  );
+  const [milestone, setMilestone] = useState({});
   const [priority, setPriority] = useState({});
   const [assignee, setAssignee] = useState({});
+  const [status, setStatus] = useState({});
   const [textAlert, setTextAlert] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
   const [statusAlert, setStatusAlert] = useState(false);
 
   const dispatch = useDispatch();
 
-  const handleCreateTask = () => {
+  useEffect(() => {
+    
+    const curStatus =
+      statusOptions?.find((e) => e.value === taskItem?.status) ||
+      statusOptions[0];
+    setStatus(curStatus);
+    const curPriority = priorityOptions?.find(e => e.value === taskItem?.priority) || priorityOptions[0];
+    setPriority(curPriority);
+    const curMember = memberOptions?.find(e => e.id === taskItem?.asignee_id) || memberOptions[0];
+    setAssignee(curMember);
+    const curMilestone = mileStoneOptions?.find(e => e.id === taskItem?.milestone_id) || mileStoneOptions[0];
+    setMilestone(curMilestone);
+  }, []);
+
+  const mileStoneOptions = useMemo(() => {
+    const newMileStones = milestones?.map(e => {
+      return {
+        ...e, 
+        value: e?.name
+      }
+    });
+    return newMileStones;
+  }, [milestones]);
+
+  const handleUpdateTask = () => {
     const request = {
+      id: taskItem?.id,
       name,
       description,
       start_time: startTime,
       end_time: endTime,
       project_id: curProject?.id,
       milestone_id: milestoneId || null,
-      status: "Todo",
-      priority: priority?.value,
-      assignee: assignee?.id,
-      is_child: true,
-      parent_task_id: parentTask?.id
+      status: status?.value || statusOptions[0]?.value,
+      priority: priority?.value || priorityOptions[0]?.value,
+      assignee: assignee?.id || memberOptions[0]?.value,
     };
-    dispatch(createTask(request)).then((res) => {
+    dispatch(updateTask(request)).then((res) => {
       if (res?.status === 200 && res?.data?.data) {
         setOpenAlert(true);
         setStatusAlert("success");
         setTextAlert(res.data?.message);
-        const newSubTask = taskItem?.sub_tasks?.concat(res?.data?.data);
-        const newTask = {...taskItem, sub_tasks: newSubTask};
-        setTaskItem(newTask);
+        // const newSubTask = taskItem?.sub_tasks?.concat(res?.data?.data);
+        // const newTask = { ...taskItem, sub_tasks: newSubTask };
+        setTaskItem(res?.data?.data);
         handleClose();
       } else {
         setOpenAlert(true);
@@ -75,20 +114,16 @@ function CreateSubTaskModal(props) {
     <>
       <Dialog open={open} className="dialog-create-sub-task" maxWidth="lg">
         <DialogTitle className="create-pj-title">
-          <div className="text-align-center">Create new sub task</div>
+          <div className="text-align-center">Edit task</div>
         </DialogTitle>
         <DialogContent>
           <div className="contents-add">
-          <div className="text-input-sbj">
+            {/* <div className="text-input-sbj">
               <div className="label">Task parent</div>
               <div className="input-text">
-                <input
-                  type="text"
-                  value={parentTask?.name}
-                  disabled
-                />
+                <input type="text" value={parentTask?.name} disabled />
               </div>
-            </div>
+            </div> */}
             <div className="text-input-sbj">
               <div className="label">Name</div>
               <div className="input-text">
@@ -111,7 +146,13 @@ function CreateSubTaskModal(props) {
                 <div className="card-left">
                   <div className="ticket__properties-item -status">
                     <label>Status</label>
-                    <div className="ticket__properties-value">Open</div>
+                    <div className="ticket__properties-value">
+                      <ButtonDropDown
+                        options={statusOptions}
+                        onChangeOption={setStatus}
+                        curOption={status}
+                      />
+                    </div>
                   </div>
                   <div className="ticket__properties-item -priority">
                     <label>Priority</label>
@@ -119,6 +160,7 @@ function CreateSubTaskModal(props) {
                       <ButtonDropDown
                         options={priorityOptions}
                         onChangeOption={setPriority}
+                        curOption={priority}
                       />
                     </div>
                   </div>
@@ -154,13 +196,18 @@ function CreateSubTaskModal(props) {
                       <ButtonDropDown
                         options={memberOptions}
                         onChangeOption={setAssignee}
+                        curOption={assignee}
                       />
                     </div>
                   </div>
                   <div className="ticket__properties-item -milestones">
                     <label>Milestone</label>
                     <div className="ticket__properties-value">
-                      {getCurrentMilestone()}
+                      <ButtonDropDown
+                        options={mileStoneOptions}
+                        onChangeOption={setMilestone}
+                        curOption={milestone}
+                      />
                     </div>
                   </div>
                 </div>
@@ -171,7 +218,7 @@ function CreateSubTaskModal(props) {
             <button className="close-btn" onClick={() => handleClose()}>
               Cancel
             </button>
-            <button className="add-btn" onClick={() => handleCreateTask()}>
+            <button className="add-btn" onClick={() => handleUpdateTask()}>
               Save
             </button>
           </div>
@@ -188,4 +235,43 @@ function CreateSubTaskModal(props) {
     </>
   );
 }
-export default CreateSubTaskModal;
+export default EditTaskModal;
+
+const statusOptions = [
+  {
+    id: 1,
+    value: "Todo",
+  },
+  {
+    id: 2,
+    value: "In Progress",
+  },
+  {
+    id: 3,
+    value: "Done Code",
+  },
+  {
+    id: 4,
+    value: "Wait To Review",
+  },
+  {
+    id: 5,
+    value: "Testing",
+  },
+  {
+    id: 6,
+    value: "Debug",
+  },
+  {
+    id: 7,
+    value: "Done",
+  },
+  {
+    id: 8,
+    value: "Pending",
+  },
+  {
+    id: 9,
+    value: "Cancel",
+  },
+];

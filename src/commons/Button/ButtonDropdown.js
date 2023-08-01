@@ -4,10 +4,10 @@ import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined
 import "./button.scss";
 
 function ButtonDropDown(props) {
-  const { options, onChangeOption } = props;
+  const { options, onChangeOption, curOption } = props;
   const [show, setShow] = useState(false);
 
-  const [optionSelect, setOptionSelect] = useState(options?.[0]);
+  const [optionSelect, setOptionSelect] = useState(curOption || options?.[0]);
 
   const buttonRef = useRef();
 
@@ -51,7 +51,7 @@ function ButtonDropDown(props) {
     <Box className="button-dropdown-wrapper" ref={buttonRef}>
       <Button endIcon={<ArrowDropDownOutlinedIcon />}
        onClick={() => handleShow()}>
-        {optionSelect?.value || ''}
+        {curOption?.value || optionSelect?.value || ''}
        </Button>
       {show ? (
         <Box className="list-options">

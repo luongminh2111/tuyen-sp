@@ -66,7 +66,7 @@ function AddIssue(props) {
       end_time: endTime,
       project_id: curProject?.id,
       milestone_id: milestone?.id || null,
-      status: 'OPEN',
+      status: 'Todo',
       priority: priority?.value,
       assignee: assignee?.id,
     }
@@ -120,7 +120,7 @@ function AddIssue(props) {
               <div className="card-left">
                 <div className="ticket__properties-item -status">
                   <label>Status</label>
-                  <div className="ticket__properties-value">Open</div>
+                  <div className="ticket__properties-value">Todo</div>
                 </div>
                 <div className="ticket__properties-item -priority">
                   <label>Priority</label>

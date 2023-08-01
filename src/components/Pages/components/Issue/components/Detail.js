@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Detail.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ReactTooltip from "react-tooltip";
 import ButtonDropDown from "../../../../../commons/Button/ButtonDropdown";
 import { useMemo } from "react";
 import CreateSubTaskModal from "./CreateSubTaskModal";
+import EditTaskModal from "./EditTaskModal";
+import { getListMileStoneInProject } from "../../ProjectSetting/actions/ProjectActionCallApi";
 
 function TaskDetail(props) {
   const { task, setShowDetail, milestones, isExpand } = props;
-
+  const curProject = useSelector((state) => state.projects.itemDetail);
   const [comment, setComment] = useState("");
   const [showComment, setShowComment] = useState(false);
   const [userSelect, setUserSelect] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [taskItem, setTaskItem] = useState(task);
+  const [isEdit, setIsEdit] = useState(false);
+
+  const dispatch = useDispatch();
 
   const members = useSelector((state) => state.projects.members);
 
@@ -45,7 +50,9 @@ function TaskDetail(props) {
 
   console.log("check task :", task);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch(getListMileStoneInProject(curProject?.id));
+  }, []);
 
   const renderEmptyList = () => {
     return (
@@ -201,15 +208,24 @@ function TaskDetail(props) {
         <hr />
       </div>
       <div className="content-wrapper">
-        <div className="task-name">{taskItem?.name}</div>
+        <div className="task-name col-12 d-flex mt-2">
+          <div className="col-6">{taskItem?.name}</div>
+          <div className="col-6 d-flex justify-content-end btn-edit-task">
+            <button onClick={() => setIsEdit(true)}>Edit</button>
+          </div>
+        </div>
         <div className="task-info d-flex">
           <div className="info-left col-md-6 col-sm-6 col-lg-6 d-block">
             <div className="created_by d-flex">
               <div className="image">
-                <div>{getCurrentMember(taskItem?.asignee_id)?.substring(0, 1)}</div>
+                <div>
+                  {getCurrentMember(taskItem?.asignee_id)?.substring(0, 1)}
+                </div>
               </div>
               <div className="user">
-                <div className="name">{getCurrentMember(taskItem?.asignee_id)}</div>
+                <div className="name">
+                  {getCurrentMember(taskItem?.asignee_id)}
+                </div>
                 <div className="time">
                   Created at: {taskItem?.created_at?.substring(0, 10)}
                 </div>
@@ -243,7 +259,9 @@ function TaskDetail(props) {
             </div>
             <div className="line-item d-flex">
               <div className="text-1">Assignee</div>
-              <div className="value">{getCurrentMember(taskItem?.asignee_id)}</div>
+              <div className="value">
+                {getCurrentMember(taskItem?.asignee_id)}
+              </div>
             </div>
             <div className="line-item d-flex">
               <div className="text-1">Milestone</div>
@@ -304,9 +322,21 @@ function TaskDetail(props) {
           members={members}
           milestoneId={task?.milestone_id}
           milestones={milestones}
-          parentTaskId={task?.id}
+          parentTask={task}
           open={openModal}
           handleClose={() => setOpenModal(false)}
+          setTaskItem={setTaskItem}
+          taskItem={taskItem}
+        />
+      ) : null}
+      {isEdit ? (
+        <EditTaskModal
+          members={members}
+          milestoneId={task?.milestone_id}
+          milestones={milestones}
+          parentTask={task}
+          open={isEdit}
+          handleClose={() => setIsEdit(false)}
           setTaskItem={setTaskItem}
           taskItem={taskItem}
         />

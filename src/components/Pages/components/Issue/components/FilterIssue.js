@@ -67,7 +67,7 @@ export default FilterIssue;
 const statusOptions = [
   {
     id: 1,
-    value: "Open",
+    value: "Todo",
   },
   {
     id: 2,
@@ -75,10 +75,31 @@ const statusOptions = [
   },
   {
     id: 3,
-    value: "Resolve",
+    value: "Done Code",
   },
   {
     id: 4,
-    value: "Closed",
+    value: "Wait To Review",
+  },
+  {
+    id: 5,
+    value: "Testing",
+  },
+  {
+    id: 6,
+    value: "Debug",
+  },
+  {
+    id: 7,
+    value: "Done",
+  },
+  {
+    id: 8,
+    value: "Pending",
+  },
+  {
+    id: 9,
+    value: "Cancel",
   },
 ];
+////todo, in progress, done code, review, testing, debug, done, pending, cancel

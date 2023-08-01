@@ -20,10 +20,15 @@ function Issues(props) {
   const [showDetail, setShowDetail] = useState(false);
 
   const [id, setId] = useState("");
+  const [subId, setSubId] = useState("");
 
   const getCurrentTask = useMemo(() => {
     return tasks?.find((e) => e.id === id);
   }, [id]);
+
+  const getCurrentSubTask = useMemo(() => {
+    return tasks?.find((e) => e.id === id)?.sub_tasks?.find(e => e.id === subId);
+  }, [subId, id]);
 
   const dispatch = useDispatch();
 
@@ -31,6 +36,10 @@ function Issues(props) {
     dispatch(getListTask());
     dispatch(getListMemberOfProject(curProject?.id));
   }, []);
+
+  useEffect(() => {
+    dispatch(getListTask());
+  }, [showDetail]);
 
   return (
     <>
@@ -40,7 +49,7 @@ function Issues(props) {
         <div className="issues-content">
           <HeaderIssue item={curProject} />
           {showDetail ? (
-            <TaskDetail task={getCurrentTask} setShowDetail={setShowDetail} milestones={milestones} isExpand={isExpand}/>
+            <TaskDetail task={getCurrentSubTask || getCurrentTask} setShowDetail={setShowDetail} milestones={milestones} isExpand={isExpand}/>
           ) : (
             <>
               <FilterIssue />
@@ -48,6 +57,8 @@ function Issues(props) {
                 tasks={tasks}
                 id={id}
                 setId={setId}
+                setSubId={setSubId}
+                showDetail={showDetail}
                 setShowDetail={setShowDetail}
                 milestones={milestones}
               />

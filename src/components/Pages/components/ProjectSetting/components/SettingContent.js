@@ -8,10 +8,11 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateProject } from "../actions/ProjectActionCallApi";
 import Alerts from "../../../../../commons/Alert";
+import { parseDateToString } from "../../../../../ulti/dateTime";
 import { updateProjectDetail } from "../actions/ProjectActionRedux";
 
 function SettingContent(props) {
-  const history = useHistory();
+
   const dispatch = useDispatch();
 
   const { settingSelect, project } = props;
@@ -19,8 +20,8 @@ function SettingContent(props) {
   const [name, setName] = useState(project.name);
   const [key, setKey] = useState(project.project_key);
   const [description, setDescription] = useState(project?.description);
-  const [startDate, setStartDate] = useState( new Date(project?.start_date));
-  const [dueDate, setDueDate] = useState(new Date(project?.due_date));
+  const [startDate, setStartDate] = useState( parseDateToString(project?.start_date));
+  const [dueDate, setDueDate] = useState(parseDateToString(project?.due_date));
 
 
   const [textAlert, setTextAlert] = useState("");
@@ -95,7 +96,6 @@ function SettingContent(props) {
               type="date"
               data-date=""
               data-date-format="YYYY MM DD"
-              defaultValue={startDate}
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
             />

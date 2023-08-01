@@ -4,13 +4,12 @@ import ReactTooltip from "react-tooltip";
 import { useSelector } from "react-redux";
 
 function TableIssue(props) {
-  const { tasks, setId, setShowDetail, milestones } = props;
+  const { tasks, setId, setShowDetail, milestones, showDetail, setSubId } =
+    props;
 
   const members = useSelector((state) => state.projects.members);
 
   const [showDetailIds, setShowDetailIds] = useState([]);
-
-  console.log("check tasks :", tasks);
 
   const getCurrentMember = (id) => {
     return members?.find((e) => e.id === id)?.name;
@@ -20,9 +19,13 @@ function TableIssue(props) {
     return milestones?.find((e) => e.id === id)?.name;
   };
 
-  const handleShowDetail = (id) => {
+  const handleShowDetail = (id, isSubTask) => {
     setShowDetail(true);
-    setId(id);
+    if (isSubTask) {
+      setSubId(id);
+    } else {
+      setId(id);
+    }
   };
 
   const renderEmptyList = () => {
@@ -36,6 +39,7 @@ function TableIssue(props) {
   };
 
   const handleChangeShowDetailIds = (value) => {
+    setId(value);
     if (showDetailIds?.includes(value)) {
       setShowDetailIds(showDetailIds?.filter((e) => e !== value));
     } else {
@@ -64,18 +68,25 @@ function TableIssue(props) {
     return (
       <>
         <div className="issue-item" key={index}>
-          <div className="item_key">
+          <div
+            className="item_key"
+            onClick={() => handleChangeShowDetailIds(e?.id)}
+          >
             {e?.sub_tasks?.length > 0 ? (
-              <span
-                style={{ marginRight: "6px" }}
-                onClick={() => handleChangeShowDetailIds(e?.id)}
-              >
+              <span style={{ marginRight: "6px" }}>
                 <i className="fa-solid fa-right-to-bracket"></i>
               </span>
             ) : null}
             {isSubTask ? (
               <span>
-               <i className="fa-solid fa-arrow-right" style={{transform: 'rotate(45deg)', color: '#d3d5d7', marginRight: "8px"}}></i>
+                <i
+                  className="fa-solid fa-arrow-right"
+                  style={{
+                    transform: "rotate(45deg)",
+                    color: "#d3d5d7",
+                    marginRight: "8px",
+                  }}
+                ></i>
               </span>
             ) : null}
             <span> {e?.task_key}</span>
@@ -84,7 +95,9 @@ function TableIssue(props) {
             className="item_subject"
             data-for={`item_subject_${index}`}
             data-tip=""
-            onClick={() => {handleShowDetail(isSubTask ? parentId : e.id)}}
+            onClick={() => {
+              handleShowDetail(e.id, isSubTask);
+            }}
           >
             {e?.name}
             <ReactTooltip

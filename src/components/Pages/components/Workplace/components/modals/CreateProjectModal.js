@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import "../../styles/modals/CreateNewProjectStyle.scss";
 import { createProject } from "../../actions/WorkplaceActionCallApi";
 import Alerts from "../../../../../../commons/Alert";
+import { parseDateToString } from "../../../../../../ulti/dateTime";
 
 function CreateNewProject(props) {
   const { open, handleClose } = props;
@@ -13,6 +14,8 @@ function CreateNewProject(props) {
   const [name, setName] = useState("");
   const [key, setKey] = useState("");
   const [description, setDescription] = useState("");
+  const [startDate, setStartDate] = useState(parseDateToString(new Date()));
+  const [endDate, setEndDate] = useState(parseDateToString(new Date()));
   
   const [textAlert, setTextAlert] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
@@ -22,7 +25,9 @@ function CreateNewProject(props) {
     const request = {
       name, 
       project_key: key,
-      description
+      description,
+      start_date: startDate,
+      end_date: endDate
     }
     dispatch(createProject(request)).then(res => {
       if(res){
@@ -67,6 +72,28 @@ function CreateNewProject(props) {
                     type="text"
                     value={key}
                     onChange={(e) => setKey(e.target.value)}
+                  ></input>
+                </div>
+              </div>
+            </div>
+            <div className="d-flex justify-content-between mt-2 mb-2">
+              <div className="prj-name col-5">
+                <div className="label mb-1">Start date</div>
+                <div>
+                  <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                  ></input>
+                </div>
+              </div>
+              <div className="prj-key col-5">
+                <div className="label mb-1">End date</div>
+                <div>
+                  <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
                   ></input>
                 </div>
               </div>

@@ -130,14 +130,14 @@
         border: 1px solid #d3d5d7;
         outline: none;
         &:focus {
-          border: 2px solid #0088FF;
+          border: 2px solid #0088ff;
         }
       }
     }
     .tag-user {
       margin-top: 16px;
       width: 100%;
-      .button-dropdown-wrapper  {
+      .button-dropdown-wrapper {
         width: 100%;
         button {
           width: 100%;
@@ -167,7 +167,7 @@
         color: #fff;
       }
       .submit {
-        background-color: #0088FF;
+        background-color: #0088ff;
         color: #fff;
         margin-left: 16px;
       }
@@ -191,9 +191,9 @@
         top: 16px;
         right: 32px;
         cursor: pointer;
-        >i {
+        > i {
           &:first-child {
-            color: #0088FF;
+            color: #0088ff;
           }
           &:last-child {
             color: #ff4d4d;
@@ -227,5 +227,15 @@
       }
     }
   }
-  
+  .btn-edit-task {
+    button {
+      height: 32px;
+      border: 1px solid #d3d5d7;
+      border-radius: 4px;
+      background-color: #0088ff;
+      color: #fff;
+      font-size: 14px;
+      width: 80px;
+    }
+  }
 }

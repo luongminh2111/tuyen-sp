@@ -5,10 +5,13 @@ import { ORG_IMAGE_DEFAULT } from "../../../../../commons/image";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { showDetailProject } from "../../Workplace/actions/WorkplaceActionRedux";
+import CreateNewProject from "../../Workplace/components/modals/CreateProjectModal";
+import { getListProject } from "../../Workplace/actions/WorkplaceActionCallApi";
 
 function Project(props) {
 
   const [isZoomIn, setIsZoomIn] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const projects = useSelector(state => state.projects.items);
 
@@ -16,13 +19,18 @@ function Project(props) {
 
   const history = useHistory();
 
+  useEffect(() => {
+    dispatch(getListProject());
+  }, [openModal]);
+
   const handleGoToProject = (item) => {
     dispatch(showDetailProject(item?.id));
     history.push(`/project?name=${item?.name}`)
   }
 
   return (
-    <div className="project-wrapper">
+    <>
+        <div className="project-wrapper">
       <div className={`header ${isZoomIn ? "zoom-in" : ""}`}>
         <div className="header-left">
           <div className="collapse-icon" onClick={() => setIsZoomIn(!isZoomIn)}>
@@ -31,7 +39,7 @@ function Project(props) {
           <div className="title">Projects</div>
         </div>
         <div className="header-right">
-          <div className="add-project" data-tip="" data-for="icon-add-project" onClick={() => history.push(`/workplace-setting?id=projects`)}>
+          <div className="add-project" data-tip="" data-for="icon-add-project" onClick={() => setOpenModal(true)}>
             <i className="fa-solid fa-plus"></i>
           </div>
           <div className="search">
@@ -80,6 +88,9 @@ function Project(props) {
         </div>
       ): null}
     </div>
+    {openModal ? <CreateNewProject open={openModal} handleClose={() => setOpenModal(false)} /> : null}
+    </>
+
   );
 }
 export default Project;
