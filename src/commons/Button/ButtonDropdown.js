@@ -2,10 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import { Box, Button } from "@mui/material";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import "./button.scss";
+import { useSelector } from "react-redux";
 
 function ButtonDropDown(props) {
   const { options, onChangeOption, curOption } = props;
   const [show, setShow] = useState(false);
+
+  const filterTask = useSelector(state => state.projects.filterTask);
 
   const [optionSelect, setOptionSelect] = useState(curOption || {});
 
@@ -14,6 +17,12 @@ function ButtonDropDown(props) {
   const handleShow = () => {
     setShow(!show);
   };
+
+  useEffect(() => {
+    if(!Object.keys(filterTask).length){
+        setOptionSelect({});
+    }
+  }, [filterTask]);
 
   useEffect(() => {
     if(onChangeOption){
