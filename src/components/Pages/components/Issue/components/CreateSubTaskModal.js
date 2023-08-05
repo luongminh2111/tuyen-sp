@@ -34,7 +34,7 @@ function CreateSubTaskModal(props) {
       end_time: endTime,
       project_id: curProject?.id,
       milestone_id: milestoneId || null,
-      status: "Todo",
+      status: "Open",
       priority: priority?.value,
       assignee: assignee?.id,
       is_child: true,

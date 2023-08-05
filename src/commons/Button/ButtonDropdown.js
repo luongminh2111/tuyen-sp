@@ -7,7 +7,7 @@ function ButtonDropDown(props) {
   const { options, onChangeOption, curOption } = props;
   const [show, setShow] = useState(false);
 
-  const [optionSelect, setOptionSelect] = useState(curOption || options?.[0]);
+  const [optionSelect, setOptionSelect] = useState(curOption || {});
 
   const buttonRef = useRef();
 
@@ -17,7 +17,7 @@ function ButtonDropDown(props) {
 
   useEffect(() => {
     if(onChangeOption){
-      onChangeOption(options?.[0]);
+      onChangeOption(optionSelect);
     }
   }, []);
 

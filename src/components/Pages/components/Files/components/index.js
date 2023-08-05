@@ -9,6 +9,7 @@ import FileRightContent from "./FileRightContent";
 
 function Files(props) {
   const isExpand = useSelector((state) => state.global.isExpand);
+  const curProject = useSelector((state) => state.projects.itemDetail);
   return (
     <>
       <ToggleNav />
@@ -22,8 +23,8 @@ function Files(props) {
               </a>
             </div>
             <div className="header-icon-set__text">
-              <span className="header-icon-set__name">PMA_web</span>
-              <span className="header-icon-set__key">(PMA_web)</span>
+              <span className="header-icon-set__name">{curProject?.name}</span>
+              <span className="header-icon-set__key">({curProject?.project_key})</span>
             </div>
           </div>
           <div className="project-header__actions"></div>

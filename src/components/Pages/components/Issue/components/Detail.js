@@ -7,16 +7,34 @@ import { useMemo } from "react";
 import CreateSubTaskModal from "./CreateSubTaskModal";
 import EditTaskModal from "./EditTaskModal";
 import { getListMileStoneInProject } from "../../ProjectSetting/actions/ProjectActionCallApi";
+import {
+  DeleteComment,
+  EditComment,
+  getListCommentInTask,
+  submitComment,
+} from "../actions/TaskCallApi";
+import Alerts from "../../../../../commons/Alert";
+import {
+  createNewComment,
+  updateComment,
+} from "../../ProjectSetting/actions/ProjectActionRedux";
 
 function TaskDetail(props) {
   const { task, setShowDetail, milestones, isExpand } = props;
   const curProject = useSelector((state) => state.projects.itemDetail);
+  const account = useSelector((state) => state.auth.account);
+  const listComment = useSelector((state) => state.projects.comments);
   const [comment, setComment] = useState("");
   const [showComment, setShowComment] = useState(false);
   const [userSelect, setUserSelect] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [taskItem, setTaskItem] = useState(task);
   const [isEdit, setIsEdit] = useState(false);
+  const [editComment, setEditComment] = useState({});
+
+  const [textAlert, setTextAlert] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [statusAlert, setStatusAlert] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -48,11 +66,81 @@ function TaskDetail(props) {
     return milestones?.find((e) => e.id === id)?.name;
   };
 
-  console.log("check task :", task);
-
   useEffect(() => {
     dispatch(getListMileStoneInProject(curProject?.id));
+    dispatch(getListCommentInTask(taskItem.id, 1));
   }, []);
+
+  const handleEditComment = () => {
+    if (comment?.trim() === "" || comment == null) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("Comment must be empty");
+      return;
+    }
+    const request = {
+      content: comment,
+      task_id: task.id,
+      created_by: account.userId,
+      type: 'NORMAL'
+    };
+    dispatch(EditComment(request, editComment.id)).then((res) => {
+      setEditComment({});
+      if (res?.status === 200 && res?.data?.data) {
+        setOpenAlert(true);
+        setStatusAlert("success");
+        setTextAlert("Edit comment success!");
+        dispatch(updateComment(res?.data?.data));
+        setComment("");
+
+      } else {
+        setOpenAlert(true);
+        setStatusAlert("error");
+        setTextAlert("Edit comment failed!");
+      }
+    });
+  };
+
+  const handleDeleteComment = (id) => {
+    dispatch(DeleteComment(id));
+    setOpenAlert(true);
+    setStatusAlert("success");
+    setTextAlert("Delete comment success!");
+  };
+
+  const handleViewMore = () => {
+    dispatch(
+      getListCommentInTask(taskItem.id, listComment?.current_page + 1, true)
+    );
+  };
+
+  const handleSubmitComment = () => {
+    if (comment?.trim() === "" || comment == null) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("Comment must be empty");
+      return;
+    }
+    const request = {
+      content: comment,
+      task_id: task.id,
+      created_by: account.userId,
+    };
+    dispatch(submitComment(request)).then((res) => {
+      if (res?.status === 200 && res?.data?.data) {
+        setOpenAlert(true);
+        setStatusAlert("success");
+        setTextAlert("Add comment success!");
+        dispatch(createNewComment(res?.data?.data));
+        setComment("");
+        setShowComment(false);
+      } else {
+        setOpenAlert(true);
+        setStatusAlert("error");
+        setTextAlert("Add comment failed!");
+      }
+    });
+  };
 
   const renderEmptyList = () => {
     return (
@@ -85,7 +173,7 @@ function TaskDetail(props) {
             </ReactTooltip>
           </div>
           <div className="item_assignee text-align-center">
-            {getCurrentMember(e?.asignee_id)}
+            {getCurrentMember(e?.assignee_id)}
           </div>
           <div className="item_status">
             <div>{e?.status}</div>
@@ -121,12 +209,12 @@ function TaskDetail(props) {
 
   const renderComment = () => {
     return (
-      <div className="comment-wrapper">
-        <div className="comment-area">
+      <div className={`comment-wrapper ${isExpand ? 'expand' : ''}`}>
+        <div className={`comment-area`}>
           <textarea
             id="comment-area"
             placeholder="write a comment, using @mention to notify a colleague..."
-            value={comment}
+            value={editComment == null ? comment : null}
             onChange={(e) => setComment(e.target.value)}
           />
         </div>
@@ -140,49 +228,81 @@ function TaskDetail(props) {
           <button className="close" onClick={() => setShowComment(false)}>
             Close{" "}
           </button>
-          <button className="submit">Submit </button>
+          <button className="submit" onClick={() => handleSubmitComment()}>
+            Submit{" "}
+          </button>
         </div>
       </div>
     );
   };
 
   const renderListComment = () => {
-    // if (true) {
-    //   return (
-    //     <div className="empty-wrapper">
-    //     <div className="content">
-    //       <div>Comment is empty</div>
-    //     </div>
-    //   </div>
-    //   )
-    // }
     return (
       <div className="list-comment">
-        {[0, 1, 2, 3]?.map((e, index) => {
+        {listComment?.data?.map((e, index) => {
           return (
             <div className="comment-item" key={index}>
               <div className="created_by d-flex">
                 <div className="image">
-                  <div>U</div>
+                  <div>
+                    {getCurrentMember(taskItem?.created_by)?.substring(0, 1)}
+                  </div>
                 </div>
                 <div className="user">
-                  <div className="name">User 1</div>
+                  <div className="name">
+                    {getCurrentMember(taskItem?.created_by)}
+                  </div>
                   <div className="time">
-                    Created at: {task?.created_at?.substring(0, 10)}
+                    Created at: {e?.created_at?.substring(0, 10)}
                   </div>
                 </div>
               </div>
-              <div className="comment-content">Test comment {index}</div>
+              <div className="comment-content">
+                {e.id !== editComment?.id ? (
+                  <p> {e?.content}</p>
+                ) : (
+                  <div className="d-flex">
+                    <input
+                      type="text"
+                      value={comment}
+                      onChange={(e) => {
+                        setComment(e.target.value);
+                      }}
+                    />
+                    <span>
+                      <i class="fa-sharp fa-solid fa-circle-check" style={{color: "#0088FF"}} onClick={() => handleEditComment()}></i>
+                    </span>
+                    <span>
+                      <i class="fa-solid fa-xmark" style={{color: '#FF4d4d'}} onClick={() => setEditComment({})}></i>
+                    </span>
+                  </div>
+                )}
+              </div>
               <div className="edit-comment">
                 <i
                   className="fa-solid fa-pen-to-square"
                   style={{ marginRight: "12px" }}
+                  onClick={() => {
+                    setEditComment(e);
+                    setComment(e.content);
+                  }}
                 ></i>
-                <i className="fa-solid fa-trash"></i>
+                <i
+                  className="fa-solid fa-trash"
+                  onClick={() => handleDeleteComment(e.id)}
+                ></i>
               </div>
             </div>
           );
         })}
+        {listComment?.current_page * listComment?.per_page <
+          listComment?.total && listComment?.total > 0 ? (
+          <div className="view-more d-flex justify-content-center align-items-center">
+            <div className="is-show-more mt-2" onClick={() => handleViewMore()}>
+              Show more
+            </div>
+          </div>
+        ) : null}
       </div>
     );
   };
@@ -219,12 +339,12 @@ function TaskDetail(props) {
             <div className="created_by d-flex">
               <div className="image">
                 <div>
-                  {getCurrentMember(taskItem?.asignee_id)?.substring(0, 1)}
+                  {getCurrentMember(taskItem?.assignee_id)?.substring(0, 1)}
                 </div>
               </div>
               <div className="user">
                 <div className="name">
-                  {getCurrentMember(taskItem?.asignee_id)}
+                  {getCurrentMember(taskItem?.assignee_id)}
                 </div>
                 <div className="time">
                   Created at: {taskItem?.created_at?.substring(0, 10)}
@@ -233,6 +353,10 @@ function TaskDetail(props) {
             </div>
             <div className="task-name" style={{ fontSize: "14px" }}>
               {taskItem?.name}
+            </div>
+            <div className="line-item d-flex">
+              <div className="text-1">Status</div>
+              <div className="value">{taskItem?.status}</div>
             </div>
             <div className="line-item d-flex">
               <div className="text-1">Priority</div>
@@ -260,7 +384,7 @@ function TaskDetail(props) {
             <div className="line-item d-flex">
               <div className="text-1">Assignee</div>
               <div className="value">
-                {getCurrentMember(taskItem?.asignee_id)}
+                {getCurrentMember(taskItem?.assignee_id)}
               </div>
             </div>
             <div className="line-item d-flex">
@@ -298,7 +422,7 @@ function TaskDetail(props) {
         <div className="list-comment-wrapper" style={{ marginTop: "24px" }}>
           <div className="title" style={{ marginBottom: "8px" }}>
             <span style={{ fontWeight: "600" }}>Comments</span>
-            <span style={{ marginLeft: "10px" }}>(4)</span>
+            <span style={{ marginLeft: "10px" }}>({listComment?.total})</span>
           </div>
           {renderListComment()}
         </div>
@@ -311,7 +435,7 @@ function TaskDetail(props) {
           <input
             type="text"
             placeholder="Enter your comment"
-            value={comment}
+            value={editComment == null ? comment : null}
             onClick={() => setShowComment(true)}
             onChange={(e) => setComment(e.target.value)}
           ></input>
@@ -339,6 +463,14 @@ function TaskDetail(props) {
           handleClose={() => setIsEdit(false)}
           setTaskItem={setTaskItem}
           taskItem={taskItem}
+        />
+      ) : null}
+      {openAlert ? (
+        <Alerts
+          text={textAlert}
+          status={statusAlert}
+          open={openAlert}
+          setOpen={setOpenAlert}
         />
       ) : null}
     </div>

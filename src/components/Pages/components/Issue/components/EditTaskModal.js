@@ -17,13 +17,11 @@ function EditTaskModal(props) {
     members,
     milestoneId,
     milestones,
-    parentTask,
     setTaskItem,
     taskItem,
   } = props;
   
   const curProject = useSelector((state) => state.projects.itemDetail);
-  console.log("check taskItem :", taskItem);
   const [name, setName] = useState(taskItem?.name);
   const [description, setDescription] = useState(taskItem?.description);
   const [startTime, setStartTime] = useState(
@@ -50,7 +48,7 @@ function EditTaskModal(props) {
     setStatus(curStatus);
     const curPriority = priorityOptions?.find(e => e.value === taskItem?.priority) || priorityOptions[0];
     setPriority(curPriority);
-    const curMember = memberOptions?.find(e => e.id === taskItem?.asignee_id) || memberOptions[0];
+    const curMember = memberOptions?.find(e => e.id === taskItem?.assignee_id) || memberOptions[0];
     setAssignee(curMember);
     const curMilestone = mileStoneOptions?.find(e => e.id === taskItem?.milestone_id) || mileStoneOptions[0];
     setMilestone(curMilestone);
@@ -84,8 +82,7 @@ function EditTaskModal(props) {
         setOpenAlert(true);
         setStatusAlert("success");
         setTextAlert(res.data?.message);
-        // const newSubTask = taskItem?.sub_tasks?.concat(res?.data?.data);
-        // const newTask = { ...taskItem, sub_tasks: newSubTask };
+        console.log("check res?.data?.data :", res?.data?.data);
         setTaskItem(res?.data?.data);
         handleClose();
       } else {
@@ -105,10 +102,6 @@ function EditTaskModal(props) {
     });
     return newMembers;
   }, [members]);
-
-  const getCurrentMilestone = () => {
-    return milestones?.find((e) => e.id === milestoneId)?.name;
-  };
 
   return (
     <>
@@ -240,7 +233,7 @@ export default EditTaskModal;
 const statusOptions = [
   {
     id: 1,
-    value: "Todo",
+    value: "Open",
   },
   {
     id: 2,
@@ -248,30 +241,10 @@ const statusOptions = [
   },
   {
     id: 3,
-    value: "Done Code",
+    value: "Resolved",
   },
   {
     id: 4,
-    value: "Wait To Review",
-  },
-  {
-    id: 5,
-    value: "Testing",
-  },
-  {
-    id: 6,
-    value: "Debug",
-  },
-  {
-    id: 7,
-    value: "Done",
-  },
-  {
-    id: 8,
-    value: "Pending",
-  },
-  {
-    id: 9,
-    value: "Cancel",
+    value: "Closed",
   },
 ];

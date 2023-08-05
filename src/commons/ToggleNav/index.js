@@ -59,7 +59,7 @@ function ToggleNav(props) {
         <span className="icon">
           <i className="fa-solid fa-list"></i>
         </span>
-        {isExpand ? <span className="text">Task</span> : null}
+        {isExpand ? <span className="text">Tasks</span> : null}
       </div>
       <div className={`menu-item board d-flex ${pathName === "/board" ? 'active' : ''}`} onClick={() => history.push("/board")}>
         <span className="icon">

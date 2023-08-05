@@ -7,7 +7,7 @@ import TableIssue from "./TableIssue";
 import "../styles/index.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getListTask } from "../actions/TaskCallApi";
-import { getListMemberOfProject } from "../../ProjectSetting/actions/ProjectActionCallApi";
+import { getListMemberOfProject, getListMileStoneInProject } from "../../ProjectSetting/actions/ProjectActionCallApi";
 import TaskDetail from "./Detail";
 
 function Issues(props) {
@@ -35,6 +35,7 @@ function Issues(props) {
   useEffect(() => {
     dispatch(getListTask());
     dispatch(getListMemberOfProject(curProject?.id));
+    dispatch(getListMileStoneInProject(curProject?.id));
   }, []);
 
   useEffect(() => {

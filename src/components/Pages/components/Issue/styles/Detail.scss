@@ -29,7 +29,7 @@
     }
     .task-info {
       margin-bottom: 24px;
-      height: 300px;
+      height: 337px;
       border: 1px solid #d3d5d7;
       border-radius: 4px;
       background-color: #fff;
@@ -117,12 +117,13 @@
     left: 150;
     width: calc(100% - 110px);
     height: 350px;
-    &.expanded {
+    &.expand {
       width: calc(100% - 260px);
     }
     .comment-area {
       width: 100%;
       textarea {
+        padding: 12px;
         width: 100%;
         height: 200px;
         max-height: 250px;
@@ -175,8 +176,7 @@
   }
   .list-comment {
     margin-bottom: 50px !important;
-    min-height: 250px;
-    max-height: 500px;
+    min-height: max-content;
     width: 100%;
     background-color: #fff;
     border-radius: 4px;
@@ -185,6 +185,9 @@
     .comment-item {
       padding: 20px 0;
       border-bottom: 1px solid #d3d5d7;
+      &:last-child {
+        border-bottom: unset !important;
+      }
       position: relative;
       .edit-comment {
         position: absolute;
@@ -223,6 +226,38 @@
         .time {
           font-size: 13px;
           font-weight: 300;
+        }
+      }
+    }
+    .is-show-more {
+      font-size: 13px;
+      font-weight: 600;
+      color: #0f1824;
+      &:hover {
+        color: #0088ff;
+        cursor: pointer;
+      }
+    }
+    .comment-content {
+      margin-left: 54px;
+      span {
+        margin-top: 5px;
+        i {
+          font-size: 22px;
+          margin-left: 16px;
+          cursor: pointer;
+        }
+      }
+      input {
+        width: 85%;
+        border: 1px solid #d3d5d7;
+        border-radius: 4px;
+        height: 36px;
+        outline: none;
+        padding: 3px 16px;
+        font-size: 13px;
+        &:focus {
+          border-color: #0088ff;
         }
       }
     }

@@ -1,29 +1,36 @@
-import React, { useRef } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ToggleNav from "../../../../../commons/ToggleNav";
 import HeaderNav from "../../../../commons/HeaderNav/HeaderNav";
 import { ORG_IMAGE_DEFAULT } from "../../../../../commons/image";
 import "../styles/index.scss";
 import BoardFilter from "./BoardFilter";
-import TaskInStatus from "./TaskInStatus";
 import DragTaskItem from "./DragTaskItem";
-import { defaultGroupsTask } from "../commons/DataCommons";
+import { getListTask } from "../../Issue/actions/TaskCallApi";
+import {
+  getListMemberInWorkspace,
+  getListMileStoneInProject,
+} from "../../ProjectSetting/actions/ProjectActionCallApi";
+import { useState } from "react";
 
 function Board(props) {
   const isExpand = useSelector((state) => state.global.isExpand);
-  const dragItem = useRef();
-  const dragOverItem = useRef();
-   
-  const dragStart = (e, position) => {
-    dragItem.current = position;
-    console.log(e.target.innerHTML);
-  };
- 
-  const dragEnter = (e, position) => {
-    dragOverItem.current = position;
-    console.log(e.target.innerHTML);
-  };
- 
+  const curProject = useSelector((state) => state.projects.itemDetail);
+  const members = useSelector((state) => state.projects.members);
+  const milestones = useSelector((state) => state.projects.milestone);
+  const tasks = useSelector((state) => state.projects.tasks);
+
+  const [milestone, setMilestone] = useState({});
+  const [assignee, setAssignee] = useState({});
+  const [statusSelect, setStatusSelect] = useState("");
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getListTask());
+    dispatch(getListMemberInWorkspace(curProject?.id));
+    dispatch(getListMileStoneInProject(curProject?.id));
+  }, []);
 
   return (
     <>
@@ -38,20 +45,33 @@ function Board(props) {
               </a>
             </div>
             <div className="header-icon-set__text">
-              <span className="header-icon-set__name">PMA_web</span>
-              <span className="header-icon-set__key">(PMA_web)</span>
+              <span className="header-icon-set__name">{curProject?.name}</span>
+              <span className="header-icon-set__key">
+                ({curProject?.project_key})
+              </span>
             </div>
           </div>
           <div className="board-header__actions"></div>
         </div>
         <div className="board-container">
-          <BoardFilter />
+          <BoardFilter
+            members={members}
+            milestones={milestones}
+            milestone={milestone}
+            setMilestone={setMilestone}
+            statusSelect={statusSelect}
+            setStatusSelect={setStatusSelect}
+            assignee={assignee}
+            setAssignee={setAssignee}
+          />
           <div className="list-status">
-            {/* <TaskInStatus status="Open" />
-            <TaskInStatus status="In-Progress" />
-            <TaskInStatus status="Resolved" />
-            <TaskInStatus status="Closed" /> */}
-            <DragTaskItem data={defaultGroupsTask} />
+            <DragTaskItem
+              members={members}
+              tasks={tasks}
+              statusSelect={statusSelect}
+              milestone={milestone}
+              assignee={assignee}
+            />
           </div>
         </div>
       </div>

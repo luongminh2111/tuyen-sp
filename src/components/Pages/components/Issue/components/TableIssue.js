@@ -4,7 +4,7 @@ import ReactTooltip from "react-tooltip";
 import { useSelector } from "react-redux";
 
 function TableIssue(props) {
-  const { tasks, setId, setShowDetail, milestones, showDetail, setSubId } =
+  const { tasks, setId, setShowDetail, milestones, setSubId } =
     props;
 
   const members = useSelector((state) => state.projects.members);
@@ -110,7 +110,7 @@ function TableIssue(props) {
             </ReactTooltip>
           </div>
           <div className="item_assignee text-align-center">
-            {getCurrentMember(e?.asignee_id)}
+            {getCurrentMember(e?.assignee_id)}
           </div>
           <div className="item_status">
             <div>{e?.status}</div>

@@ -39,3 +39,29 @@ export const createSubTaskForProject = (item) => ({
   type: actionType.CREATE_SUB_TASK_IN_PROJECT,
   item
 });
+
+export const createNewComment = (item) => ({
+  type: actionType.CREATE_NEW_COMMENT,
+  item
+});
+
+export const getListComment = (items, isViewMore) => ({
+  type: actionType.GET_LIST_COMMENT,
+  items,
+  isViewMore
+});
+
+export const updateComment = (item) => ({
+  type: actionType.UPDATE_COMMENT,
+  item
+});
+
+export const deleteComment = (itemId) => ({
+  type: actionType.DELETE_COMMENT,
+  itemId
+});
+
+export const updateFilterTask = (key) => ({
+  type: actionType.UPDATE_FILTER_TASK,
+  key
+});

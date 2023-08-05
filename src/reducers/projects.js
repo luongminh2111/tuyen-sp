@@ -8,6 +8,10 @@ const initState = {
   milestone: [],
   members: [],
   tasks: [],
+  comments: [],
+  filterTask: {
+    key: ''
+  }
 };
 
 const projects = (state = initState, action) => {
@@ -57,20 +61,66 @@ const projects = (state = initState, action) => {
         ...state,
         tasks: [action?.item, ...state.tasks],
       };
-    // case projectType.CREATE_SUB_TASK_IN_PROJECT: 
-    //   const { tasks } = state;
-    //   const newTask = tasks?.map(e => {
-    //     if (e.id === action?.item?.parent_task_id) {
-    //       return {
-    //         ...e, ...action.item
-    //       }
-    //     }
-    //     return e;
-    //   });
-    //   return {
-    //     ...state,
-    //     tasks: newTask
-    //   }
+    case projectType.GET_LIST_COMMENT: 
+      if(action?.isViewMore) {
+        const preComments = state.comments;
+        const preListComment = preComments?.data;
+        const newDataComment = preListComment?.concat(action.items.data);
+        const newComments = {
+          current_page: action.items.current_page,
+          per_page: action.items.per_page,
+          total: action.items.total,
+          data: newDataComment
+        } 
+        return {
+          ...state,
+          comments: newComments
+        }
+      }
+      return {
+        ...state,
+        comments: action.items
+      }
+    case projectType.CREATE_NEW_COMMENT: 
+      const preListComment = state.comments?.data;
+      const newDataComment = preListComment?.concat(action.item);
+      const newLists = {
+        current_page: (state.comments || 1),
+        per_page: 5,
+        total: state.comments?.total > 0 ? Number(state.comments?.total) + 1 : 1,
+        data: newDataComment
+      } 
+      return {
+        ...state,
+        comments: newLists
+      }
+    case projectType.UPDATE_COMMENT: 
+      const { comments } = state;
+      const newComments = comments?.data?.map(e => {
+        if (e.id === action.item.id) {
+          return action.item;
+        }
+        return e;
+      })
+      return {
+        ...state,
+        comments: {...state.comments, data: newComments}
+      }
+      case projectType.DELETE_COMMENT: 
+      const afterList = state.comments?.data?.filter(e =>  e.id !== action.itemId);
+      return {
+        ...state,
+        comments: {...state.comments, 
+          data: afterList,
+          total: state.comments?.total > 1 ? Number(state.comments?.total) - 1 : 0 }
+      }
+    case projectType.UPDATE_FILTER_TASK: 
+      return {
+        ...state,
+        filterTask: {
+          key: action.key
+        }
+      }
     default:
       return state;
   }
