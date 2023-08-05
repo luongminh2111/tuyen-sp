@@ -104,4 +104,18 @@
         }
       }
     }
+    .clear-filter{
+      display: flex;
+      align-items: flex-end;
+      button {
+        width: max-content;
+        padding: 4px 12px;
+        border: 1px solid #d3d5d7;
+        min-width: 120px;
+        font-weight: 600;
+        border-radius: 6px;
+        background: #FF4d4d;
+        color: #fff;
+      }
+    }
 }

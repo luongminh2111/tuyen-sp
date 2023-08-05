@@ -6,9 +6,9 @@ import Alerts from "../../../../../commons/Alert";
 import { getListTask } from "../../Issue/actions/TaskCallApi";
 
 function DragTaskItem(props) {
-  const { members, tasks, statusSelect, milestone, assignee } = props;
+  const { members, tasks } = props;
 
-  const key = useSelector(state => state.projects.filterTask.key);
+  const filterTask = useSelector(state => state.projects.filterTask);
 
   const [groupTask, setGroupTask] = useState([
     // { title: "Open", items: [], status: 'Open'},
@@ -105,8 +105,9 @@ function DragTaskItem(props) {
   };
 
   useEffect(() => {
-    handleGetListTask(statusSelect, milestone?.id, assignee?.id, key);
-  }, [statusSelect, milestone, assignee]);
+    handleGetListTask(filterTask?.status, filterTask?.milestone_id, filterTask?.assignee_id, filterTask?.key);
+  }, [filterTask]);
+
 
   const dragItem = useRef();
   const dragItemNode = useRef();

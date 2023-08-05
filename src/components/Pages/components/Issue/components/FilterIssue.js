@@ -1,62 +1,101 @@
 import React, { useMemo, useState } from "react";
 import "../styles/Filter.scss";
 import ButtonDropDown from "../../../../../commons/Button/ButtonDropdown";
-import { taskOptions } from "../../AddIssue/commons/DataCommon";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { clearFilterTask, updateFilterTask } from "../../ProjectSetting/actions/ProjectActionRedux";
 
 function FilterIssue(props) {
   const [key, setKey] = useState("");
   const [status, setStatus] = useState({});
   const [milestone, setMilestone] = useState({});
   const [assignee, setAssignee] = useState({});
-  const members = useSelector(state => state.projects.members);
-  const milestones = useSelector(state => state.projects.milestone);
+  const members = useSelector((state) => state.projects.members);
+  const milestones = useSelector((state) => state.projects.milestone);
 
-  
+  const dispatch = useDispatch();
+
   const memberOptions = useMemo(() => {
-    const newMembers = members?.map(e => {
+    const newMembers = members?.map((e) => {
       return {
-        ...e, 
-        value: e?.name
-      }
+        ...e,
+        value: e?.name,
+      };
     });
     return newMembers;
   }, [members]);
 
-  
+  useEffect(() => {
+    if (status?.id) {
+      dispatch(updateFilterTask("status", status?.value));
+    }
+    if (milestone?.id > 0) {
+      dispatch(updateFilterTask("milestone_id", milestone.id));
+    }
+    if (assignee?.id > 0) {
+      dispatch(updateFilterTask("assignee_id", assignee.id));
+    }
+  }, [status, milestone, assignee]);
+
+  const handleChangeKey = (value) => {
+    setKey(value);
+    setTimeout(() => {
+      dispatch(updateFilterTask("key", value));
+    }, 1000);
+  };
+
   const mileStoneOptions = useMemo(() => {
-    const newMileStones = milestones?.map(e => {
+    const newMileStones = milestones?.map((e) => {
       return {
-        ...e, 
-        value: e?.name
-      }
+        ...e,
+        value: e?.name,
+      };
     });
     return newMileStones;
   }, [milestones]);
 
+  const handleClear = () => {
+    dispatch(clearFilterTask());
+    setStatus({});
+    setMilestone({});
+    setAssignee({});
+    setKey('');
+  }
+
   return (
     <div className="issues-filter-wrapper">
       <div className="filter-select-list d-flex">
-        <div className="issue-type" style={{marginRight: '16px'}}>
+        <div className="issue-type" style={{ marginRight: "16px" }}>
           <div className="label mb-1">Status</div>
           <ButtonDropDown options={statusOptions} onChangeOption={setStatus} />
         </div>
-        <div className="milestone" style={{marginRight: '16px'}}>
+        <div className="milestone" style={{ marginRight: "16px" }}>
           <div className="label mb-1">Milestone</div>
-          <ButtonDropDown options={mileStoneOptions} onChangeOption={setMilestone} />
+          <ButtonDropDown
+            options={mileStoneOptions}
+            onChangeOption={setMilestone}
+          />
         </div>
-        <div className="assignee" style={{marginRight: '16px'}}>
+        <div className="assignee" style={{ marginRight: "16px" }}>
           <div className="label mb-1">Assignee</div>
-          <ButtonDropDown options={memberOptions} onChangeOption={setAssignee} />
+          <ButtonDropDown
+            options={memberOptions}
+            onChangeOption={setAssignee}
+          />
         </div>
         <div className="keyword-input">
           <div className="label mb-1">Keyword</div>
           <input
             type="text"
             value={key}
-            onChange={(e) => setKey(e.target.value)}
+            onChange={(e) => handleChangeKey(e.target.value)}
             placeholder="Enter keyword"
           />
+        </div>
+        <div className="clear-filter">
+          <div>
+            <button onClick={() => handleClear()}>Clear</button>
+          </div>
         </div>
       </div>
     </div>

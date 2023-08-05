@@ -19,11 +19,6 @@ function Board(props) {
   const members = useSelector((state) => state.projects.members);
   const milestones = useSelector((state) => state.projects.milestone);
   const tasks = useSelector((state) => state.projects.tasks);
-
-  const [milestone, setMilestone] = useState({});
-  const [assignee, setAssignee] = useState({});
-  const [statusSelect, setStatusSelect] = useState("");
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -57,20 +52,11 @@ function Board(props) {
           <BoardFilter
             members={members}
             milestones={milestones}
-            milestone={milestone}
-            setMilestone={setMilestone}
-            statusSelect={statusSelect}
-            setStatusSelect={setStatusSelect}
-            assignee={assignee}
-            setAssignee={setAssignee}
           />
           <div className="list-status">
             <DragTaskItem
               members={members}
               tasks={tasks}
-              statusSelect={statusSelect}
-              milestone={milestone}
-              assignee={assignee}
             />
           </div>
         </div>

@@ -61,7 +61,12 @@ export const deleteComment = (itemId) => ({
   itemId
 });
 
-export const updateFilterTask = (key) => ({
+export const updateFilterTask = (key, value) => ({
   type: actionType.UPDATE_FILTER_TASK,
-  key
+  key,
+  value
+});
+
+export const clearFilterTask = () => ({
+  type: actionType.CLEAR_FILTER_TASK
 });

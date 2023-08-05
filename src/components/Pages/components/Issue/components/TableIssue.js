@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import "../styles/Table.scss";
 import ReactTooltip from "react-tooltip";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getListTask } from "../actions/TaskCallApi";
 
 function TableIssue(props) {
   const { tasks, setId, setShowDetail, milestones, setSubId } =
     props;
-
+  const dispatch = useDispatch();
   const members = useSelector((state) => state.projects.members);
+  const filterTask = useSelector(state => state.projects.filterTask);
 
   const [showDetailIds, setShowDetailIds] = useState([]);
+
+  useEffect(() => {
+    dispatch(getListTask(filterTask?.status, filterTask?.milestone_id, filterTask?.assignee_id, filterTask?.key));
+  }, [filterTask]);
+
 
   const getCurrentMember = (id) => {
     return members?.find((e) => e.id === id)?.name;
