@@ -2,6 +2,7 @@ import * as actionsType from "../components/Pages/components/Workplace/actions/W
 
 const initState = {
   items: [],
+  filterStaff: {} 
 };
 
 const staffs = (state = initState, action) => {
@@ -16,6 +17,14 @@ const staffs = (state = initState, action) => {
         ...state,
         items: action.items,
       };
+    case actionsType.UPDATE_FILTER_STAFF: 
+      return {
+        ...state,
+        filterStaff: {
+          ...state.filterStaff,
+          [action.key]: action.value
+        }
+      }
     default:
       return state;
   }

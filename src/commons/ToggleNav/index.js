@@ -10,7 +10,6 @@ function ToggleNav(props) {
   const menuBarRef = useRef();
   const dispatch = useDispatch();
   const history = useHistory();
-  console.log("check history :", history);
 
   const handleChangeExpand = () => {
     dispatch({
@@ -18,6 +17,14 @@ function ToggleNav(props) {
       value : !isExpand
     })
   };
+
+  const handleChangeMenu = (value) => {
+    dispatch({
+      type: 'RESET_LIST',
+      value
+    });
+    history.push("/tasks");
+  }
 
   const pathName = history.location.pathname;
 
@@ -55,7 +62,7 @@ function ToggleNav(props) {
         </span>
         {isExpand ? <span className="text">Create Task</span> : null}
       </div>
-      <div className={`menu-item issue d-flex ${pathName === "/tasks" ? 'active' : ''}`} onClick={() => history.push("/tasks")}>
+      <div className={`menu-item issue d-flex ${pathName === "/tasks" ? 'active' : ''}`} onClick={() => handleChangeMenu(true)}>
         <span className="icon">
           <i className="fa-solid fa-list"></i>
         </span>

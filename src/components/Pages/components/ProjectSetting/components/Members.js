@@ -28,7 +28,7 @@ function MemberSetting(props) {
   return (
     <div className="member-content-wrapper">
       <div className="title d-flex">
-        <div>Project Members (1 members)</div>
+        <div>Project Members ({members?.length} members)</div>
       </div>
       <div className="add-member-btn">
         <button onClick={() => setOpenModal(true)}>Add member</button>

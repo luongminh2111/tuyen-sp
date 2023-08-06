@@ -28,19 +28,25 @@ export const getListMileStoneInProject = (projectId) => (dispatch) => {
   })
 };
 
-export const createNewMileStone = (request) => (dispatch) => {
-  const endPoint = `${BASE_URL}/api/milestone`;
+export const createNewMileStone = (request, milestoneId) => (dispatch) => {
+
+
+  let endPoint = `${BASE_URL}/api/milestone`;
+
+  if(milestoneId > 0) {
+    endPoint += `/${milestoneId}`
+  }
+
   const options = {
     method: 'POST',
     data: JSON.stringify(request)
   }
   return callApi(endPoint, options).then( res => {
-    console.log("check res :", res);
     return res;
   })
 };
 
-export const getListMemberInWorkspace = () => (dispatch, getState) => {
+export const getListMemberInWorkspace = (filterStaff) => (dispatch, getState) => {
 
   const {
     workplace: {
@@ -50,7 +56,18 @@ export const getListMemberInWorkspace = () => (dispatch, getState) => {
     }
   } = getState();
 
-  const endPoint = `${BASE_URL}/api/get_members_by_workspace/${id}`;
+  let endPoint = `${BASE_URL}/api/get_members_by_workspace/${id}?.language=vi`;
+  if (filterStaff) {
+    if(Object.keys(filterStaff).length){
+      if(filterStaff?.query?.trim() !== '' && filterStaff?.query?.length > 0) {
+        endPoint += `&key=${filterStaff?.query}`;
+      }
+      if(filterStaff?.role > 0) {
+        endPoint += `&role=${filterStaff?.role}`;
+      }
+    }
+  }
+
   const options = {
     method: 'GET',
   }

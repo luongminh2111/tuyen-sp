@@ -5,15 +5,16 @@ import { useDispatch } from "react-redux";
 import { createNewMileStone } from "../actions/ProjectActionCallApi";
 import { saveNewMilestone } from "../actions/ProjectActionRedux";
 import Alerts from "../../../../../commons/Alert";
+import { parseDateToString } from "../../../../../ulti/dateTime";
 
 function EditMilestone(props) {
-  const { setEdit, projectId } = props;
+  const { setEdit, projectId, milestone, setCurrentMileStone } = props;
   const dispatch = useDispatch();
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [dueDate, setDueDate] = useState(new Date());
+  const [title, setTitle] = useState(milestone?.name || "");
+  const [description, setDescription] = useState(milestone?.description || "");
+  const [startDate, setStartDate] = useState(milestone?.start_date?.substring(0,10) || parseDateToString (new Date()));
+  const [dueDate, setDueDate] = useState(milestone?.due_date?.substring(0,10) || parseDateToString (new Date()));
 
   const [textAlert, setTextAlert] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
@@ -21,13 +22,13 @@ function EditMilestone(props) {
 
   const handleCreateMileStone = () => {
     const request = {
-      title,
+      name: title,
       description,
       start_date: startDate,
       due_date: dueDate,
       project_id: projectId,
     };
-    dispatch(createNewMileStone(request)).then((res) => {
+    dispatch(createNewMileStone(request, milestone?.id)).then((res) => {
       if (res?.status === 200 && res?.data?.data) {
         setOpenAlert(true);
         setStatusAlert("success");
@@ -44,9 +45,14 @@ function EditMilestone(props) {
     });
   };
 
+  const handleGoBack = () => {
+    setEdit(false);
+    setCurrentMileStone({});
+  }
+
   return (
     <div className="add-mile-content-wrapper">
-      <div className="back-to-edit" onClick={() => setEdit(false)}>
+      <div className="back-to-edit" onClick={() => handleGoBack()}>
         <i className="fa-sharp fa-solid fa-arrow-left"></i>
         Back
       </div>

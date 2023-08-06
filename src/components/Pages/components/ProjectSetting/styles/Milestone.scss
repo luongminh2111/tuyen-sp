@@ -46,6 +46,7 @@
     }
     .ml-desc {
       width: 300px;
+      padding-left: 16px;
       max-width: 300px;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -65,6 +66,11 @@
   }
   .name {
     width: calc(100% - 700px);
+    &:hover {
+      text-decoration: underline;
+      color: #0088FF;
+      cursor: pointer;
+    }
     >span {
       &:nth-child(1) {
         margin-right: 24px;
@@ -87,6 +93,7 @@
   .ml-desc {
     width: 300px;
     max-width: 300px;
+    padding-left: 16px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;

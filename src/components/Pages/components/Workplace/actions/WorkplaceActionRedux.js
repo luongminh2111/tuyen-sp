@@ -38,4 +38,10 @@ export const showDetailProject = (id) => ({
 export const getListMemberOfWorkspace = (items) => ({
   type: actionType.GET_LIST_MEMBER_IN_WORKSPACE,
   items
-})
+});
+
+export const updateFilterStaff = (key, value) => ({
+  type: actionType.UPDATE_FILTER_STAFF,
+  key,
+  value
+});

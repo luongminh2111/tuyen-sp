@@ -1,5 +1,6 @@
 const initState = {
-  isExpand : false
+  isExpand: false,
+  isReset: false,
 };
 
 const global = (state = initState, action) => {
@@ -7,9 +8,13 @@ const global = (state = initState, action) => {
     case "CHANGE_EXPAND":
       return {
         ...state,
-        isExpand: action.value
-      }
-    
+        isExpand: action.value,
+      };
+    case "RESET_LIST":
+      return {
+        ...state,
+        isReset: action.value,
+      };
     default:
       return state;
   }

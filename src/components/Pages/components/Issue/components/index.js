@@ -7,15 +7,18 @@ import TableIssue from "./TableIssue";
 import "../styles/index.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getListTask } from "../actions/TaskCallApi";
-import { getListMemberOfProject, getListMileStoneInProject } from "../../ProjectSetting/actions/ProjectActionCallApi";
+import {
+  getListMemberOfProject,
+  getListMileStoneInProject,
+} from "../../ProjectSetting/actions/ProjectActionCallApi";
 import TaskDetail from "./Detail";
 
 function Issues(props) {
   const isExpand = useSelector((state) => state.global.isExpand);
+
   const tasks = useSelector((state) => state.projects.tasks);
   const curProject = useSelector((state) => state.projects.itemDetail);
-  const milestones = useSelector(state => state.projects.milestone);
-  
+  const milestones = useSelector((state) => state.projects.milestone);
 
   const [showDetail, setShowDetail] = useState(false);
 
@@ -27,7 +30,9 @@ function Issues(props) {
   }, [id]);
 
   const getCurrentSubTask = useMemo(() => {
-    return tasks?.find((e) => e.id === id)?.sub_tasks?.find(e => e.id === subId);
+    return tasks
+      ?.find((e) => e.id === id)
+      ?.sub_tasks?.find((e) => e.id === subId);
   }, [subId, id]);
 
   const dispatch = useDispatch();
@@ -36,6 +41,7 @@ function Issues(props) {
     dispatch(getListTask());
     dispatch(getListMemberOfProject(curProject?.id));
     dispatch(getListMileStoneInProject(curProject?.id));
+    setShowDetail(false);
   }, []);
 
   useEffect(() => {
@@ -50,7 +56,12 @@ function Issues(props) {
         <div className="issues-content">
           <HeaderIssue item={curProject} />
           {showDetail ? (
-            <TaskDetail task={getCurrentSubTask || getCurrentTask} setShowDetail={setShowDetail} milestones={milestones} isExpand={isExpand}/>
+            <TaskDetail
+              task={getCurrentSubTask || getCurrentTask}
+              setShowDetail={setShowDetail}
+              milestones={milestones}
+              isExpand={isExpand}
+            />
           ) : (
             <>
               <FilterIssue />

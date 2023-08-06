@@ -6,7 +6,7 @@
   margin-left: 50px;
   .content-header {
     padding-top: 80px;
-    border-top: 1px solid #D3D5D7;
+    border-top: 1px solid #d3d5d7;
     .content-header__inner {
       height: 56px;
       .header-icon-set {
@@ -41,10 +41,11 @@
             align-items: center;
             &:hover {
               background-color: #2c9a7a;
-              i {
-                color: #FFFFFF;
+              .link {
+                i {
+                  color: #ffffff;
+                }
               }
-             
             }
             .link {
               cursor: pointer;
@@ -83,7 +84,7 @@
       }
     }
   }
-  .workplace-empty{
+  .workplace-empty {
     width: 100%;
     padding: 0 40px;
     margin: 24px 0;
@@ -93,7 +94,7 @@
       width: calc(100% / 3 - 30px);
       height: 120px;
       box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-      background-color: #FFF;
+      background-color: #fff;
       border-radius: 10px;
       display: flex;
       .item-icon {
@@ -125,11 +126,11 @@
         button {
           width: 80px;
           background-color: #2c9a7a;
-          color: #FFF;
+          color: #fff;
           font-size: 16px;
           border-radius: 4px;
           height: 32px;
-          border: 1px solid #FFF;
+          border: 1px solid #fff;
         }
       }
       &.issue {

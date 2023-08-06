@@ -4,7 +4,6 @@ import { useState } from "react";
 import EditMilestone from "./EditMilestone";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getListMileStone } from "../actions/ProjectActionRedux";
 import { getListMileStoneInProject } from "../actions/ProjectActionCallApi";
 
 function Milestone(props) {
@@ -12,17 +11,23 @@ function Milestone(props) {
   const {projectId} = props;
 
   const milestones = useSelector(state => state.projects.milestone) || [];
-  console.log("check milestones :", milestones);
 
   const [edit, setEdit] = useState(false);
+  const [currentMileStone, setCurrentMileStone] = useState({});
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getListMileStoneInProject(projectId));
   }, []);
 
+  const handleEdit = (milestone) => {
+    setCurrentMileStone(milestone);
+    setEdit(true);
+  }
+
   if (edit) {
-    return <EditMilestone setEdit={setEdit} projectId={projectId} />;
+    return <EditMilestone setEdit={setEdit} projectId={projectId} milestone={currentMileStone} setCurrentMileStone={setCurrentMileStone} />;
   }
 
   return (
@@ -48,7 +53,7 @@ function Milestone(props) {
           {milestones?.map((e, index) => {
             return (
               <div className="item" key={index}>
-                <div className="name">{e?.name}</div>
+                <div className="name" onClick={() => handleEdit(e)} >{e?.name}</div>
                 <div className="from">{e?.start_date}</div>
                 <div className="to">{e?.due_date}</div>
                 <div className="ml-desc">{e?.description}</div>

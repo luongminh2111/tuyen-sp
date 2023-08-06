@@ -12,12 +12,12 @@
     }
   }
   .btn-create-sub-task {
-    height: 32px;
+    height: 36px;
     background-color: #0088ff;
     color: #fff;
     border: 1px solid #d3d5d7;
     border-radius: 4px;
-    width: 120px;
+    width: 150px;
     outline: none;
   }
   .content-wrapper {
@@ -34,7 +34,10 @@
       border-radius: 4px;
       background-color: #fff;
       padding: 24px;
-      .info-left {
+      .info-right {
+        margin-top: 96.5px;
+      }
+      .info-left, .info-right {
         .created_by {
           margin-bottom: 16px;
           .image {

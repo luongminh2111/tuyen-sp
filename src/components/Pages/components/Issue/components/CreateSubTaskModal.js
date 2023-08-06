@@ -48,6 +48,12 @@ function CreateSubTaskModal(props) {
         const newSubTask = taskItem?.sub_tasks?.concat(res?.data?.data);
         const newTask = {...taskItem, sub_tasks: newSubTask};
         setTaskItem(newTask);
+        setName('');
+        setDescription('');
+        setStartTime(parseDateToString(new Date()));
+        setEndTime(parseDateToString(new Date()));
+        setPriority({});
+        setAssignee({});
         handleClose();
       } else {
         setOpenAlert(true);

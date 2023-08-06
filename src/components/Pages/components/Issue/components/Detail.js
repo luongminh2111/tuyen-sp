@@ -19,12 +19,14 @@ import {
   createNewComment,
   updateComment,
 } from "../../ProjectSetting/actions/ProjectActionRedux";
+import { useHistory } from "react-router-dom";
 
 function TaskDetail(props) {
   const { task, setShowDetail, milestones, isExpand } = props;
   const curProject = useSelector((state) => state.projects.itemDetail);
   const account = useSelector((state) => state.auth.account);
   const listComment = useSelector((state) => state.projects.comments);
+  const isReset = useSelector((state) => state.global.isReset);
   const [comment, setComment] = useState("");
   const [showComment, setShowComment] = useState(false);
   const [userSelect, setUserSelect] = useState([]);
@@ -37,6 +39,8 @@ function TaskDetail(props) {
   const [openAlert, setOpenAlert] = useState(false);
   const [statusAlert, setStatusAlert] = useState(false);
 
+  const history = useHistory();
+
   const dispatch = useDispatch();
 
   const members = useSelector((state) => state.projects.members);
@@ -44,6 +48,16 @@ function TaskDetail(props) {
   const getCurrentMember = (id) => {
     return members?.find((e) => e.id === id)?.name;
   };
+
+  useEffect(() => {
+    if(isReset) {
+      setShowDetail(false);
+      dispatch({
+        type: 'RESET_LIST',
+        value: false
+      });
+    }
+  }, [isReset]);
 
   const memberOptions = useMemo(() => {
     const newMembers = members?.map((e) => {
@@ -83,7 +97,7 @@ function TaskDetail(props) {
       content: comment,
       task_id: task.id,
       created_by: account.userId,
-      type: 'NORMAL'
+      type: "NORMAL",
     };
     dispatch(EditComment(request, editComment.id)).then((res) => {
       setEditComment({});
@@ -93,7 +107,6 @@ function TaskDetail(props) {
         setTextAlert("Edit comment success!");
         dispatch(updateComment(res?.data?.data));
         setComment("");
-
       } else {
         setOpenAlert(true);
         setStatusAlert("error");
@@ -210,7 +223,7 @@ function TaskDetail(props) {
 
   const renderComment = () => {
     return (
-      <div className={`comment-wrapper ${isExpand ? 'expand' : ''}`}>
+      <div className={`comment-wrapper ${isExpand ? "expand" : ""}`}>
         <div className={`comment-area`}>
           <textarea
             id="comment-area"
@@ -271,10 +284,18 @@ function TaskDetail(props) {
                       }}
                     />
                     <span>
-                      <i class="fa-sharp fa-solid fa-circle-check" style={{color: "#0088FF"}} onClick={() => handleEditComment()}></i>
+                      <i
+                        class="fa-sharp fa-solid fa-circle-check"
+                        style={{ color: "#0088FF" }}
+                        onClick={() => handleEditComment()}
+                      ></i>
                     </span>
                     <span>
-                      <i class="fa-solid fa-xmark" style={{color: '#FF4d4d'}} onClick={() => setEditComment({})}></i>
+                      <i
+                        class="fa-solid fa-xmark"
+                        style={{ color: "#FF4d4d" }}
+                        onClick={() => setEditComment({})}
+                      ></i>
                     </span>
                   </div>
                 )}
@@ -320,17 +341,16 @@ function TaskDetail(props) {
           </div>
           <div className="text">Back to {taskItem?.name}</div>
         </div>
-        <div
-          className="col-md-6 col-lg-6 col-sm-6 d-flex justify-content-end"
-          onClick={() => setOpenModal(true)}
-        >
-          <button className="btn-create-sub-task">Create sub task</button>
-        </div>
         <hr />
       </div>
       <div className="content-wrapper">
         <div className="task-name col-12 d-flex mt-2">
-          <div className="col-6">{taskItem?.name}</div>
+          <div className="col-6 d-flex">
+            {taskItem?.task_key ? (
+              <div style={{ marginRight: "4px" }}>{taskItem?.task_key} /</div>
+            ) : null}
+            <div>{taskItem?.name}</div>
+          </div>
           <div className="col-6 d-flex justify-content-end btn-edit-task">
             <button onClick={() => setIsEdit(true)}>Edit</button>
           </div>
@@ -395,7 +415,28 @@ function TaskDetail(props) {
               </div>
             </div>
           </div>
-          <div className="info-right col-md-6 col-sm-6 col-lg-6"></div>
+          <div className="info-right col-md-6 col-sm-6 col-lg-6">
+            <div className="line-item d-flex">
+              <div className="text-1">Start date</div>
+              <div className="value">
+                {taskItem?.start_time?.substring(0, 10)}
+              </div>
+            </div>
+            <div className="line-item d-flex">
+              <div className="text-1">Due date</div>
+              <div className="value">
+                {taskItem?.end_time?.substring(0, 10)}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="col-12 d-flex mb-1">
+          <div className="col-10" style={{fontSize: '16px', fontWeight: '600', color: '#0088FF', paddingTop: '15px'}}>Sub Tasks</div>
+          <div className="col-2">
+            <div className="col-12 d-flex justify-content-end" onClick={() => setOpenModal(true)}>
+              <button className="btn-create-sub-task">Create sub task</button>
+            </div>
+          </div>
         </div>
         <div className="list-subtask">
           <div className="table-header">
