@@ -15,7 +15,6 @@ import { useEffect } from "react";
 function Login() {
 
   const account = useSelector(state => state.auth.account);
-  console.log("check account :", account);
   const [isLoading, setIsLoading] = useState(true);
 
   const [remember, setRemember] = useState(false);

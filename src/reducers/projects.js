@@ -9,7 +9,8 @@ const initState = {
   members: [],
   tasks: [],
   comments: [],
-  filterTask: {}
+  filterTask: {},
+  filterProject: {}
 };
 
 const projects = (state = initState, action) => {
@@ -120,10 +121,23 @@ const projects = (state = initState, action) => {
           [action.key]: action.value
         }
       }
-      case projectType.CLEAR_FILTER_TASK: 
+    case projectType.CLEAR_FILTER_TASK: 
       return {
         ...state,
         filterTask: {}
+      }
+    case projectType.UPDATE_FILTER_PROJECT: 
+      return {
+        ...state,
+        filterProject: {
+          ...state.filterProject,
+          [action.key]: action.value
+        }
+      }
+    case projectType.CLEAR_FILTER_PROJECT: 
+      return {
+        ...state,
+        filterProject: {}
       }
     default:
       return state;

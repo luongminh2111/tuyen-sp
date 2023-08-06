@@ -77,21 +77,20 @@ export const createMemberForWorkspace = (request) => (dispatch) => {
   })
 };
 
-export const getListProject = () => (dispatch, getState) => {
-  const {
-    auth: {
-      account: {
-        workspace_id
-      }
-    }
-  } = getState();
+export const getListProject = (query) => (dispatch, getState) => {
 
   const options = {
     method: 'GET',
+    mode: 'cors'
   }
-  const endPoint = `${BASE_URL}/api/get_projects_by_workspace/${workspace_id}`;
+
+  let endPoint = `${BASE_URL}/api/projects-by-user`;
+
+  if(query?.length > 0 && query?.trim() !== ''){
+    endPoint += `?key=${query}`;
+  }
+
   return callApi(endPoint, options).then(json => {
-    console.log("check json :", json);
     if(json?.status === 200 && json?.data?.data) {
       dispatch(updateListProject(json.data.data));
     }

@@ -70,3 +70,13 @@ export const updateFilterTask = (key, value) => ({
 export const clearFilterTask = () => ({
   type: actionType.CLEAR_FILTER_TASK
 });
+
+export const updateFilterProject = (key, value) => ({
+  type: actionType.UPDATE_FILTER_PROJECT,
+  key,
+  value
+});
+
+export const clearFilterProject = () => ({
+  type: actionType.CLEAR_FILTER_PROJECT
+});

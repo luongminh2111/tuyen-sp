@@ -23,8 +23,6 @@ function MyProfile(props) {
     dispatch(getMyProfile());
   }, []);
 
-  console.log("check account : ", account);
-
   const handleChangeUserName = (value) => {
     setNewName(value);
   }

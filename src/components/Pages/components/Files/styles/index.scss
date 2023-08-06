@@ -57,22 +57,75 @@
           display: flex;
           >div {
             margin-left: 16px;
+            width: 120px;
             background: #fff;
             border: 1px solid #d3d5d7;
-            padding: 4px 12px;
+            padding: 4px 16px;
             font-size: 14px;
             border-radius: 16px;
+            &:hover {
+              cursor: pointer;
+              background-color: #0088FF;
+              color: #fff;
+            }
             i {
               margin-right: 6px;
             }
           }
         }        
       }
+      .select-file {
+        width: 100%;
+        min-height: 120px;
+        padding: 24px;
+        max-height: max-content;
+        margin-top: 24px;
+        margin-bottom: 16px;
+        border: 2px dashed #0f1824;
+        border-radius: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        input {
+        display: none;
+        }
+        label {
+          padding: 4px 16px;
+          border: 1px solid #d3d5d7;
+          border-radius: 4px;
+          background-color: #0088FF;
+          color: #fff;
+        }
+        .file-info {
+          span {
+            p {
+              line-height: 35px;
+            }
+            button {
+              width: 100px;
+              height: 36px;
+              border: 1px solid #d3d5d7;
+              border-radius: 4px;
+              outline: none;
+              margin-left: 12px;
+            }
+            .submit {
+              background-color: #0088FF;
+              color: #fff;
+            }
+            .cancel {
+              background-color: #ff4d4d;
+              color: #fff;
+            }
+          }
+        }
+      }
       .files-table {
         margin-top: 24px;
         border: 1px solid #d3d5d7;
         border-radius: 4px;
-        .table-header {
+        width: 100%;
+        .table-file-header {
           .select-box {
             display: flex;
             align-items: center;
@@ -82,7 +135,7 @@
               height: 20px;
             }
           }
-          .list-actions {
+          .list-custom-actions {
             display: flex;
             align-items: center;
             
@@ -137,8 +190,11 @@
               display: flex;
               input {
                 margin-right: 8px;
-                width: 16px;
-                height: 16px;
+                width: 15px;
+                height: 15px;
+                &:focus {
+                  outline: none;
+                }
               }
             }
             .item-size {

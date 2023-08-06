@@ -6,10 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { getListProject } from "../actions/WorkplaceActionCallApi";
 import { useHistory } from "react-router-dom";
 import { showDetailProject } from "../actions/WorkplaceActionRedux";
+import {
+  clearFilterProject,
+  updateFilterProject,
+} from "../../ProjectSetting/actions/ProjectActionRedux";
 
 function ListProject(props) {
-  
-  const projects = useSelector(state => state.projects.items);
+  const projects = useSelector((state) => state.projects.items);
+  const filter = useSelector((state) => state.projects.filterProject);
+  const [query, setQuery] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -19,28 +24,54 @@ function ListProject(props) {
     dispatch(getListProject());
   }, []);
 
+  useEffect(() => {
+    if (filter && filter?.key) {
+      dispatch(getListProject(filter?.key));
+    }
+  }, [filter]);
+
+  const handleChangeQuery = (value) => {
+    setQuery(value);
+    if (value?.trim() !== "") {
+      setTimeout(() => {
+        dispatch(updateFilterProject("key", value));
+      }, 600);
+    }
+  };
+
+  const handleClear = () => {
+    setQuery("");
+    dispatch(clearFilterProject());
+    dispatch(getListProject());
+  };
+
   const handleGoToProject = (item) => {
     dispatch(showDetailProject(item?.id));
     history.push(`/project?name=${item?.name}`);
-  }
+  };
 
   return (
     <div className="list-project-content-wrapper">
       <div className="title d-flex">
         <div>List of Projects</div>
         <div>
-            <i className="fa-sharp fa-solid fa-circle-question"></i>
-          </div>
+          <i className="fa-sharp fa-solid fa-circle-question"></i>
+        </div>
       </div>
       <div className="btn-add-project">
-       <button onClick={() => setOpenModal(true)}>Add Project</button>
+        <button onClick={() => setOpenModal(true)}>Add Project</button>
       </div>
       <div className="filter-project d-flex">
         <div className="text-1">Filter project</div>
         <div className="search-input d-flex">
           <i className="fa-solid fa-magnifying-glass"></i>
-          <input type="text" placeholder="Search in project name or project key" />
-          <i className="fa-solid fa-x"></i>
+          <input
+            type="text"
+            placeholder="Search in project name or project key"
+            value={query}
+            onChange={(e) => handleChangeQuery(e.target.value)}
+          />
+          <i className="fa-solid fa-x" onClick={() => handleClear()}></i>
         </div>
       </div>
       <div className="filter-result-table">
@@ -53,7 +84,11 @@ function ListProject(props) {
         <div className="body">
           {projects?.map((e, index) => {
             return (
-              <div className="item" key={index} onClick={() => handleGoToProject(e)}>
+              <div
+                className="item"
+                key={index}
+                onClick={() => handleGoToProject(e)}
+              >
                 <div className="name">{e?.name}</div>
                 <div className="key">{e?.project_key}</div>
                 <div className="desc">{e?.description}</div>
@@ -65,12 +100,12 @@ function ListProject(props) {
           })}
         </div>
       </div>
-      {openModal ?
-       <CreateNewProject 
-       open={openModal} 
-       handleClose={() => setOpenModal(false)}
-       /> 
-       : null}
+      {openModal ? (
+        <CreateNewProject
+          open={openModal}
+          handleClose={() => setOpenModal(false)}
+        />
+      ) : null}
     </div>
   );
 }
