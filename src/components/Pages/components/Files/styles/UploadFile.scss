@@ -1,0 +1,68 @@
+.dialog-upload-file {
+  
+    .MuiDialog-container {
+      width: 800px;
+      margin: 0 auto;
+    }
+    .MuiPaper-root {
+      width: calc(100%);
+      height: calc(100% - 350px);
+    }
+    .MuiDialogContent-root {
+      position: relative;
+    }
+    .contents-add {
+      label {
+        background: #0088FF;
+        color: #FFF;
+        border: 1px solid #d3d5d7;
+      }
+      .file-info {
+        max-width: calc(100% - 200px);
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .area-input-ticket {
+        margin-top: 24px;
+        textarea {
+          width: 100%;
+          min-height: 100px;
+          border: 1px solid #d3d5d7;
+          border-radius: 4px;
+          outline: none;
+          padding: 12px;
+          &::placeholder {
+            font-size: 13px;
+          }
+          &:focus {
+            border-color: #0088FF;
+          }
+        }
+      }
+    }
+    .list-btn-file {
+      display: flex;
+      justify-content: flex-end;
+      bottom: 24px;
+      right: 24px;
+      position: absolute;
+      .close-btn {
+        width: 120px;
+        background-color: #ff4d4d;
+        color: #FFF;
+        height: 36px;
+        margin-right: 16px;
+        border: 1px solid #d3d5d7;
+        border-radius: 4px;
+      }
+      .add-btn {
+        width: 120px;
+        background-color: #0088FF;
+        color: #FFF;
+        height: 36px;
+        border: 1px solid #d3d5d7;
+        border-radius: 4px;
+      }
+    }
+}

@@ -1,16 +1,67 @@
 import React, { useState } from "react";
 import "../styles/index.scss";
-import { Button } from "@mui/material";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import UploadPopup from "./UploadPopup";
+import { useDispatch, useSelector } from "react-redux";
+import { getStorage, ref, deleteObject } from "firebase/storage";
 import storages from "../../../../../contains/firebaseConfig";
+import EditFilePopup from "./EditFilePopup";
 
 function FileLeftContent(props) {
+  const { curProject } = props;
   const [showSelect, setShowSelect] = useState(false);
+  const files = useSelector((state) => state.files.items);
+  const members = useSelector((state) => state.projects.members);
+  const [isEdit, setIdEdit] = useState(false);
+  const [curItem, setCurItem] = useState({});
 
-  const [file, setFile] = useState("");
-  const [urlReceived, setUrlReceived] = useState("");
-  const [listFiles, setListFiles] = useState([]);
+  const dispatch = useDispatch();
+
+  console.log("Check files :", files);
   const [idsSelected, setIdsSelected] = useState([]);
+
+  const getCurrentMember = (id) => {
+    return members?.find((e) => e.id === id)?.name || "";
+  };
+
+  const handleChangeIds = (value) => {
+    if (idsSelected?.includes(value)) {
+      setIdsSelected(idsSelected?.filter((e) => e !== value));
+    } else {
+      setIdsSelected(idsSelected?.concat(value));
+    }
+  };
+
+  const handleChangeSelectAll = () => {
+    if (idsSelected?.length != files?.length) {
+      setIdsSelected(files?.map((e) => e.id));
+    } else {
+      setIdsSelected([]);
+    }
+  };
+
+  const handleDownload = () => {
+    const fileSelected = files?.filter((e) => idsSelected?.includes(e.id));
+    fileSelected?.forEach((item) => {
+      const link = document.createElement("a");
+      link.href = item?.link;
+      link.setAttribute("download", item?.name);
+      link.target = "_blank";
+      link.click();
+      link.remove();
+    });
+  };
+
+  const handleDelete = () => {
+    const fileSelected = files?.filter((e) => idsSelected?.includes(e.id));
+    fileSelected?.forEach((item) => {
+      const storageRef = ref(storages, `/files/${item.name}`);
+      deleteObject(storageRef).then(() => {});
+    });
+    dispatch({
+      type: "DELETE_FILE",
+      value: idsSelected,
+    });
+  };
 
   const renderTableHeader = () => {
     return (
@@ -21,65 +72,63 @@ function FileLeftContent(props) {
         >
           <div className="select-box">
             <div className="input-box">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                checked={idsSelected?.length === files?.length}
+                onChange={() => handleChangeSelectAll()}
+              />
             </div>
-            <div>Select All </div>
+            <div>Select all </div>
           </div>
           <div className="list-custom-actions">
             <div>
-              <button disabled>Rename</button>
+              <button
+                disabled={idsSelected?.length === 0}
+                className={idsSelected?.length > 0 ? "active" : ""}
+                onClick={() => handleDelete()}
+              >
+                Delete
+              </button>
             </div>
             <div>
-              <button disabled>Remove</button>
-            </div>
-            <div>
-              <button disabled>Delete</button>
-            </div>
-            <div>
-              <button disabled>Download</button>
+              <button
+                disabled={idsSelected?.length === 0}
+                className={idsSelected?.length > 0 ? "active" : ""}
+                onClick={() => handleDownload()}
+              >
+                Download
+              </button>
             </div>
           </div>
         </div>
         <div className="header-row">
           <div className="file-name">File Name</div>
-          <div className="size">Size</div>
-          <div className="updated-by">Updated By</div>
+          <div className="size">Description</div>
+          <div className="updated-by">Created By</div>
           <div className="updated-at">Updated At</div>
         </div>
       </div>
     );
   };
 
-  const renderFileItem = () => {
+  const renderFileItem = (e) => {
     return (
       <div className="item-file">
         <div className="item-name">
           <div className="input-check ">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={idsSelected?.includes(e.id)}
+              onChange={() => handleChangeIds(e.id)}
+            />
           </div>
-          <div>Screenshot 2023-06-13 154353.png</div>
+          <div onClick={() => {setCurItem(e); setIdEdit(true)}} style={{cursor: 'pointer'}}>{e?.name}</div>
         </div>
-        <div className="item-size">0.6 MB</div>
-        <div className="item-update-by">Vu Duc Tuyen</div>
-        <div className="item-updated-at">20-06-2023 18:52</div>
+        <div className="item-des">{e?.description}</div>
+        <div className="item-update-by">{getCurrentMember(e?.created_by)}</div>
+        <div className="item-updated-at">{e?.updated_at?.substring(0, 10)}</div>
       </div>
     );
-  };
-
-  const handleChangeFile = (file) => {
-    setFile(file[0]);
-  };
-
-  const handleUpload = () => {
-    if (!file) return;
-    const storageRef = ref(storages, `/files/${file.name}`);
-    uploadBytesResumable(storageRef, file);
-    getImage();
-  };
-  const getImage = async () => {
-    const fileUrl = await getDownloadURL(ref(storages, `/files/${file.name}`));
-    setUrlReceived(fileUrl);
-    console.log("check fileUrl:", fileUrl);
   };
 
   return (
@@ -99,44 +148,25 @@ function FileLeftContent(props) {
         </div>
       </div>
       {showSelect ? (
-        <div className="select-file">
-          <div className="box-select">
-            <div className="d-flex justify-content-center">
-              <label for="files" class="btn">
-                {file ? "Change File..." : "Select File..."}
-              </label>
-              <input
-                id="files"
-                style={{ visibility: "hidden" }}
-                type="file"
-                onChange={(e) => handleChangeFile(e.target.files)}
-              />
-            </div>
-            {file ? (
-              <div className="file-info d-flex mt-3">
-                <span>
-                  <p>{file?.name}</p>
-                </span>
-                <span>
-                  <button className="submit" onClick={() => handleUpload()}>
-                    submit
-                  </button>
-                </span>
-                <span>
-                  <button className="cancel" onClick={() => setFile("")}>
-                    cancel
-                  </button>
-                </span>
-              </div>
-            ) : null}
-          </div>
-        </div>
+        <UploadPopup
+          open={showSelect}
+          handleClose={() => setShowSelect(false)}
+          curProject={curProject}
+        />
+      ) : null}
+       {isEdit ? (
+        <EditFilePopup
+          open={isEdit}
+          handleClose={() => {setIdEdit(false); setCurItem({})}}
+          curProject={curProject}
+          item={curItem}
+        />
       ) : null}
       <div className="files-table">
         {renderTableHeader()}
         <div className="table-content">
-          {[1, 2, 3, 4, 5]?.map((e) => {
-            return renderFileItem();
+          {files?.map((e) => {
+            return renderFileItem(e);
           })}
         </div>
       </div>

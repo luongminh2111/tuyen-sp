@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ToggleNav from "../../../../../commons/ToggleNav";
 import HeaderNav from "../../../../commons/HeaderNav/HeaderNav";
 import { ORG_IMAGE_DEFAULT } from "../../../../../commons/image";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "../styles/index.scss";
 import FileLeftContent from "./FileLeftContent";
-import FileRightContent from "./FileRightContent";
+import { getListFile } from "../actions/FileActionCallapi";
+import {  getListMemberOfProject } from "../../ProjectSetting/actions/ProjectActionCallApi";
 
 function Files(props) {
   const isExpand = useSelector((state) => state.global.isExpand);
   const curProject = useSelector((state) => state.projects.itemDetail);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getListFile());
+    dispatch(getListMemberOfProject(curProject?.id));
+  }, []);
+
   return (
     <>
       <ToggleNav />
@@ -30,8 +38,8 @@ function Files(props) {
           <div className="project-header__actions"></div>
         </div>
         <div className="files-container">
-          <FileLeftContent />
-          <FileRightContent />
+          <FileLeftContent curProject={curProject} />
+          {/* <FileRightContent /> */}
         </div>
       </div>
     </>
