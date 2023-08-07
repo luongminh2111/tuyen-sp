@@ -13,3 +13,5 @@ export const tasks = [
     {id: 3, name: 'Item 3', column: DO_IT},
     {id: 4, name: 'Item 4', column: DO_IT},
 ];
+
+export const logoPM = "https://firebasestorage.googleapis.com/v0/b/projectm-e1638.appspot.com/o/files%2FlogoPM.png?alt=media&token=6f94e305-c6c5-43a5-ad96-b7b218db1eb5";
