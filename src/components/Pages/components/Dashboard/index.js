@@ -15,6 +15,7 @@ function Dashboard(props) {
   const [isRightZoomOut, setIsRightRoomOut] = useState(false);
 
   const account = useSelector(state => state.auth.account);
+  const workspace = useSelector(state => state.workplace?.workspace);
 
   const projects = useSelector(state => state.projects.items);
 
@@ -37,7 +38,7 @@ function Dashboard(props) {
                 </a>
               </div>
               <div className="title-group">
-                <span className="org-name">HUST</span>
+                <span className="org-name">{workspace?.name}</span>
                 <span
                   className="setting-icon"
                   data-tip=""

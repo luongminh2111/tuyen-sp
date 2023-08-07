@@ -87,7 +87,6 @@ export const addMemberToProject = (userIds, projectId) => (dispatch) => {
       data: JSON.stringify(request)
     }
     return callApi(endPoint, options).then(res => {
-      console.log("check res :", res);
       if(res.status === 200) {
         dispatch(getListMemberOfProject(projectId));
       }

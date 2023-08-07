@@ -13,7 +13,6 @@ function AddMemberModal(props) {
   const members = staffs?.filter((e) => e.role !== USER_ROLE.WORKSPACE_ADMIN && !hasIds?.includes(e.id));
 
   const [ids, setIds] = useState([]);
-  console.log("check ids :", ids);
 
   const dispatch = useDispatch();
 

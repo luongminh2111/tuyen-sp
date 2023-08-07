@@ -12,7 +12,6 @@ function Workplace(props){
   const [settingSelect, setSettingSelect] = useState('');
 
   const workspace = useSelector(state => state.workplace?.workspace) || {};
-  console.log("check workspace:", workspace);
 
   const history = useHistory();
 

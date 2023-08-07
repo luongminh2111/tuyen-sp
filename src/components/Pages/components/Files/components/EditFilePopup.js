@@ -14,7 +14,6 @@ import { updateFile, uploadFile } from "../actions/FileActionCallapi";
 
 function EditFilePopup(props) {
   const { open, handleClose, curProject, item } = props;
-  console.log("check item :", item);
   const [name, setName] = useState(item?.name || "");
   const [description, setDescription] = useState(item?.description || "");
   const [textAlert, setTextAlert] = useState("");

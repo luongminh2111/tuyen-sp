@@ -16,9 +16,6 @@ function MemberSetting(props) {
   const members = useSelector(state => state.projects.members);
   const hasIds = members?.map(e => e.id);
 
-  console.log("check members :", members);
-
-
   useEffect(() => {
     dispatch(getListMemberInWorkspace());
     dispatch(getListMemberOfProject(projectId));

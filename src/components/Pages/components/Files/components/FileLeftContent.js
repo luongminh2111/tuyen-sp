@@ -17,7 +17,6 @@ function FileLeftContent(props) {
 
   const dispatch = useDispatch();
 
-  console.log("Check files :", files);
   const [idsSelected, setIdsSelected] = useState([]);
 
   const getCurrentMember = (id) => {
@@ -55,7 +54,6 @@ function FileLeftContent(props) {
   const handleDelete = () => {
     const fileSelected = files?.filter((e) => idsSelected?.includes(e.id));
     fileSelected?.forEach((item) => {
-      console.log("check item :", item);
       const storageRef = ref(storages, `/files/${item.name}`);
       deleteObject(storageRef).then(() => {
       });

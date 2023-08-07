@@ -44,10 +44,7 @@ function Staffs(props) {
     dispatch(getListMemberInWorkspace());
   }, []);
 
-  console.log("check filterStaff :", filterStaff);
-
   useEffect(() => {
-    console.log("check roleOption:", roleOption);
     if(roleOption?.id >= 0) {
       dispatch(updateFilterStaff('role', roleOption?.id));
     }

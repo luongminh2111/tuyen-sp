@@ -10,7 +10,6 @@ import ProjectHeader from "./ProjectHeader";
 function Project(props) {
   const isExpand = useSelector((state) => state.global.isExpand);
   const curProject = useSelector((state) => state.projects.itemDetail);
-  console.log("check curProject :", curProject);
 
   return (
     <>
