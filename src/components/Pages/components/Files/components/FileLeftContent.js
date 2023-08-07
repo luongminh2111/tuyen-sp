@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import storages from "../../../../../contains/firebaseConfig";
 import EditFilePopup from "./EditFilePopup";
+import { deleteFile } from "../actions/FileActionCallapi";
 
 function FileLeftContent(props) {
   const { curProject } = props;
@@ -54,12 +55,16 @@ function FileLeftContent(props) {
   const handleDelete = () => {
     const fileSelected = files?.filter((e) => idsSelected?.includes(e.id));
     fileSelected?.forEach((item) => {
+      console.log("check item :", item);
       const storageRef = ref(storages, `/files/${item.name}`);
-      deleteObject(storageRef).then(() => {});
+      deleteObject(storageRef).then(() => {
+      });
     });
-    dispatch({
-      type: "DELETE_FILE",
-      value: idsSelected,
+    dispatch(deleteFile(idsSelected, curProject.id)).then(() => {
+      dispatch({
+        type: "DELETE_FILE",
+        value: idsSelected,
+      });
     });
   };
 
@@ -122,7 +127,15 @@ function FileLeftContent(props) {
               onChange={() => handleChangeIds(e.id)}
             />
           </div>
-          <div onClick={() => {setCurItem(e); setIdEdit(true)}} style={{cursor: 'pointer'}}>{e?.name}</div>
+          <div
+            onClick={() => {
+              setCurItem(e);
+              setIdEdit(true);
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            {e?.name}
+          </div>
         </div>
         <div className="item-des">{e?.description}</div>
         <div className="item-update-by">{getCurrentMember(e?.created_by)}</div>
@@ -154,10 +167,13 @@ function FileLeftContent(props) {
           curProject={curProject}
         />
       ) : null}
-       {isEdit ? (
+      {isEdit ? (
         <EditFilePopup
           open={isEdit}
-          handleClose={() => {setIdEdit(false); setCurItem({})}}
+          handleClose={() => {
+            setIdEdit(false);
+            setCurItem({});
+          }}
           curProject={curProject}
           item={curItem}
         />

@@ -28,6 +28,24 @@ export const updateFile = (request, id) => (dispatch) => {
     (error) => { return error?.response})
 };
 
+export const deleteFile = (ids, curProjectId) => (dispatch) => {
+  const request = {
+    ids,
+    project_id: curProjectId
+  };
+
+  const url = `${BASE_URL}/api/document`;
+  const options = {
+    method: "DELETE",
+    data: JSON.stringify(request)
+  };
+
+  return callApi(url, options).then( 
+    (response) => { 
+      return response}, 
+    (error) => { return error?.response})
+};
+
 
 export const getListFile = () => (dispatch, getState) => {
 

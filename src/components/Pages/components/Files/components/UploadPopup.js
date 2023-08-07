@@ -31,6 +31,12 @@ function UploadPopup(props) {
 
   const handleUpload = () => {
     if (!file) return;
+    if (description?.trim()?.length === 0 ) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("Description must not be empty");
+      return;
+    }
     setLoading(true);
     const storageRef = ref(storages, `/files/${file.name}`);
     uploadBytesResumable(storageRef, file).then(() => {
