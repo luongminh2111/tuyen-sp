@@ -50,11 +50,11 @@ function TaskDetail(props) {
   };
 
   useEffect(() => {
-    if(isReset) {
+    if (isReset) {
       setShowDetail(false);
       dispatch({
-        type: 'RESET_LIST',
-        value: false
+        type: "RESET_LIST",
+        value: false,
       });
     }
   }, [isReset]);
@@ -171,12 +171,10 @@ function TaskDetail(props) {
       <>
         <div className="issue-item" key={index}>
           <div className="item_key">{e?.task_key}</div>
-          <div
-            className="item_subject"
-            data-for={`item_subject_${index}`}
-            data-tip=""
-          >
-            {e?.name}
+          <div className="item_subject">
+            <div data-for={`item_subject_${index}`} data-tip="">
+              {e?.name}
+            </div>
             <ReactTooltip
               type="dark"
               effect="solid"
@@ -431,9 +429,22 @@ function TaskDetail(props) {
           </div>
         </div>
         <div className="col-12 d-flex mb-1">
-          <div className="col-10" style={{fontSize: '16px', fontWeight: '600', color: '#0088FF', paddingTop: '15px'}}>Sub Tasks</div>
+          <div
+            className="col-10"
+            style={{
+              fontSize: "16px",
+              fontWeight: "600",
+              color: "#0088FF",
+              paddingTop: "15px",
+            }}
+          >
+            Sub Tasks
+          </div>
           <div className="col-2">
-            <div className="col-12 d-flex justify-content-end" onClick={() => setOpenModal(true)}>
+            <div
+              className="col-12 d-flex justify-content-end"
+              onClick={() => setOpenModal(true)}
+            >
               <button className="btn-create-sub-task">Create sub task</button>
             </div>
           </div>

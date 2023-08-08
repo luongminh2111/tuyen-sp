@@ -6,18 +6,23 @@ import { useEffect } from "react";
 import { getListTask } from "../actions/TaskCallApi";
 
 function TableIssue(props) {
-  const { tasks, setId, setShowDetail, milestones, setSubId } =
-    props;
+  const { tasks, setId, setShowDetail, milestones, setSubId } = props;
   const dispatch = useDispatch();
   const members = useSelector((state) => state.projects.members);
-  const filterTask = useSelector(state => state.projects.filterTask);
+  const filterTask = useSelector((state) => state.projects.filterTask);
 
   const [showDetailIds, setShowDetailIds] = useState([]);
 
   useEffect(() => {
-    dispatch(getListTask(filterTask?.status, filterTask?.milestone_id, filterTask?.assignee_id, filterTask?.key));
+    dispatch(
+      getListTask(
+        filterTask?.status,
+        filterTask?.milestone_id,
+        filterTask?.assignee_id,
+        filterTask?.key
+      )
+    );
   }, [filterTask]);
-
 
   const getCurrentMember = (id) => {
     return members?.find((e) => e.id === id)?.name;
@@ -101,13 +106,13 @@ function TableIssue(props) {
           </div>
           <div
             className="item_subject"
-            data-for={`item_subject_${index}`}
-            data-tip=""
             onClick={() => {
               handleShowDetail(e.id, isSubTask);
             }}
           >
-            {e?.name}
+            <div data-for={`item_subject_${index}`} data-tip="">
+              {e?.name}
+            </div>
             <ReactTooltip
               type="dark"
               effect="solid"

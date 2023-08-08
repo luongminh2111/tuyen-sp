@@ -77,9 +77,9 @@ function NotificationPopup(props) {
           items?.map((e) => {
             return (
               <div className={`noti-item ${e?.read_at || ids?.includes(e?.id) ? "read" : ""} `} onClick={() => handleReadNoti(e)} >
-                <div className="top-content">
+                {/* <div className="top-content">
                   {getCurrentMember(e?.user_id)}
-                </div>
+                </div> */}
                 <div className="bot-content">{e?.content}</div>
               </div>
             );
