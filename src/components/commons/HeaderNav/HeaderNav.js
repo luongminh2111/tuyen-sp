@@ -7,35 +7,32 @@ import { useEffect } from "react";
 import ReactTooltip from "react-tooltip";
 import { ORG_IMAGE_DEFAULT } from "../../../commons/image";
 import { logout } from "../../Pages/actions/AccountActionCallApi";
+import NotificationPopup from "./NotificationPopup";
+import { getNotiCount } from "../../Pages/actions/NotiActionCallApi";
 
 function HeaderNav(props) {
   const [showDropDownUser, setShowDropDownUser] = useState(false);
 
   const userRef = useRef();
+  const [count, setCount] = useState(0);
+
   const dispatch = useDispatch();
+  const [showNoti, setShowNoti] = useState(false);
 
   const account = useSelector((state) => state.auth.account);
 
   const history = useHistory();
 
-  const handleRedirectPage = (pageUrl) => {
-    try {
-      const token = sessionStorage.getItem("token");
-      if (token) {
-        history.push(`/${pageUrl}`);
+  useEffect(() => {
+    dispatch(getNotiCount()).then((res) => {
+      if (res?.data > 0) {
+        setCount(res.data);
       }
-    } catch (e) {
-      window.alert("You must be login for this function");
-      history.push(`/`);
-    }
-  };
+    });
+  }, []);
 
   const handleLogout = () => {
     dispatch(logout());
-    // () => {
-    //   sessionStorage.removeItem("token_admin");
-    //   history.push("/sign-in");
-    // }
     dispatch({ type: "RESET_AUTH" });
     sessionStorage.removeItem("token_admin");
     localStorage.removeItem("user");
@@ -87,8 +84,12 @@ function HeaderNav(props) {
         <div className="dashboard d-flex align-items-center">Dashboard</div>
       </div>
       <div className="nav-bar right d-flex">
-        <div className="member" data-tip="" data-for="icon-member">
-          <i className="fa-solid fa-users"></i>
+        <div className="member">
+          <i
+            className="fa-solid fa-users"
+            data-tip=""
+            data-for="icon-member"
+          ></i>
           <ReactTooltip
             type="dark"
             effect="solid"
@@ -98,8 +99,20 @@ function HeaderNav(props) {
             Member
           </ReactTooltip>
         </div>
-        <div className="notification" data-tip="" data-for="icon-noti">
-          <i className="fa-solid fa-bell"></i>
+
+        <div className="notification">
+          <i
+            className="fa-solid fa-bell"
+            data-tip=""
+            data-for="icon-noti "
+            onClick={() => setShowNoti(true)}
+          ></i>
+          {count > 0 ? (
+            <div className="count">
+              <i className={`fa-solid fa-${count}`}></i>{" "}
+            </div>
+          ) : null}
+          {showNoti ? <NotificationPopup setShowNoti={setShowNoti} count={count} setCount={setCount} /> : null}
           <ReactTooltip
             type="dark"
             effect="solid"
@@ -111,12 +124,10 @@ function HeaderNav(props) {
         </div>
         <div
           className="current-user d-flex"
-          data-tip=""
-          data-for="icon-user"
           ref={userRef}
           onClick={() => setShowDropDownUser(!showDropDownUser)}
         >
-          <i className="fa-solid fa-user"></i>
+          <i className="fa-solid fa-user" data-tip="" data-for="icon-user"></i>
           <i className="fa-solid fa-caret-down"></i>
           <ReactTooltip
             type="dark"

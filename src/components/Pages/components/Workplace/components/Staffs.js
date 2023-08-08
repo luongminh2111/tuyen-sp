@@ -28,7 +28,6 @@ function Staffs(props) {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassWord] = useState("");
-  const [rePassword, setRePassword] = useState("");
   const [role, setRole] = useState(USER_ROLE.MEMBER);
   const [roleOption, setRoleOption] = useState({});
 
@@ -70,11 +69,6 @@ function Staffs(props) {
   };
 
   const handleAddUser = () => {
-    if (password !== rePassword) {
-      setOpenAlert(true);
-      setTextAlert("password incorrect, try again!");
-      setStatusAlert("error");
-    }
 
     if (handleValidateEmail(email)) {
       setOpenAlert(true);
@@ -86,7 +80,6 @@ function Staffs(props) {
       name: userName,
       email,
       password,
-      password_confirmation: rePassword,
       role,
     };
 
@@ -100,7 +93,6 @@ function Staffs(props) {
         setUserName("");
         setEmail("");
         setPassWord("");
-        setRePassword("");
         setTimeout(() => {
           setIsEdit(false);
         }, 500);
@@ -190,19 +182,6 @@ function Staffs(props) {
                   type="password"
                   value={password}
                   onChange={(e) => setPassWord(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="input-pass mt-3">
-              <div className="label">
-                <span>Confirm password</span>
-                <span>*</span>
-              </div>
-              <div>
-                <input
-                  type="password"
-                  value={rePassword}
-                  onChange={(e) => setRePassword(e.target.value)}
                 />
               </div>
             </div>

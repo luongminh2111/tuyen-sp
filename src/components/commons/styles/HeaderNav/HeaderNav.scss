@@ -46,8 +46,8 @@
         >div {
           cursor: pointer;
           width: 32px;
-          background-color: #FFFFFF;
-          border-radius: 50%;
+          // background-color: #FFFFFF;
+          // border-radius: 50%;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -58,8 +58,11 @@
           }
           margin: 0 16px;
           &:hover {
+            background-color: #2c9a7a;
+            border-radius: 50%;
             i {
-              color: #2c9a7a;
+            
+              color: #fff;
             }
           }
         }
@@ -105,6 +108,76 @@
                 &:first-child {
                   color: #777;
                   background-color: unset;
+                }
+              }
+            }
+          }
+        }
+        .notification {
+          position: relative;
+          z-index: 2;
+          .count {
+            position: absolute;
+            z-index: 10;
+            top: 2px;
+            right: 1px;
+            width: 16px;
+            height: 16px;
+            background-color: #ff4d4d;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            i{
+              font-size: 12px;
+              color: #fff;
+            }
+          }
+          .notification-wrapper {
+            width: 300px;
+            min-height: 450px;
+            max-height: 450px;
+            border: 1px solid #d3d5d7;
+            background-color: #FFF;
+            border-radius: 4px;
+            position: absolute;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            top: 40px;
+            .title {
+              background-color: #0088FF;
+              height: 40px;
+              padding: 10px 12px;
+              >div {
+                color: #fff;
+                i {
+                  font-size: 16px;
+                }
+              }
+              
+            }
+            .list-noti {
+              height: 410px;
+              width: 100%;
+              .loading {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+              }
+              .noti-item {
+                height: 72px;
+                padding: 12px 16px;
+                font-size: 13px;
+                margin-bottom: 2px;
+                padding-bottom: 4px;
+                border-bottom: 1px solid #d3d5d7;
+                .top-content {
+                  margin-bottom: 4px;
+                  font-weight: 600;
+                }
+                &.read {
+                  background-color: #f0f0f0;
                 }
               }
             }

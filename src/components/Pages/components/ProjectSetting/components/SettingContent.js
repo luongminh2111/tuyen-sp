@@ -16,7 +16,6 @@ function SettingContent(props) {
   const dispatch = useDispatch();
 
   const { settingSelect, project } = props;
-  console.log("check project :", project);
   const [name, setName] = useState(project.name);
   const [key, setKey] = useState(project.project_key);
   const [description, setDescription] = useState(project?.description);

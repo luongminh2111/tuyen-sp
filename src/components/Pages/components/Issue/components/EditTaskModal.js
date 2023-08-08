@@ -82,7 +82,6 @@ function EditTaskModal(props) {
         setOpenAlert(true);
         setStatusAlert("success");
         setTextAlert(res.data?.message);
-        console.log("check res?.data?.data :", res?.data?.data);
         setTaskItem(res?.data?.data);
         handleClose();
       } else {
