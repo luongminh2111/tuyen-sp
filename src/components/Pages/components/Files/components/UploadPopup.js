@@ -95,7 +95,7 @@ function UploadPopup(props) {
           <DialogContent>
             <div className="contents-add">
               <div className="d-flex">
-                <label for="files" class="btn">
+                <label for="files" className="btn">
                   {file ? "Change File" : "Select File"}
                 </label>
                 <input

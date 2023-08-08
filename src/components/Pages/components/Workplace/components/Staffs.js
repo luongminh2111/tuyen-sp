@@ -14,6 +14,8 @@ import {
 } from "../actions/WorkplaceActionRedux";
 import { getListMemberInWorkspace } from "../../ProjectSetting/actions/ProjectActionCallApi";
 import { CircularProgress } from "@mui/material";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import storages from "../../../../../contains/firebaseConfig";
 import ButtonDropDown from "../../../../../commons/Button/ButtonDropdown";
 
 function Staffs(props) {
@@ -31,6 +33,9 @@ function Staffs(props) {
   const [role, setRole] = useState(USER_ROLE.MEMBER);
   const [roleOption, setRoleOption] = useState({});
 
+  const [file, setFile] = useState({});
+  const [preUrl, setPreUrl] = useState("");
+
   const [loading, setLoading] = useState(false);
 
   const [textAlert, setTextAlert] = useState("");
@@ -44,8 +49,8 @@ function Staffs(props) {
   }, []);
 
   useEffect(() => {
-    if(roleOption?.id >= 0) {
-      dispatch(updateFilterStaff('role', roleOption?.id));
+    if (roleOption?.id >= 0) {
+      dispatch(updateFilterStaff("role", roleOption?.id));
     }
   }, [roleOption]);
 
@@ -68,8 +73,7 @@ function Staffs(props) {
     }, 600);
   };
 
-  const handleAddUser = () => {
-
+  const handleAddUser = (url) => {
     if (handleValidateEmail(email)) {
       setOpenAlert(true);
       setTextAlert("Email is not in the correct format!");
@@ -81,6 +85,7 @@ function Staffs(props) {
       email,
       password,
       role,
+      avatar: url
     };
 
     dispatch(createMemberForWorkspace(request)).then((res) => {
@@ -102,6 +107,27 @@ function Staffs(props) {
         setTextAlert(res.data.message);
       }
     });
+  };
+
+  const handleChangeFile = (file) => {
+    setFile(file[0]);
+    const objectUrl = URL.createObjectURL(file[0]);
+    console.log("check ee :", objectUrl);
+    setPreUrl(objectUrl);
+
+    // free memory when ever this component is unmounted
+    //  return () => URL.revokeObjectURL(objectUrl)
+  };
+
+  const handleUpload = () => {
+    if (!file) return;
+    setLoading(true);
+    const storageRef = ref(storages, `/avatars/${file.name}`);
+    uploadBytesResumable(storageRef, file).then(() => {
+      getDownloadURL(ref(storages, `/avatars/${file.name}`)).then(res => {
+        handleAddUser(res);
+    })});
+
   };
 
   const renderEditUser = () => {
@@ -209,13 +235,26 @@ function Staffs(props) {
                 <span>*</span>
               </div>
               <div className="avatar">
-                <img src={ORG_IMAGE_DEFAULT}></img>
+                <div className="img-pre">
+                  <img src={preUrl || ORG_IMAGE_DEFAULT} alt="avatar" />
+                </div>
+                <div className="upload">
+                  <label for="files" className="btn">
+                    Select avatar
+                  </label>
+                  <input
+                    id="files"
+                    style={{ visibility: "hidden", display: "none" }}
+                    type="file"
+                    onChange={(e) => handleChangeFile(e.target.files)}
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div className="d-flex justify-content-center submit-btn">
-          <button onClick={() => handleAddUser()} style={{ width: "200px" }}>
+          <button onClick={() => handleUpload()} style={{ width: "200px" }}>
             Create new member
           </button>
         </div>
@@ -245,10 +284,16 @@ function Staffs(props) {
             value={query}
             onChange={(e) => handleChangeQuery(e.target.value)}
           />
-          <i className="fa-solid fa-x" onClick={() => handleChangeQuery("")}></i>
+          <i
+            className="fa-solid fa-x"
+            onClick={() => handleChangeQuery("")}
+          ></i>
         </div>
         <div className="text-2">
-          <ButtonDropDown  options={roleOptions} onChangeOption={setRoleOption}></ButtonDropDown>
+          <ButtonDropDown
+            options={roleOptions}
+            onChangeOption={setRoleOption}
+          ></ButtonDropDown>
         </div>
       </div>
       <div className="filter-result-table">
@@ -298,22 +343,21 @@ function Staffs(props) {
 }
 export default Staffs;
 
-
 const roleOptions = [
   {
     id: 0,
-    value: 'All'
+    value: "All",
   },
   {
     id: 1,
-    value: 'Admin'
+    value: "Admin",
   },
   {
     id: 2,
-    value: 'PM'
+    value: "PM",
   },
   {
     id: 3,
-    value: 'member'
-  }
-]
+    value: "member",
+  },
+];
