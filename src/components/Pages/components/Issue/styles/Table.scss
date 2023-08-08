@@ -110,6 +110,21 @@
         text-align: center;
         min-width: 60px;
       }
+      &.Progress {
+        >div {
+          background-color: #4488c5;
+        }
+      }
+      &.Resolved {
+        >div {
+          background-color: #5eb5a6;
+        }
+      }
+      &.Closed {
+        >div {
+          background-color: #a1af2f;
+        }
+      }
     }
     .item_priority{
       i {

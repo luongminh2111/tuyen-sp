@@ -1,4 +1,5 @@
 .signin-wrapper {
+  height: 100vh;
   font-family: "Gilroy", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
   .head {
     padding-top: 100px;
@@ -13,7 +14,7 @@
     display: flex;
     justify-content: center;
     margin-top: 100px;
-    margin-bottom: 100px;
+    margin-bottom: 170px;
     .login-form {
       padding: 32px;
       width: 384px;

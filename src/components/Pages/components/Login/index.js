@@ -122,7 +122,7 @@ function Login() {
   return (
     <Box className="signin-wrapper">
       <Box className="head">
-        <div className="title-1">Log in to your Account</div>
+        <div className="title-1">Welcome to Project M</div>
       </Box>
 
       <div className="login-container">

@@ -17,6 +17,7 @@ function NotificationPopup(props) {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [ids, setIds] = useState([]);
+  const [filter, setFilter] = useState(false);
 
   useEffect(() => {
     dispatch(getListMemberInWorkspace());
@@ -25,6 +26,13 @@ function NotificationPopup(props) {
       setItems(res?.data);
     });
   }, []);
+
+  useEffect(() => {
+    dispatch(getListNoti(account?.id, filter)).then((res) => {
+      setLoading(false);
+      setItems(res?.data);
+    });
+  }, [filter]);
 
   const handleReadNoti = (item) => {
     if(item.read_at) {
@@ -47,8 +55,15 @@ function NotificationPopup(props) {
     <div className="notification-wrapper">
       <div className="title d-flex justify-content-between">
         <div>Notification</div>
-        <div>
+        <div className="d-flex content-2">
+          <div className="sub-content-1" onClick={() => setFilter(!filter)}>
+              <input type="checkbox" checked={filter} />
+              <label> Unread only </label>
+          </div>
+          <div>
           <i class="fa-solid fa-x" onClick={() => setShowNoti(false)}></i>
+          </div>
+          
         </div>
       </div>
       <div className="list-noti">

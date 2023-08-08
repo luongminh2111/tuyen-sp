@@ -120,7 +120,7 @@ function TableIssue(props) {
           <div className="item_assignee text-align-center">
             {getCurrentMember(e?.assignee_id)}
           </div>
-          <div className="item_status">
+          <div className={`item_status ${e?.status}`}>
             <div>{e?.status}</div>
           </div>
           <div className="item_priority">

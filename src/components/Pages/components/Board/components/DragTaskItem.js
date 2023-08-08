@@ -196,7 +196,7 @@ function DragTaskItem(props) {
                 <i className="fa-solid fa-circle"></i>
               </span>
               <span>{item?.status || "Open"}</span>
-              <span style={{ marginLeft: "8px" }}>({3})</span>
+              <span style={{ marginLeft: "8px" }}>({item?.items?.length})</span>
             </div>
             <div
               key={item.title}

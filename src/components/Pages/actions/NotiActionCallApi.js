@@ -1,8 +1,14 @@
 import { BASE_URL } from "../../../contains/config"
 import callApi from "../../../ulti/callApi";
 
-export const getListNoti = (userId) => dispatch => {
-  const url = `${BASE_URL}/api/notifications/${userId}`;
+export const getListNoti = (userId, filter) => dispatch => {
+  let url = "";
+  if(filter) {
+    url = `${BASE_URL}/api/notifications/${userId}?unread=true`;
+  } else {
+    url = `${BASE_URL}/api/notifications/${userId}`
+  }
+
   const options = {
     method: 'GET'
   }
