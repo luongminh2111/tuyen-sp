@@ -33,16 +33,10 @@
         .avatar {
           width: 60px;
           height: 100%;
-          >div {
+          img {
             width: 45px;
             height: 45px;
             border-radius: 50%;
-            background: #608c4a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: 600;
           }
         }
         .right-content {

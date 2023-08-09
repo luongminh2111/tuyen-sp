@@ -40,7 +40,7 @@ function MemberSetting(props) {
       </div>
       <div className="filter-result-table">
         <div className="header">
-          <div className="name">Nick Name</div>
+          <div className="member-name">Nick Name</div>
           <div className="mail">Email Address</div>
           <div className="role">Role</div>
           <div className="join">Join on</div>
@@ -50,7 +50,7 @@ function MemberSetting(props) {
           {members?.map((e, index) => {
             return (
               <div className="item" key={index}>
-                <div className="name">{e?.name}</div>
+                <div className="member-name">{e?.name}</div>
                 <div className="mail">{e?.email}</div>
                 <div className="role">{USER_ROLE_TEXT[e?.role]}</div>
                 <div className="join">{e?.created_at?.substring(0, 10)}</div>

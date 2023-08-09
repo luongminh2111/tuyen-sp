@@ -1,7 +1,28 @@
 import React from "react";
 import "../styles/ProjectLeftContent.scss";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getAllUpdateItem } from "../../Workplace/actions/WorkplaceActionCallApi";
+import { useState } from "react";
+import { CircularProgress } from "@mui/material";
+import { EMPTY_USER } from "../../../../../commons/image";
 
 function ProjectLeftContent(props) {
+  const dispatch = useDispatch();
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    dispatch(getAllUpdateItem()).then((res) => {
+      setLoading(false);
+      if (res) {
+        setItems(res);
+      }
+    });
+  }, []);
+
+  console.log("check items : ", items);
+
   return (
     <div className="project-left-wrapper">
       <div className="title">
@@ -9,126 +30,72 @@ function ProjectLeftContent(props) {
         <div className="text-2">Recent Updates</div>
       </div>
       <div className="list-timeline">
-        <div className="timeline-item">
-          <div className="timelịne-date">Mon Jun. 26, 2023</div>
-          <div className="timeline__stream">
-            <div className="avatar">
-              <div>V</div>
-            </div>
-            <div className="right-content">
-              <div className="stream-update__text">
-                <div>
-                  <span>Vũ Đức Tuyên</span>
-                  <span>posted a comment on the issue</span>
-                </div>
-                <div>
-                  <span>a day ago</span>
-                </div>
-              </div>
-              <div className="stream-update__title">
-                <span className="project-name">PMA_web </span>
-                <span>(PMA_WEB)</span>
-              </div>
-              <div className="stream-update__content d-flex justify-content-between">
-                <div className="">
-                  <img></img>
-                  <div>Shared Files tu_vung.docx</div>
-                </div>
-                <div className="btn-actions d-flex align-items-end">
-                  <div className="comment " style={{ marginRight: "12px" }}>
-                    <i className="fa-solid fa-message"></i>
-                  </div>
-                  <div className="rate">
-                    <span>
-                      <i className="fa-solid fa-star"></i>
-                    </span>
-                    <span>0</span>
-                  </div>
-                </div>
-              </div>
+        {loading ? (
+          <div>
+            <div
+              className="w-100 d-flex justify-content-center align-items-center"
+              style={{ height: "400px" }}
+            >
+              <CircularProgress />
             </div>
           </div>
-        </div>
-        <div className="timeline-item">
-          <div className="timelịne-date">Mon Jun. 26, 2023</div>
-          <div className="timeline__stream">
-            <div className="avatar">
-              <div>V</div>
-            </div>
-            <div className="right-content">
-              <div className="stream-update__text">
-                <div>
-                  <span>Vũ Đức Tuyên</span>
-                  <span>posted a comment on the issue</span>
+        ) : (
+          items?.map((e) => {
+            return (
+              <div className="timeline-item">
+                <div className="timelịne-date">
+                  {e?.updated_at?.substring(0, 10)}
                 </div>
-                <div>
-                  <span>a day ago</span>
-                </div>
-              </div>
-              <div className="stream-update__title">
-                <span className="project-name">PMA_web </span>
-                <span>(PMA_WEB)</span>
-              </div>
-              <div className="stream-update__content d-flex justify-content-between">
-                <div className="">
-                  <img></img>
-                  <div>Shared Files tu_vung.docx</div>
-                </div>
-                <div className="btn-actions d-flex align-items-end">
-                  <div className="comment " style={{ marginRight: "12px" }}>
-                    <i className="fa-solid fa-message"></i>
+                <div className="timeline__stream">
+                  <div className="avatar">
+                    <img src={e?.creator?.avatar || EMPTY_USER} alt="avatar" />
                   </div>
-                  <div className="rate">
-                    <span>
-                      <i className="fa-solid fa-star"></i>
-                    </span>
-                    <span>0</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="timeline-item">
-          <div className="timelịne-date">Mon Jun. 26, 2023</div>
-          <div className="timeline__stream">
-            <div className="avatar">
-              <div>V</div>
-            </div>
-            <div className="right-content">
-              <div className="stream-update__text">
-                <div>
-                  <span>Vũ Đức Tuyên</span>
-                  <span>posted a comment on the issue</span>
-                </div>
-                <div>
-                  <span>a day ago</span>
-                </div>
-              </div>
-              <div className="stream-update__title">
-                <span className="project-name">PMA_web </span>
-                <span>(PMA_WEB)</span>
-              </div>
-              <div className="stream-update__content d-flex justify-content-between">
-                <div className="">
-                  <img></img>
-                  <div>Shared Files tu_vung.docx</div>
-                </div>
-                <div className="btn-actions d-flex align-items-end">
-                  <div className="comment " style={{ marginRight: "12px" }}>
-                    <i className="fa-solid fa-message"></i>
-                  </div>
-                  <div className="rate">
-                    <span>
-                      <i className="fa-solid fa-star"></i>
-                    </span>
-                    <span>0</span>
+                  <div className="right-content">
+                    <div className="stream-update__text">
+                      <div>
+                        <span
+                          style={{ fontWeight: "600", marginRight: "16px" }}
+                        >
+                          {e?.creator?.name}
+                        </span>
+                        {e?.type === "NORMAL" ? (
+                          <span>posted a comment on the task</span>
+                        ) : null}
+                        {e?.type === "ADD" ? (
+                          <span>added a new task</span>
+                        ) : null}
+                        {e?.type === "UPDATE" ? (
+                          <span>updated a task</span>
+                        ) : null}
+                      </div>
+                    </div>
+                    <div className="stream-update__title">
+                      <span
+                        className="project-name"
+                        style={{
+                          fontWeight: "600",
+                          marginRight: "10px",
+                          color: "#0088FF",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {e?.task?.task_key}
+                      </span>
+                      <span>{e?.task?.name}</span>
+                    </div>
+                    {e?.type === "NORMAL" || e?.type === "UPDATE" ? (
+                      <div className="stream-update__content d-flex justify-content-between mt-2">
+                        <div className="">
+                          <div>{e?.content}</div>
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+            );
+          })
+        )}
       </div>
     </div>
   );

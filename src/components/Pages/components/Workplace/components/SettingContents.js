@@ -22,6 +22,11 @@ function SettingContent(props) {
   const [domain, setDomain] = useState(workspace?.domain || "");
   const [description, setDescription] = useState(workspace?.description || "");
 
+  const [file, setFile] = useState({});
+  const [preUrl, setPreUrl] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
   const [textAlert, setTextAlert] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
   const [statusAlert, setStatusAlert] = useState(false);
@@ -44,6 +49,12 @@ function SettingContent(props) {
         setTextAlert("Update workspace successful !");
       }
     });
+  };
+
+  const handleChangeFile = (file) => {
+    setFile(file[0]);
+    const objectUrl = URL.createObjectURL(file[0]);
+    setPreUrl(objectUrl);
   };
 
   const renderGeneralSetting = () => {
@@ -84,7 +95,22 @@ function SettingContent(props) {
               <span>*</span>
             </div>
             <div className="logo-company">
-              <img src={ORG_IMAGE_DEFAULT || avatar}></img>
+              <div className="avatar d-flex">
+                <div className="img-pre">
+                  <img src={preUrl || ORG_IMAGE_DEFAULT} alt="avatar" />
+                </div>
+                <div className="upload">
+                  <label for="files" className="btn">
+                    Select avatar
+                  </label>
+                  <input
+                    id="files"
+                    style={{ visibility: "hidden", display: "none" }}
+                    type="file"
+                    onChange={(e) => handleChangeFile(e.target.files)}
+                  />
+                </div>
+              </div>
             </div>
             <div className="label d-flex">
               <span>Organization Domain</span>

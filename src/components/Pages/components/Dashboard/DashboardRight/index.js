@@ -1,10 +1,13 @@
-import React, { useState } from "react";
-import ReactTooltip from "react-tooltip";
+import React, { useEffect, useState } from "react";
 import { ORG_IMAGE_DEFAULT } from "../../../../../commons/image";
 import "./style/index.scss";
 
 function DashboardRight(props) {
   const { handleChangeRightRoom, isRightZoomOut } = props;
+
+  useEffect(() => {
+    
+  }, []);
 
   return (
     <div

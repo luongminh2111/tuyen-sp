@@ -109,3 +109,21 @@ export const getAllUserInWorkspace = (id) => dispatch => {
   })
 };
 
+export const getAllUpdateItem = () => (dispatch, getState) => {
+  const {
+    projects: {
+      itemDetail: {
+        id
+      }
+    }
+  } = getState();
+  const options = {
+    method: 'GET',
+  }
+  const endPoint = `${BASE_URL}/api/update_in_project/${id}`;
+  return callApi(endPoint, options).then(json => {
+    if(json?.status === 200 && json?.data?.data) {
+      return json.data.data;
+    }
+  })
+}

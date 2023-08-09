@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/Staff.scss";
 import { useState } from "react";
-import { ORG_IMAGE_DEFAULT } from "../../../../../commons/image";
+import { EMPTY_USER } from "../../../../../commons/image";
 import { useHistory } from "react-router-dom";
 import { USER_ROLE, USER_ROLE_TEXT } from "../../../../../commons/Commons";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,7 @@ import { CircularProgress } from "@mui/material";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import storages from "../../../../../contains/firebaseConfig";
 import ButtonDropDown from "../../../../../commons/Button/ButtonDropdown";
+import { getMyProfile } from "../../MyProfile/actions/MyProflesActionsCallApi";
 
 function Staffs(props) {
   const staffs = useSelector((state) => state.staffs.items);
@@ -85,7 +86,7 @@ function Staffs(props) {
       email,
       password,
       role,
-      avatar: url
+      avatar: url || EMPTY_USER
     };
 
     dispatch(createMemberForWorkspace(request)).then((res) => {
@@ -98,6 +99,8 @@ function Staffs(props) {
         setUserName("");
         setEmail("");
         setPassWord("");
+        setPreUrl("");
+        setFile({});
         setTimeout(() => {
           setIsEdit(false);
         }, 500);
@@ -112,11 +115,7 @@ function Staffs(props) {
   const handleChangeFile = (file) => {
     setFile(file[0]);
     const objectUrl = URL.createObjectURL(file[0]);
-    console.log("check ee :", objectUrl);
     setPreUrl(objectUrl);
-
-    // free memory when ever this component is unmounted
-    //  return () => URL.revokeObjectURL(objectUrl)
   };
 
   const handleUpload = () => {
@@ -236,7 +235,7 @@ function Staffs(props) {
               </div>
               <div className="avatar">
                 <div className="img-pre">
-                  <img src={preUrl || ORG_IMAGE_DEFAULT} alt="avatar" />
+                  <img src={preUrl || EMPTY_USER} alt="avatar" />
                 </div>
                 <div className="upload">
                   <label for="files" className="btn">
@@ -261,6 +260,11 @@ function Staffs(props) {
       </div>
     );
   };
+
+  const handleShowDetailUser = (id) => {
+    dispatch(getMyProfile(id));
+    history.push(`/my-profile?id=${id}`);
+  }
 
   if (isEdit) {
     return renderEditUser();
@@ -310,7 +314,7 @@ function Staffs(props) {
             return (
               <div
                 className="item"
-                onClick={() => history.push("/my-profile")}
+                onClick={() => handleShowDetailUser(e.id)}
                 key={index}
               >
                 <div className="name">{e?.name}</div>

@@ -1,5 +1,6 @@
 const initState = {
   account: {},
+  currentUser: {},
   isAuthenticated: false,
 };
 
@@ -12,9 +13,18 @@ const auth = (state = initState, action) => {
       return {
         ...state,
         account: action.account,
-        isAuthenticated: true
-      }
-    
+        isAuthenticated: true,
+      };
+    case "GET_CURRENT_USER":
+      return {
+        ...state,
+        currentUser: action.item,
+      };
+    case "RESET_CURRENT_USER":
+      return {
+        ...state,
+        currentUser: {},
+      };
     default:
       return state;
   }

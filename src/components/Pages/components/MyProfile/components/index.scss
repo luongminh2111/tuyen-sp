@@ -8,7 +8,7 @@
     left: 80px;
     button {
       width: 180px;
-      background-color: #0088FF;
+      background-color: #0088ff;
       border: 1px solid #d3d5d7;
       border-radius: 4px;
       color: #fff;
@@ -16,7 +16,6 @@
       font-weight: 600;
       height: 36px;
     }
-   
   }
   .profile-container {
     display: flex;
@@ -31,27 +30,40 @@
       height: 530px;
       padding: 16px 24px;
       .avatar {
+        margin-bottom: 16px;
         width: 100%;
-        height: 60px;
+        height: 100px;
         display: flex;
         justify-content: center;
-        div {
-          background:  #608c4a;
-          border-radius: 50%;
-          width: 60px;
-          height: 60px;
+        .top {
           display: flex;
           justify-content: center;
-          align-items: center;
-          color: #fff;
-          font-size: 30px;
+          width: 100%;
+          margin-bottom: 12px;
+          img {
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+          }
+        }
+        .bottom {
+          .upload {
+            background-color: #0088ff;
+            color: #fff;
+            border-radius: 4px;
+            label {
+              color: #fff;
+              font-size: 13px;
+            }
+          }
         }
       }
-      .username, .email, .unique-id {
+      .username,
+      .email,
+      .unique-id {
         margin-top: 24px;
         margin-left: 24px;
         margin-right: 24px;
-       
       }
       .note {
         font-size: 12px;
@@ -75,13 +87,18 @@
       }
       button {
         width: 150px;
-        background-color: #0088FF;
+        background-color: #0088ff;
         border: 1px solid #d3d5d7;
         border-radius: 4px;
         color: #fff;
         font-size: 16px;
         font-weight: 600;
         height: 36px;
+      }
+      .disabled {
+        button {
+          cursor: not-allowed;
+        }
       }
     }
   }
