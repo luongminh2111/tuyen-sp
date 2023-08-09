@@ -17,11 +17,11 @@ function HeaderIssue(props) {
           <span>({item?.project_key})</span>
         </div>
         </div>
-        <div className="issues-header_right">
+        {/* <div className="issues-header_right">
           <span className="search">
             <i className="fa-solid fa-magnifying-glass"></i>
           </span>
-        </div>
+        </div> */}
       </div>
     </>
   );

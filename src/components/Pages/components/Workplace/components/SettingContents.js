@@ -7,6 +7,9 @@ import ListProject from "./ListProjects";
 import { useDispatch } from "react-redux";
 import { updateWorkSpace } from "../actions/WorkplaceActionCallApi";
 import Alerts from "../../../../../commons/Alert";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import storages from "../../../../../contains/firebaseConfig";
+import { CircularProgress } from "@mui/material";
 
 function SettingContent(props) {
   const history = useHistory();
@@ -18,7 +21,7 @@ function SettingContent(props) {
   const [organizationName, setOrganizationName] = useState(
     workspace?.organization_name || ""
   );
-  const [avatar, setAvatar] = useState(workspace?.avatar || "");
+
   const [domain, setDomain] = useState(workspace?.domain || "");
   const [description, setDescription] = useState(workspace?.description || "");
 
@@ -31,12 +34,13 @@ function SettingContent(props) {
   const [openAlert, setOpenAlert] = useState(false);
   const [statusAlert, setStatusAlert] = useState(false);
 
-  const handleUpdateWorkspace = () => {
+  const handleUpdateWorkspace = (url) => {
     const request = {
       name,
       organization_name: organizationName,
       domain,
       description,
+      avatar: url || ORG_IMAGE_DEFAULT,
     };
     dispatch(updateWorkSpace(request)).then((res) => {
       if (res) {
@@ -57,7 +61,43 @@ function SettingContent(props) {
     setPreUrl(objectUrl);
   };
 
+  const handleUpload = () => {
+    if (!file) return;
+    if (description?.trim()?.length === 0) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("Description must not be empty");
+      return;
+    }
+    setLoading(true);
+    const storageRef = ref(storages, `/avatars/${file.name}`);
+    uploadBytesResumable(storageRef, file).then(() => {
+      getDownloadURL(ref(storages, `/avatars/${file.name}`)).then((res) => {
+        setLoading(false);
+        handleUpdateWorkspace(res);
+      });
+    });
+  };
+
   const renderGeneralSetting = () => {
+    if (loading) {
+      return (
+        <div>
+          <div
+            className="w-100 d-flex justify-content-center align-items-center"
+            style={{ fontSize: "18px", marginTop: "30px", fontWeight: "600" }}
+          >
+            The system is processing, please wait
+          </div>
+          <div
+            className="w-100 d-flex justify-content-center align-items-center"
+            style={{ height: "300px" }}
+          >
+            <CircularProgress />
+          </div>
+        </div>
+      );
+    }
     return (
       <>
         <div className="title d-flex">
@@ -97,7 +137,10 @@ function SettingContent(props) {
             <div className="logo-company">
               <div className="avatar d-flex">
                 <div className="img-pre">
-                  <img src={preUrl || ORG_IMAGE_DEFAULT} alt="avatar" />
+                  <img
+                    src={preUrl || workspace?.avatar || ORG_IMAGE_DEFAULT}
+                    alt="avatar"
+                  />
                 </div>
                 <div className="upload">
                   <label for="files" className="btn">
@@ -142,7 +185,7 @@ function SettingContent(props) {
         </div>
 
         <div className="d-flex justify-content-center save-btn">
-          <button onClick={handleUpdateWorkspace}>Save</button>
+          <button onClick={() => handleUpload()}>Save</button>
         </div>
       </>
     );

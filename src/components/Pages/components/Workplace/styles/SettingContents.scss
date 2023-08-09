@@ -35,8 +35,21 @@
           img {
             width: 70px;
             height: 70px;
+            border-radius: 4px;
           }
          
+        }
+        .upload {
+          min-width: max-content;
+          display: flex;
+          align-items: center;
+          label {
+            margin-left: 16px;
+            background-color: #0088FF;
+            color: #FFF;
+            font-size: 13px;
+            border-radius: 4px;
+          }
         }
       }
     }
