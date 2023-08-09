@@ -52,7 +52,9 @@ function EditTaskModal(props) {
     setAssignee(curMember);
     const curMilestone = mileStoneOptions?.find(e => e.id === taskItem?.milestone_id) || mileStoneOptions[0];
     setMilestone(curMilestone);
-  }, []);
+  }, [milestones, members, taskItem ]);
+
+  console.log("check priority :", priority);
 
   const mileStoneOptions = useMemo(() => {
     const newMileStones = milestones?.map(e => {

@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 function ButtonDropDown(props) {
   const { options, onChangeOption, curOption } = props;
   const [show, setShow] = useState(false);
-  console.log("check curOption :", curOption);
   const filterTask = useSelector(state => state.projects.filterTask);
 
   const [optionSelect, setOptionSelect] = useState(curOption || {});

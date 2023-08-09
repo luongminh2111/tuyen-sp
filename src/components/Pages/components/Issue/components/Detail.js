@@ -48,14 +48,15 @@ function TaskDetail(props) {
   const getCurrentMember = (id) => {
     return members?.find((e) => e.id === id)?.name;
   };
-
+  console.log("check reset : ", isReset);
   useEffect(() => {
+    dispatch({
+      type: "RESET_LIST",
+      value: false,
+    });
     if (isReset) {
       setShowDetail(false);
-      dispatch({
-        type: "RESET_LIST",
-        value: false,
-      });
+    
     }
   }, [isReset]);
 

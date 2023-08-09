@@ -187,7 +187,7 @@ function DragTaskItem(props) {
     <div className="drag-n-drop">
       {groupTask.map((item, grpI) => {
         return (
-          <div className="drag-item" key={grpI}>
+          <div className="drag-item" key={`${grpI}-${grpI*3}`}>
             <div
               className={`status-title ${item?.status}`}
               style={{ marginBottom: "16px" }}
@@ -221,7 +221,7 @@ function DragTaskItem(props) {
                   }
                   className={dragging ? getStyles({ grpI, itemI }) : "dnd-item"}
                 >
-                  <div className="task-item">
+                  <div className="task-item" key={item?.task_key}>
                     <div className="row-1 mb-2 mt-2">
                       <div className="_left col-10">
                         <div className="name">{item?.name}</div>

@@ -45,6 +45,7 @@ function Issues(props) {
   }, []);
 
   useEffect(() => {
+    console.log("check vao day nay");
     dispatch(getListTask());
   }, [showDetail]);
 

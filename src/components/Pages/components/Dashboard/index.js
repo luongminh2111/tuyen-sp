@@ -34,7 +34,7 @@ function Dashboard(props) {
             <div className="header-icon-set  -dashboard ">
               <div className="header-icon-set__icon">
                 <a href="/">
-                  <img src={ORG_IMAGE_DEFAULT} />
+                  <img style={{borderRadius: '4px'}} src={ workspace?.avatar || ORG_IMAGE_DEFAULT} alt="avatar" />
                 </a>
               </div>
               <div className="title-group">

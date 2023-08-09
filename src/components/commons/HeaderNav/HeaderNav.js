@@ -18,6 +18,7 @@ function HeaderNav(props) {
 
   const dispatch = useDispatch();
   const [showNoti, setShowNoti] = useState(false);
+  const workspace = useSelector(state => state.workplace?.workspace);
 
   const account = useSelector((state) => state.auth.account);
 
@@ -79,7 +80,7 @@ function HeaderNav(props) {
         onClick={() => history.push("/dashboard")}
       >
         <div className="org-icon">
-          <img src={ORG_IMAGE_DEFAULT} />
+          <img src={workspace?.avatar || ORG_IMAGE_DEFAULT} alt="avatar" style={{borderRadius: '4px'}} />
         </div>
         <div className="dashboard d-flex align-items-center">Dashboard</div>
       </div>
