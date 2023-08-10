@@ -36,7 +36,7 @@ function CreateSubTaskModal(props) {
       milestone_id: milestoneId || null,
       status: "Open",
       priority: priority?.value,
-      assignee: assignee?.id,
+      assignee_id: assignee?.id,
       is_child: true,
       parent_task_id: parentTask?.id
     };

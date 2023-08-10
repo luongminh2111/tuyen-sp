@@ -53,7 +53,6 @@ function EditTaskModal(props) {
 
   const dispatch = useDispatch();
 
-  console.log("check priority :", priority);
 
   const handleUpdateTask = () => {
     const request = {
@@ -66,15 +65,19 @@ function EditTaskModal(props) {
       milestone_id: milestoneId || null,
       status: status?.value || statusOptions[0]?.value,
       priority: priority?.value || priorityOptions[0]?.value,
-      assignee: assignee?.id || memberOptions[0]?.value,
+      assignee_id: assignee?.id || memberOptions[0]?.value,
     };
     dispatch(updateTask(request)).then((res) => {
+      console.log("check res :", res);
       if (res?.status === 200 && res?.data?.data) {
         setOpenAlert(true);
         setStatusAlert("success");
         setTextAlert(res.data?.message);
         setTaskItem(res?.data?.data);
-        handleClose();
+        setTimeout(() => {
+          handleClose();
+        }, 1000);
+     
       } else {
         setOpenAlert(true);
         setStatusAlert("error");

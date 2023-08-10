@@ -24,10 +24,13 @@ function AddIssue(props) {
   const [endTime, setEndTime] = useState(parseDateToString(new Date()));
   const [milestone, setMilestone] = useState({});
   const [priority, setPriority] = useState({});
+  const [estTime, setEstTime] = useState(0);
   const [assignee, setAssignee] = useState({});
   const [textAlert, setTextAlert] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
   const [statusAlert, setStatusAlert] = useState(false);
+
+  const [createSuccess, setCreateSuccess] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -69,6 +72,7 @@ function AddIssue(props) {
       status: 'Open',
       priority: priority?.value,
       assignee: assignee?.id,
+      estimate_time: estTime
     }
     dispatch(createTask(request)).then(res => {
       if (res?.status === 200 && res?.data?.data) {
@@ -76,12 +80,25 @@ function AddIssue(props) {
         setStatusAlert("success");
         setTextAlert(res.data?.message);
         dispatch(createTaskForProject(res.data.data));
+        setCreateSuccess(true);
       } else {
         setOpenAlert(true);
         setStatusAlert("error");
         setTextAlert(res.data?.message);
       }
     });
+  }
+
+  const handleCreateMore = () => {
+    setName("");
+    setDescription("");
+    setEstTime(0);
+    setMilestone({});
+    setAssignee({});
+    setPriority({});
+    setStartTime(parseDateToString(new Date()));
+    setEndTime(parseDateToString(new Date()));
+    setCreateSuccess(false);
   }
 
   return (
@@ -103,6 +120,16 @@ function AddIssue(props) {
           </div>
           <div className="project-header__actions"></div>
         </div>
+        {createSuccess ? 
+        <div className="create-task-success">
+          <div>
+            <div className="title1">Task has been added</div>
+            <div className="mt-2 d-flex justify-content-center" style={{color: '#0088FF', fontWeight: '600', cursor: 'pointer'}}>{name}</div>
+          </div>
+          <div className="btn">
+            <button onClick={() => handleCreateMore()}>Create another task</button>
+          </div>
+        </div> : 
         <div className="contents-main">
           <div className="title-issue">
             <h3>Create task</h3>
@@ -154,6 +181,12 @@ function AddIssue(props) {
                     <ButtonDropDown options={mileStoneOptions} onChangeOption={setMilestone} />
                   </div>
                 </div>
+                <div className="ticket__properties-item -milestones">
+                  <label>Estimate Time</label>
+                  <div className="ticket__properties-value">
+                    <input type="number" value={estTime} onChange={(e) => setEstTime(e.target.value)} />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -161,7 +194,7 @@ function AddIssue(props) {
             <Button className="preview-btn">Preview</Button>
             <Button className="add-btn" onClick={() => handleCreateTask()}>Add</Button>
           </div>
-        </div>
+        </div> }
       </div>
       {openAlert ? (
         <Alerts

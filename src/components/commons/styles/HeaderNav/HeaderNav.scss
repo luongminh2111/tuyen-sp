@@ -69,6 +69,14 @@
         .current-user {
           position: relative;
           width: 36px;
+          &:hover {
+            background-color: unset;
+            border-radius: 50%;
+            i {
+            
+              color: unset;
+            }
+          }
           i {
             &:first-child {
               font-size: 18px;
@@ -77,7 +85,7 @@
             &:nth-child(2) {
               position: absolute;
               top: 8px;
-              right: 3px;
+              right: -10px;
               font-size: 12px;
             }
           }
@@ -95,20 +103,8 @@
               cursor: pointer;
               padding: 6px 8px;
               border-radius: 4px;
-              &:first-child {
-                color: #777;
-                cursor: text;
-              }
               &:last-child {
                 margin-bottom: unset;
-              }
-              &:hover {
-                background-color: #f2fcf9;
-                color: #2c9a7a;
-                &:first-child {
-                  color: #777;
-                  background-color: unset;
-                }
               }
             }
           }
@@ -171,8 +167,12 @@
               }
             }
             .list-noti {
-              height: 410px;
+              height: 400px;
+              max-height: 400px;
+              overflow-y: scroll;
+              
               width: 100%;
+              padding:  12px 8px;
               .loading {
                 display: flex;
                 align-items: center;

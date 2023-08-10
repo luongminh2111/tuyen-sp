@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
 import { useEffect } from "react";
 import ReactTooltip from "react-tooltip";
-import { ORG_IMAGE_DEFAULT } from "../../../commons/image";
+import { EMPTY_USER, ORG_IMAGE_DEFAULT } from "../../../commons/image";
 import { logout } from "../../Pages/actions/AccountActionCallApi";
 import NotificationPopup from "./NotificationPopup";
 import { getNotiCount } from "../../Pages/actions/NotiActionCallApi";
@@ -43,11 +43,7 @@ function HeaderNav(props) {
   const renderDropdownUser = () => {
     return (
       <div className="dropdown-user-wrapper">
-        <div>Hello {` + ${account?.name}`}</div>
         <div onClick={() => history.push("/my-profile")}>My Profile</div>
-        <div onClick={() => history.push("/project-setting")}>
-          Personal Settings
-        </div>
         <div onClick={() => handleLogout()}>Logout</div>
       </div>
     );
@@ -128,7 +124,7 @@ function HeaderNav(props) {
           ref={userRef}
           onClick={() => setShowDropDownUser(!showDropDownUser)}
         >
-          <i className="fa-solid fa-user" data-tip="" data-for="icon-user"></i>
+            <img src={account?.avatar || EMPTY_USER}  alt="avatar-user"style={{width: '30px', height: '30px', borderRadius: '50%'}} />
           <i className="fa-solid fa-caret-down"></i>
           <ReactTooltip
             type="dark"

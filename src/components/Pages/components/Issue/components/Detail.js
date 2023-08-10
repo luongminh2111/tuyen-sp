@@ -24,7 +24,6 @@ import { useHistory } from "react-router-dom";
 
 function TaskDetail(props) {
   const { task, setShowDetail, milestones, isExpand, isSubTask } = props;
-  console.log("check props :", props);
   const curProject = useSelector((state) => state.projects.itemDetail);
   const account = useSelector((state) => state.auth.account);
   const listComment = useSelector((state) => state.projects.comments);
@@ -341,7 +340,7 @@ function TaskDetail(props) {
           <div>
             <i className="fa-solid fa-rotate-left"></i>
           </div>
-          <div className="text">Back to {taskItem?.name}</div>
+          <div className="text"> Back to list task</div>
         </div>
         <hr />
       </div>
