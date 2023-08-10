@@ -1,70 +1,102 @@
 import React, { useState } from "react";
-import { Button, TextField, Box, dividerClasses } from "@mui/material";
-import "../../styles/_changePassword.scss";
+import { Box } from "@mui/material";
+import "../styles/Changepass.scss";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { updatePassw } from "../../actions/login/LoginActionCallApi";
-import { logout } from "../../actions/login/LoginAction";
+import { useEffect } from "react";
+import { resetPassword } from "../../actions/AccountActionCallApi";
+import Alerts from "../../../../commons/Alert";
 
 function ChangePassword(props) {
   const [email, setEmail] = useState("");
-  const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [reNewpassword, setReNewPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [RePassword, setRePassword] = useState("");
+  const [token, setToken] = useState("");
   const history = useHistory();
   const dispatch = useDispatch();
+  const [textAlert, setTextAlert] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [statusAlert, setStatusAlert] = useState(false);
+
+
+  useEffect(() => {
+    const path = new URLSearchParams(history.location.search);
+    const curToken = path.get("token");
+    setToken(curToken);
+  }, []);
 
   const handleChangePasssw = () => {
-    dispatch(updatePassw(oldPassword, newPassword, reNewpassword)).then(
-      res => {
-        if(res){
-          logout();
-          history.push("/login");
-        } else {
-          setMessage("Thay đổi mật khẩu thất bại");
-        }
-      }
+    if (newPassword !== RePassword) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("Password does not match");
+      return;
+    }
+    if(!token || email?.trim()?.length === 0 || newPassword?.trim()?.length === 0) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("Email or password must not be empty");
+      return;
+    }
+    const request = {
+      token,
+      email, 
+      password: newPassword,
+      password_confirmation: RePassword
+    }
+    dispatch(resetPassword(request)).then(res => {
+      if (res === "Password reset successfully") {
+        setOpenAlert(true);
+        setStatusAlert("success");
+        setTextAlert(res);
+        setTimeout(() => {
+          history.push("/sign-in")
+        }, 1000);
+      } else {
+        setOpenAlert(true);
+        setStatusAlert("error");
+        setTextAlert(res.data?.message);
+      }}
     );
   };
 
   return (
-    <div className="login-container">
+    <div className="change-pass-container">
       <Box className="change-password-form">
         <Box className="head">
           <ArrowCircleLeftOutlinedIcon style={{ color: "#3ab19b" }} onClick={() => history.push("/")} />
-          <Box className="head_title">THAY ĐỔI MẬT KHẨU</Box>
+          <Box className="head_title">RESET PASSWORD</Box>
         </Box>
         <Box className="new-password form-input" sx={{ mb: 2 }}>
-          <Box className="txt-label">Mật khẩu cũ</Box>
-          <TextField value={oldPassword} variant="outlined" type="password" onChange={e => setOldPassword(e.target.value)}/>
-        </Box>
-        <Box className="new-password form-input" sx={{ mb: 2 }}>
-          <Box className="txt-label">Mật khẩu mới</Box>
-          <TextField value={newPassword}  variant="outlined"  type="password" onChange={e => setNewPassword(e.target.value)}/>
+          <Box className="txt-label">Email</Box>
+          <input value={email} type="text" onChange={e => setEmail(e.target.value)}/>
         </Box>
         <Box className="new-password form-input">
-          <Box className="txt-label">Mật khẩu mới (xác nhận)</Box>
-          <TextField value={reNewpassword}  variant="outlined" type="password" onChange={e => setReNewPassword(e.target.value)}/>
+          <Box className="txt-label">New Password</Box>
+          <input value={newPassword} type="password"  onChange={e => setNewPassword(e.target.value)}/>
+        </Box>
+        <Box className="new-password form-input mt-3" >
+          <Box className="txt-label">Confirm Password</Box>
+          <input value={RePassword} type="password"  onChange={e => setRePassword(e.target.value)}/>
         </Box>
         <Box className="btn">
-          <Button
-            variant="outlined"
-            style={{
-              borderRadius: 35,
-              border: "none",
-              backgroundColor: "#21b6ae",
-              padding: "18px 36px",
-              color: "white",
-            }}
+          <button
             className="reset-btn"
             onClick={() => handleChangePasssw()}
           >
-            Xác nhận
-          </Button>
+            Save
+          </button>
         </Box>
       </Box>
+      {openAlert ? (
+        <Alerts
+          text={textAlert}
+          status={statusAlert}
+          open={openAlert}
+          setOpen={setOpenAlert}
+        />
+      ) : null}
     </div>
   );
 }

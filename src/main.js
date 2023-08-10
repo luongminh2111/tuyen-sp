@@ -7,7 +7,7 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import Reminder from "./components/Pages/components/Login/reminder";
+
 import Dashboard from "./components/Pages/components/Dashboard";
 import AddIssue from "./components/Pages/components/AddIssue";
 import Project from "./components/Pages/components/Project/components";
@@ -25,7 +25,7 @@ function Main(props) {
         <Switch>
           <Switch>
             <Route exact path="/" component={Dashboard}></Route>
-            <Route exact path="/reminder" component={Reminder}></Route>
+          
             <Route exact path="/dashboard" component={Dashboard}></Route>
             <Route exact path="/add-task" component={AddIssue}></Route>
             <Route path="/project" component={Project}></Route>

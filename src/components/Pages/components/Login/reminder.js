@@ -4,9 +4,10 @@ import { useDispatch } from "react-redux";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import "../styles/Reminder.scss";
-import { login } from "../../actions/AccountActionCallApi";
+import { forgotPassword, login } from "../../actions/AccountActionCallApi";
 import { useHistory } from "react-router-dom";
 import Footer from "../../../commons/Footer";
+import Alerts from "../../../../commons/Alert";
 
 function Reminder(props) {
   const [email, setEmail] = useState("");
@@ -18,23 +19,13 @@ function Reminder(props) {
   const [showAlert, setShowAlert] = useState(false);
   const [showInputPass, setShowInputPass] = useState(false);
 
+  const [textAlert, setTextAlert] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [statusAlert, setStatusAlert] = useState(false);
+
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [showSnackbar, setShowSnackbar] = useState(false);
-  const onCloseClickHandler = (event) => {
-    setShowSnackbar(false);
-  };
-
-  const CustomSnackbar = (props) => (
-    <Snackbar
-      autoHideDuration={2000}
-      open={showSnackbar}
-      onClose={onCloseClickHandler}
-      anchorOrigin={{ horizontal: "center", vertical: "top" }}
-      children={props.children}
-    ></Snackbar>
-  );
 
   const handleValidateEmail = (mail) => {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -58,18 +49,14 @@ function Reminder(props) {
     } else {
       setErrorMail(false);
       setMessageMail("");
-      const loginRequest = {};
-      // dispatch(login(loginRequest)).then((json) => {
-      //   console.log("check json :", json);
-      //   if (json) {
-      //     setTimeout(() => {
-      //       history.push("/");
-      //     }, [1000]);
-      //   } else {
-      //     setShowSnackbar(true);
-      //     setShowAlert(true);
-      //   }
-      // });
+      const request = {
+        email
+      }
+      dispatch(forgotPassword(request)).then(res => {
+        setOpenAlert(true);
+        setStatusAlert('success');
+        setTextAlert(res);
+      });
     }
   };
 
@@ -106,11 +93,14 @@ function Reminder(props) {
             </Button>
           </div>
         </Box>
-        {showAlert ? (
-          <CustomSnackbar>
-            <Alert severity="error">Đăng nhập thất bại, vui lòng thử lại</Alert>
-          </CustomSnackbar>
-        ) : null}
+        {openAlert ? (
+        <Alerts
+          text={textAlert}
+          status={statusAlert}
+          open={openAlert}
+          setOpen={setOpenAlert}
+        />
+      ) : null}
       </div>
       <Footer />
     </Box>

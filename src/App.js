@@ -12,6 +12,8 @@ import { secretPass } from "./commons/Commons";
 import { updateUser } from "./components/Pages/actions/AccountActionRedux";
 import PrivateRoute from "./auth/PrivateRouteComponent";
 import Main from "./main";
+import Reminder from "./components/Pages/components/Login/reminder";
+import ChangePassword from "./components/Pages/components/Register/ChangePassword";
 
 function App() {
   
@@ -42,6 +44,8 @@ function App() {
       <React.Fragment>
         <Switch>
           <Route exact path="/sign-in" component={Login}></Route>
+          <Route exact path="/reminder" component={Reminder}></Route>
+          <Route exact path="/reset-password" component={ChangePassword} ></Route>
           <PrivateRoute path="/">
             <Main />
           </PrivateRoute>
