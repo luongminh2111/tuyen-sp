@@ -24,7 +24,15 @@ import { useHistory } from "react-router-dom";
 import { EMPTY_USER } from "../../../../../commons/image";
 
 function TaskDetail(props) {
-  const { task, setShowDetail, milestones, isExpand, isSubTask, setId, setSubId } = props;
+  const {
+    task,
+    setShowDetail,
+    milestones,
+    isExpand,
+    isSubTask,
+    setId,
+    setSubId,
+  } = props;
   const curProject = useSelector((state) => state.projects.itemDetail);
   const account = useSelector((state) => state.auth.account);
   const listComment = useSelector((state) => state.projects.comments);
@@ -86,7 +94,7 @@ function TaskDetail(props) {
   useEffect(() => {
     dispatch(getListMileStoneInProject(curProject?.id));
     console.log("check isSubTask :", isSubTask);
-    if (isSubTask === 'par') {
+    if (isSubTask === "par") {
       dispatch(getListCommentInTask(taskItem.id, 1));
     }
   }, []);
@@ -177,7 +185,11 @@ function TaskDetail(props) {
         <div className="issue-item" key={index}>
           <div className="item_key">{e?.task_key}</div>
           <div className="item_subject">
-            <div data-for={`item_subject_${index}`} data-tip="" onClick={() => setSubId(e.id)}>
+            <div
+              data-for={`item_subject_${index}`}
+              data-tip=""
+              onClick={() => setSubId(e.id)}
+            >
               {e?.name}
             </div>
             <ReactTooltip
@@ -262,7 +274,15 @@ function TaskDetail(props) {
               <div className="created_by d-flex">
                 <div className="image">
                   <div>
-                    {getCurrentMember(taskItem?.created_by)?.substring(0, 1)}
+                    <img
+                      src={account?.avatar || EMPTY_USER}
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                      }}
+                      alt="avatar-cmt"
+                    />
                   </div>
                 </div>
                 <div className="user">
@@ -306,8 +326,14 @@ function TaskDetail(props) {
               <div className="edit-comment">
                 <i
                   className="fa-solid fa-pen-to-square"
-                  style={{ marginRight: "12px" }}
+                  style={
+                    (
+                    e?.type !== "NORMAL"
+                      ? { color: "#d3d5d7", marginRight: "12px" }
+                      : { marginRight: "12px" })
+                  }
                   onClick={() => {
+                    if (e?.type !== "NORMAL") return;
                     setEditComment(e);
                     setComment(e.content);
                   }}
@@ -337,7 +363,11 @@ function TaskDetail(props) {
       <div className="go-back d-flex w-100">
         <div
           className="col-md-6 col-lg-6 col-sm-6 d-flex"
-          onClick={() => {setShowDetail(false); setId(''); setSubId('') }}
+          onClick={() => {
+            setShowDetail(false);
+            setId("");
+            setSubId("");
+          }}
         >
           <div>
             <i className="fa-solid fa-rotate-left"></i>
@@ -433,34 +463,34 @@ function TaskDetail(props) {
             </div>
             <div className="line-item d-flex">
               <div className="text-1">Estimate Time</div>
-              <div className="value">
-                {taskItem?.estimate_time}
+              <div className="value">{taskItem?.estimate_time}</div>
+            </div>
+          </div>
+        </div>
+        {isSubTask === "par" ? (
+          <div className="col-12 d-flex mb-1">
+            <div
+              className="col-10"
+              style={{
+                fontSize: "16px",
+                fontWeight: "600",
+                color: "#0088FF",
+                paddingTop: "15px",
+              }}
+            >
+              Sub Tasks
+            </div>
+            <div className="col-2">
+              <div
+                className="col-12 d-flex justify-content-end"
+                onClick={() => setOpenModal(true)}
+              >
+                <button className="btn-create-sub-task">Create sub task</button>
               </div>
             </div>
           </div>
-        </div>
-        <div className="col-12 d-flex mb-1">
-          <div
-            className="col-10"
-            style={{
-              fontSize: "16px",
-              fontWeight: "600",
-              color: "#0088FF",
-              paddingTop: "15px",
-            }}
-          >
-            Sub Tasks
-          </div>
-          <div className="col-2">
-            <div
-              className="col-12 d-flex justify-content-end"
-              onClick={() => setOpenModal(true)}
-            >
-              <button className="btn-create-sub-task">Create sub task</button>
-            </div>
-          </div>
-        </div>
-        {isSubTask === 'par' ? (
+        ) : null}
+        {isSubTask === "par" ? (
           <div className="list-subtask">
             <div className="table-header">
               <div className="key">Key</div>
