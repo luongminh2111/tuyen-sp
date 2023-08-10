@@ -24,7 +24,7 @@ import { useHistory } from "react-router-dom";
 import { EMPTY_USER } from "../../../../../commons/image";
 
 function TaskDetail(props) {
-  const { task, setShowDetail, milestones, isExpand, isSubTask } = props;
+  const { task, setShowDetail, milestones, isExpand, isSubTask, setId, setSubId } = props;
   const curProject = useSelector((state) => state.projects.itemDetail);
   const account = useSelector((state) => state.auth.account);
   const listComment = useSelector((state) => state.projects.comments);
@@ -85,7 +85,8 @@ function TaskDetail(props) {
 
   useEffect(() => {
     dispatch(getListMileStoneInProject(curProject?.id));
-    if (!isSubTask) {
+    console.log("check isSubTask :", isSubTask);
+    if (isSubTask === 'par') {
       dispatch(getListCommentInTask(taskItem.id, 1));
     }
   }, []);
@@ -176,7 +177,7 @@ function TaskDetail(props) {
         <div className="issue-item" key={index}>
           <div className="item_key">{e?.task_key}</div>
           <div className="item_subject">
-            <div data-for={`item_subject_${index}`} data-tip="">
+            <div data-for={`item_subject_${index}`} data-tip="" onClick={() => setSubId(e.id)}>
               {e?.name}
             </div>
             <ReactTooltip
@@ -336,7 +337,7 @@ function TaskDetail(props) {
       <div className="go-back d-flex w-100">
         <div
           className="col-md-6 col-lg-6 col-sm-6 d-flex"
-          onClick={() => setShowDetail(false)}
+          onClick={() => {setShowDetail(false); setId(''); setSubId('') }}
         >
           <div>
             <i className="fa-solid fa-rotate-left"></i>
@@ -459,7 +460,7 @@ function TaskDetail(props) {
             </div>
           </div>
         </div>
-        {!isSubTask ? (
+        {isSubTask === 'par' ? (
           <div className="list-subtask">
             <div className="table-header">
               <div className="key">Key</div>

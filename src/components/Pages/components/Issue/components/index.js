@@ -61,7 +61,9 @@ function Issues(props) {
               setShowDetail={setShowDetail}
               milestones={milestones}
               isExpand={isExpand}
-              isSubTask={subId > 0}
+              isSubTask={subId > 0 ? 'sub' : 'par'}
+              setId={setId}
+              setSubId={setSubId}
             />
           ) : (
             <>
