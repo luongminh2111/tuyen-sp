@@ -33,32 +33,41 @@ function Status(props) {
       <div className="status-content">
         <div className="graph--bar -w-full">
           <div className="graph--bar__fig">
-            <div className="graph--process">
+            {total === 0 ? (
               <div
                 style={{
                   backgroundColor: "#ed8077",
-                  width: `calc(100% * ${openValue || 0} / ${total} )`,
+                  width: `calc(100%)`,
                 }}
               ></div>
-              <div
-                style={{
-                  backgroundColor: "#4488c5",
-                  width: `calc(100% * ${progressValue || 0} /${total} )`,
-                }}
-              ></div>
-              <div
-                style={{
-                  backgroundColor: "#5eb5a6",
-                  width: `calc(100% * ${resolveValue || 0} /${total} )`,
-                }}
-              ></div>
-              <div
-                style={{
-                  backgroundColor: "#a1af2f",
-                  width: `calc(100% * ${closeValue || 0} /${total} )`,
-                }}
-              ></div>
-            </div>
+            ) : (
+              <div className="graph--process">
+                <div
+                  style={{
+                    backgroundColor: "#ed8077",
+                    width: `calc(100% * ${openValue || 0} / ${total} )`,
+                  }}
+                ></div>
+                <div
+                  style={{
+                    backgroundColor: "#4488c5",
+                    width: `calc(100% * ${progressValue || 0} /${total} )`,
+                  }}
+                ></div>
+                <div
+                  style={{
+                    backgroundColor: "#5eb5a6",
+                    width: `calc(100% * ${resolveValue || 0} /${total} )`,
+                  }}
+                ></div>
+                <div
+                  style={{
+                    backgroundColor: "#a1af2f",
+                    width: `calc(100% * ${closeValue || 0} /${total} )`,
+                  }}
+                ></div>
+              </div>
+            )}
             <div className="graph--bar__numbers">
               {Math.ceil(closeValue / total)}% closed
             </div>
