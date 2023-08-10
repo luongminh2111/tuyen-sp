@@ -57,10 +57,11 @@ function Issues(props) {
           <HeaderIssue item={curProject} />
           {showDetail ? (
             <TaskDetail
-              task={getCurrentSubTask || getCurrentTask}
+              task={subId > 0 ? getCurrentSubTask : getCurrentTask}
               setShowDetail={setShowDetail}
               milestones={milestones}
               isExpand={isExpand}
+              isSubTask={subId > 0}
             />
           ) : (
             <>

@@ -257,7 +257,7 @@ function DragTaskItem(props) {
                             </span>
                           </>
                         ) : null}
-                        {item?.priority === "HIGHT" ? (
+                        {item?.priority === "HIGH" ? (
                           <>
                             <span>Priority:</span>
                             <span>

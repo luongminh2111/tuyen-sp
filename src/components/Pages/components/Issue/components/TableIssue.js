@@ -135,7 +135,7 @@ function TableIssue(props) {
                 style={{ color: "#2c9a7a" }}
               ></i>
             ) : null}
-            {e?.priority === "HIGHT" ? (
+            {e?.priority === "HIGH" ? (
               <i
                 className="fa-solid fa-arrow-up"
                 style={{ color: "#FF4D4D" }}

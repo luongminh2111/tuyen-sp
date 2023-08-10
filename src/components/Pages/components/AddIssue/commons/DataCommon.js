@@ -24,7 +24,7 @@ export const priorityOptions = [
   },
   {
     id: 2,
-    value: 'HIGHT'
+    value: 'HIGH'
   },
   {
     id: 3,

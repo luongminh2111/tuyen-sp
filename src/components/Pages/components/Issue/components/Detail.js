@@ -23,7 +23,8 @@ import {
 import { useHistory } from "react-router-dom";
 
 function TaskDetail(props) {
-  const { task, setShowDetail, milestones, isExpand } = props;
+  const { task, setShowDetail, milestones, isExpand, isSubTask } = props;
+  console.log("check props :", props);
   const curProject = useSelector((state) => state.projects.itemDetail);
   const account = useSelector((state) => state.auth.account);
   const listComment = useSelector((state) => state.projects.comments);
@@ -50,17 +51,6 @@ function TaskDetail(props) {
     return members?.find((e) => e.id === id)?.name;
   };
 
-  // useEffect(() => {
-  //   // dispatch({
-  //   //   type: "RESET_LIST",
-  //   //   value: false,
-  //   // });
-  //   if (isReset) {
-  //     setShowDetail(false);
-    
-  //   }
-  // }, [isReset]);
-
   const memberOptions = useMemo(() => {
     const newMembers = members?.map((e) => {
       return {
@@ -71,13 +61,12 @@ function TaskDetail(props) {
     return newMembers;
   }, [members]);
 
-  
   const mileStoneOptions = useMemo(() => {
-    const newMileStones = milestones?.map(e => {
+    const newMileStones = milestones?.map((e) => {
       return {
-        ...e, 
-        value: e?.name
-      }
+        ...e,
+        value: e?.name,
+      };
     });
     return newMileStones;
   }, [milestones]);
@@ -96,7 +85,9 @@ function TaskDetail(props) {
 
   useEffect(() => {
     dispatch(getListMileStoneInProject(curProject?.id));
-    dispatch(getListCommentInTask(taskItem.id, 1));
+    if (!isSubTask) {
+      dispatch(getListCommentInTask(taskItem.id, 1));
+    }
   }, []);
 
   const handleEditComment = () => {
@@ -210,7 +201,7 @@ function TaskDetail(props) {
                 style={{ color: "#2c9a7a" }}
               ></i>
             ) : null}
-            {e?.priority === "HIGHT" ? (
+            {e?.priority === "HIGH" ? (
               <i
                 className="fa-solid fa-arrow-up"
                 style={{ color: "#FF4D4D" }}
@@ -400,7 +391,7 @@ function TaskDetail(props) {
                       style={{ color: "#2c9a7a" }}
                     ></i>
                   ) : null}
-                  {taskItem?.priority === "HIGHT" ? (
+                  {taskItem?.priority === "HIGH" ? (
                     <i
                       className="fa-solid fa-arrow-up"
                       style={{ color: "#FF4D4D" }}
@@ -462,29 +453,31 @@ function TaskDetail(props) {
             </div>
           </div>
         </div>
-        <div className="list-subtask">
-          <div className="table-header">
-            <div className="key">Key</div>
-            <div className="subject">Name</div>
-            <div className="assignee">Assignee</div>
-            <div className="status">Status</div>
-            <div className="priority">Priority</div>
-            <div className="milestone">Milestone</div>
-            <div className="created">Created</div>
-            <div className="due-date">Due date</div>
-            <div className="updateAt">Update At</div>
-            <div className="register">Created By</div>
-          </div>
-          {taskItem?.sub_tasks?.length === 0 ? (
-            renderEmptyList()
-          ) : (
-            <div className="table-content">
-              {taskItem?.sub_tasks?.map((e, index) => {
-                return renderItem(e, index);
-              })}
+        {!isSubTask ? (
+          <div className="list-subtask">
+            <div className="table-header">
+              <div className="key">Key</div>
+              <div className="subject">Name</div>
+              <div className="assignee">Assignee</div>
+              <div className="status">Status</div>
+              <div className="priority">Priority</div>
+              <div className="milestone">Milestone</div>
+              <div className="created">Created</div>
+              <div className="due-date">Due date</div>
+              <div className="updateAt">Update At</div>
+              <div className="register">Created By</div>
             </div>
-          )}
-        </div>
+            {taskItem?.sub_tasks?.length === 0 ? (
+              renderEmptyList()
+            ) : (
+              <div className="table-content">
+                {taskItem?.sub_tasks?.map((e, index) => {
+                  return renderItem(e, index);
+                })}
+              </div>
+            )}
+          </div>
+        ) : null}
         <div className="list-comment-wrapper" style={{ marginTop: "24px" }}>
           <div className="title" style={{ marginBottom: "8px" }}>
             <span style={{ fontWeight: "600" }}>Comments</span>
