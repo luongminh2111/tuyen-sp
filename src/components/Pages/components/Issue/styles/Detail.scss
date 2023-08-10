@@ -43,14 +43,12 @@
           .image {
             width: 40px;
             height: 40px;
-            border-radius: 50%;
-            background-color: #2c9a7a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            font-weight: 500;
-            margin-right: 16px;
+            margin-right:  16px;
+            img {
+              width: 40px;
+            height: 40px;
+              border-radius: 50%;
+            }
           }
           .user {
             .name {

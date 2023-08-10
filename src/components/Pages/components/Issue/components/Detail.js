@@ -21,6 +21,7 @@ import {
   updateComment,
 } from "../../ProjectSetting/actions/ProjectActionRedux";
 import { useHistory } from "react-router-dom";
+import { EMPTY_USER } from "../../../../../commons/image";
 
 function TaskDetail(props) {
   const { task, setShowDetail, milestones, isExpand, isSubTask } = props;
@@ -361,7 +362,7 @@ function TaskDetail(props) {
             <div className="created_by d-flex">
               <div className="image">
                 <div>
-                  {getCurrentMember(taskItem?.assignee_id)?.substring(0, 1)}
+                  <img src={account?.avatar || EMPTY_USER} alt="avatar" />
                 </div>
               </div>
               <div className="user">
@@ -374,7 +375,7 @@ function TaskDetail(props) {
               </div>
             </div>
             <div className="task-name" style={{ fontSize: "14px" }}>
-              {taskItem?.name}
+              {taskItem?.description}
             </div>
             <div className="line-item d-flex">
               <div className="text-1">Status</div>
@@ -427,6 +428,12 @@ function TaskDetail(props) {
               <div className="text-1">Due date</div>
               <div className="value">
                 {taskItem?.end_time?.substring(0, 10)}
+              </div>
+            </div>
+            <div className="line-item d-flex">
+              <div className="text-1">Estimate Time</div>
+              <div className="value">
+                {taskItem?.estimate_time}
               </div>
             </div>
           </div>

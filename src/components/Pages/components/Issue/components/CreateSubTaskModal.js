@@ -18,6 +18,7 @@ function CreateSubTaskModal(props) {
   const [description, setDescription] = useState("");
   const [startTime, setStartTime] = useState(parseDateToString(new Date()));
   const [endTime, setEndTime] = useState(parseDateToString(new Date()));
+  const [est , setEst] = useState(0);
   const [priority, setPriority] = useState({});
   const [assignee, setAssignee] = useState({});
   const [textAlert, setTextAlert] = useState("");
@@ -38,7 +39,8 @@ function CreateSubTaskModal(props) {
       priority: priority?.value,
       assignee_id: assignee?.id,
       is_child: true,
-      parent_task_id: parentTask?.id
+      parent_task_id: parentTask?.id,
+      estimate_time: est
     };
     dispatch(createTask(request)).then((res) => {
       if (res?.status === 200 && res?.data?.data) {
@@ -167,6 +169,12 @@ function CreateSubTaskModal(props) {
                     <label>Milestone</label>
                     <div className="ticket__properties-value">
                       {getCurrentMilestone()}
+                    </div>
+                  </div>
+                   <div className="ticket__properties-item -milestones">
+                    <label>Estimate Time</label>
+                    <div className="ticket__properties-value">
+                      <input type="number" value={est} onChange={(e) => setEst(e.target.value)} />
                     </div>
                   </div>
                 </div>

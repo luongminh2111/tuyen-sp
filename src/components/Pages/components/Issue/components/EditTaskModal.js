@@ -26,6 +26,7 @@ function EditTaskModal(props) {
   const curProject = useSelector((state) => state.projects.itemDetail);
   const [name, setName] = useState(taskItem?.name);
   const [description, setDescription] = useState(taskItem?.description);
+  const [est, setEst] = useState(taskItem?.estimate_time);
   const [startTime, setStartTime] = useState(
     parseDateToString(taskItem?.start_time || new Date())
   );
@@ -66,9 +67,9 @@ function EditTaskModal(props) {
       status: status?.value || statusOptions[0]?.value,
       priority: priority?.value || priorityOptions[0]?.value,
       assignee_id: assignee?.id || memberOptions[0]?.value,
+      estimate_time: est
     };
     dispatch(updateTask(request)).then((res) => {
-      console.log("check res :", res);
       if (res?.status === 200 && res?.data?.data) {
         setOpenAlert(true);
         setStatusAlert("success");
@@ -184,6 +185,12 @@ function EditTaskModal(props) {
                         onChangeOption={setMilestone}
                         curOption={milestone}
                       />
+                    </div>
+                  </div>
+                  <div className="ticket__properties-item -milestones">
+                    <label>Estimate Time</label>
+                    <div className="ticket__properties-value mt-2">
+                        <input type="number" value={est} onChange={(e) => setEst(e.target.value)} />
                     </div>
                   </div>
                 </div>
