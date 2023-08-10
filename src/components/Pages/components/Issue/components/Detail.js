@@ -14,6 +14,7 @@ import {
   getListTask,
   submitComment,
 } from "../actions/TaskCallApi";
+import { priorityOptions } from "../../AddIssue/commons/DataCommon";
 import Alerts from "../../../../../commons/Alert";
 import {
   createNewComment,
@@ -48,17 +49,17 @@ function TaskDetail(props) {
   const getCurrentMember = (id) => {
     return members?.find((e) => e.id === id)?.name;
   };
-  console.log("check reset : ", isReset);
-  useEffect(() => {
-    dispatch({
-      type: "RESET_LIST",
-      value: false,
-    });
-    if (isReset) {
-      setShowDetail(false);
+
+  // useEffect(() => {
+  //   // dispatch({
+  //   //   type: "RESET_LIST",
+  //   //   value: false,
+  //   // });
+  //   if (isReset) {
+  //     setShowDetail(false);
     
-    }
-  }, [isReset]);
+  //   }
+  // }, [isReset]);
 
   const memberOptions = useMemo(() => {
     const newMembers = members?.map((e) => {
@@ -69,6 +70,17 @@ function TaskDetail(props) {
     });
     return newMembers;
   }, [members]);
+
+  
+  const mileStoneOptions = useMemo(() => {
+    const newMileStones = milestones?.map(e => {
+      return {
+        ...e, 
+        value: e?.name
+      }
+    });
+    return newMileStones;
+  }, [milestones]);
 
   const handleSelectUser = (value) => {
     if (userSelect?.includes(value)) {
@@ -511,7 +523,10 @@ function TaskDetail(props) {
         <EditTaskModal
           members={members}
           milestoneId={task?.milestone_id}
+          memberOptions={memberOptions}
+          priorityOptions={priorityOptions}
           milestones={milestones}
+          mileStoneOptions={mileStoneOptions}
           parentTask={task}
           open={isEdit}
           handleClose={() => setIsEdit(false)}

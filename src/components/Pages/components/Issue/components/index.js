@@ -41,13 +41,12 @@ function Issues(props) {
     dispatch(getListTask());
     dispatch(getListMemberOfProject(curProject?.id));
     dispatch(getListMileStoneInProject(curProject?.id));
-    setShowDetail(false);
   }, []);
 
-  useEffect(() => {
-    console.log("check vao day nay");
-    dispatch(getListTask());
-  }, [showDetail]);
+  // useEffect(() => {
+  //   console.log("check vao day nay");
+  //   dispatch(getListTask());
+  // }, [showDetail]);
 
   return (
     <>

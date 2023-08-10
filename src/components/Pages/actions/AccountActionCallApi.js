@@ -75,10 +75,11 @@ export const resetPassword = (request) => (dispatch) => {
   };
   return axios.post(url, request, options).then(
     (response) => {
-      return response?.data?.message;
+      return response?.data;
     },
     (error) => {
-      return error?.response;
+      console.log("check error :", error);
+      return error?.response?.data;
     }
   );
 };

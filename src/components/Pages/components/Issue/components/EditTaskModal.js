@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import "../styles/CreateSubTaskModal.scss";
 import ButtonDropDown from "../../../../../commons/Button/ButtonDropdown";
 import { parseDateToString } from "../../../../../ulti/dateTime";
-import { priorityOptions } from "../../AddIssue/commons/DataCommon";
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTask } from "../../AddIssue/actions/CreateTaskCallApi";
@@ -19,8 +18,11 @@ function EditTaskModal(props) {
     milestones,
     setTaskItem,
     taskItem,
+    memberOptions,
+    priorityOptions,
+    mileStoneOptions,
   } = props;
-  
+
   const curProject = useSelector((state) => state.projects.itemDetail);
   const [name, setName] = useState(taskItem?.name);
   const [description, setDescription] = useState(taskItem?.description);
@@ -30,41 +32,28 @@ function EditTaskModal(props) {
   const [endTime, setEndTime] = useState(
     parseDateToString(taskItem?.end_time || new Date())
   );
-  const [milestone, setMilestone] = useState({});
-  const [priority, setPriority] = useState({});
-  const [assignee, setAssignee] = useState({});
-  const [status, setStatus] = useState({});
+  const [milestone, setMilestone] = useState(
+    mileStoneOptions?.find((e) => e.id === taskItem?.milestone_id) ||
+      mileStoneOptions[0]
+  );
+  const [priority, setPriority] = useState(
+    priorityOptions?.find((e) => e.value === taskItem?.priority) ||
+      priorityOptions[0]
+  );
+  const [assignee, setAssignee] = useState(
+    memberOptions?.find((e) => e.id === taskItem?.assignee_id) ||
+      memberOptions[0]
+  );
+  const [status, setStatus] = useState(
+    statusOptions?.find((e) => e.value === taskItem?.status) || statusOptions[0]
+  );
   const [textAlert, setTextAlert] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
   const [statusAlert, setStatusAlert] = useState(false);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    
-    const curStatus =
-      statusOptions?.find((e) => e.value === taskItem?.status) ||
-      statusOptions[0];
-    setStatus(curStatus);
-    const curPriority = priorityOptions?.find(e => e.value === taskItem?.priority) || priorityOptions[0];
-    setPriority(curPriority);
-    const curMember = memberOptions?.find(e => e.id === taskItem?.assignee_id) || memberOptions[0];
-    setAssignee(curMember);
-    const curMilestone = mileStoneOptions?.find(e => e.id === taskItem?.milestone_id) || mileStoneOptions[0];
-    setMilestone(curMilestone);
-  }, [milestones, members, taskItem ]);
-
   console.log("check priority :", priority);
-
-  const mileStoneOptions = useMemo(() => {
-    const newMileStones = milestones?.map(e => {
-      return {
-        ...e, 
-        value: e?.name
-      }
-    });
-    return newMileStones;
-  }, [milestones]);
 
   const handleUpdateTask = () => {
     const request = {
@@ -93,16 +82,6 @@ function EditTaskModal(props) {
       }
     });
   };
-
-  const memberOptions = useMemo(() => {
-    const newMembers = members?.map((e) => {
-      return {
-        ...e,
-        value: e?.name,
-      };
-    });
-    return newMembers;
-  }, [members]);
 
   return (
     <>

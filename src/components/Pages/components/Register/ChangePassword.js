@@ -46,17 +46,17 @@ function ChangePassword(props) {
       password_confirmation: RePassword
     }
     dispatch(resetPassword(request)).then(res => {
-      if (res === "Password reset successfully") {
+      if (res?.message === "Password reset successfully") {
         setOpenAlert(true);
         setStatusAlert("success");
-        setTextAlert(res);
+        setTextAlert(res?.message);
         setTimeout(() => {
           history.push("/sign-in")
         }, 1000);
       } else {
         setOpenAlert(true);
         setStatusAlert("error");
-        setTextAlert(res);
+        setTextAlert(res?.errors?.email?.[0] || res?.errors?.password?.[0] || res?.message);
       }}
     );
   };

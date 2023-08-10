@@ -53,9 +53,12 @@ function Reminder(props) {
         email
       }
       dispatch(forgotPassword(request)).then(res => {
-        setOpenAlert(true);
-        setStatusAlert('success');
-        setTextAlert(res);
+        if(res){
+          setOpenAlert(true);
+          setStatusAlert('success');
+          setTextAlert(res);
+        }
+
       });
     }
   };

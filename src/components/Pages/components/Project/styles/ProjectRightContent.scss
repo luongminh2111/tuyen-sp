@@ -19,7 +19,8 @@
           .graph--process {
             width: 100%;
             height: 12px;
-            background: #ed8077;
+            display: flex;
+            flex-wrap: nowrap;
           }
           .graph--bar__numbers {
             text-align: end;

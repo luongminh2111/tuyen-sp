@@ -18,6 +18,11 @@ function ButtonDropDown(props) {
   };
 
   useEffect(() => {
+    console.log("check curOption curOption:", curOption);
+    setOptionSelect(curOption);
+  }, [curOption]);
+
+  useEffect(() => {
     if(!Object.keys(filterTask).length){
         setOptionSelect({});
     }
