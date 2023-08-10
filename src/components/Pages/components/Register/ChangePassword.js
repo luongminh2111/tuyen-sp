@@ -56,7 +56,7 @@ function ChangePassword(props) {
       } else {
         setOpenAlert(true);
         setStatusAlert("error");
-        setTextAlert(res.data?.message);
+        setTextAlert(res);
       }}
     );
   };

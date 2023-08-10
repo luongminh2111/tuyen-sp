@@ -33,7 +33,6 @@ function TableIssue(props) {
   };
 
   const handleShowDetail = (id, isSubTask) => {
-    console.log("check ok r nha");
     setShowDetail(true);
     if (isSubTask) {
       setSubId(id);

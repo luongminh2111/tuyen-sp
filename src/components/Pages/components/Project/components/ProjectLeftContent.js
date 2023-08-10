@@ -21,7 +21,6 @@ function ProjectLeftContent(props) {
     });
   }, []);
 
-  console.log("check items : ", items);
 
   return (
     <div className="project-left-wrapper">
