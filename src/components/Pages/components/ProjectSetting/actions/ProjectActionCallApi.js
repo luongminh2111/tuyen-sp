@@ -128,10 +128,13 @@ export const deleteUserInProject = (userId) => (dispatch, getState) => {
       }
     }
   } = getState();
+  const request = {
+    user_id: userId
+  }
   const endPoint = `${BASE_URL}/api/delete_user_project/${id}`;
   const options = {
     method: 'DELETE',
-    data: JSON.stringify({userId})
+    data: JSON.stringify(request)
   }
   return callApi(endPoint, options).then( res => {
     return res;

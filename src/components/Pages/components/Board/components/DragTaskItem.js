@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateTask } from "../../AddIssue/actions/CreateTaskCallApi";
 import Alerts from "../../../../../commons/Alert";
 import { getListTask } from "../../Issue/actions/TaskCallApi";
+import { EMPTY_USER } from "../../../../../commons/image";
 
 function DragTaskItem(props) {
   const { members, tasks } = props;
@@ -41,6 +42,7 @@ function DragTaskItem(props) {
             priority: e.priority,
             status: e.status,
             task_key: e.task_key,
+            end_time: e.end_time
           };
         });
         const arrSub = new Array();
@@ -55,11 +57,12 @@ function DragTaskItem(props) {
                 priority: e3.priority,
                 status: e3.status,
                 task_key: e3.task_key,
+                end_time: e3.end_time
               })
             )
           );
         const taskOpen = handleFilterTask(
-          "open",
+          "Open",
           listParentTask?.concat(arrSub)
         );
         const taskInProgress = handleFilterTask(
@@ -67,11 +70,11 @@ function DragTaskItem(props) {
           listParentTask?.concat(arrSub)
         );
         const taskResolved = handleFilterTask(
-          "resolved",
+          "Resolved",
           listParentTask?.concat(arrSub)
         );
         const taskClosed = handleFilterTask(
-          "closed",
+          "Closed",
           listParentTask?.concat(arrSub)
         );
         const arr = new Array();
@@ -154,7 +157,7 @@ function DragTaskItem(props) {
           )[0]
         );
         dragItem.current = targetItem;
-        const status = groupTask?.[targetItem.grpI]?.status?.toUpperCase();
+        const status = groupTask?.[targetItem.grpI]?.status;
         handleUpdateTask(item, status);
         return newList;
       });
@@ -229,10 +232,7 @@ function DragTaskItem(props) {
                       <div className="_right col-2">
                         {item?.assignee_id ? (
                           <div className="avatar">
-                            {getCurrentMember(item?.assignee_id)?.substring(
-                              0,
-                              1
-                            )}
+                            <img src={item?.avatar || EMPTY_USER} alt="avatar" />
                           </div>
                         ) : null}
                       </div>
@@ -277,6 +277,10 @@ function DragTaskItem(props) {
                           </>
                         ) : null}
                       </div>
+                    </div>
+                    <div className="row-2 mt-1 mb-2 d-flex" style={{fontSize: '13px', fontWeight: '400'}}>
+                      <div style={{marginRight: '12px'}}>End time:</div>
+                      <div>{item?.end_time?.substring(0, 10)}&nbsp;{item?.end_time?.substring(11, 19)}</div>
                     </div>
                   </div>
                 </div>

@@ -315,10 +315,11 @@ function TaskDetail(props) {
                   </div>
                   <div className="user">
                     <div className="name">
-                      {getCurrentMember(taskItem?.created_by)}
+                      <span>{getCurrentMember(taskItem?.created_by)}</span>
+                      <span style={{marginLeft: "12px"}}>{e?.created_at !== e?.updated_at ? '(edited)' : ''}</span>
                     </div>
                     <div className="time">
-                      Created at: {e?.created_at?.substring(0, 10)}&nbsp; {e?.created_at?.substring(11, 19)}
+                      Created at: {e?.updated_at?.substring(0, 10)}&nbsp; {e?.updated_at?.substring(11, 19)}
                     </div>
                   </div>
                 </div>
