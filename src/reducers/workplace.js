@@ -2,6 +2,7 @@ import * as actionsType from "../components/Pages/components/Workplace/actions/W
 
 const initState = {
   workspace: {},
+  settingSelect: ''
 };
 
 const workplace = (state = initState, action) => {
@@ -16,6 +17,16 @@ const workplace = (state = initState, action) => {
         ...state,
         workspace: action.value,
       };
+    case 'UPDATE_SETTING_SELECT':
+      return {
+        ...state,
+        settingSelect: action.value,
+    }
+    case 'RESET_SETTING_SELECT':
+      return {
+        ...state,
+        settingSelect: '',
+    }
     default:
       return state;
   }

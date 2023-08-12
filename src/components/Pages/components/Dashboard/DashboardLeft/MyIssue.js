@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { getFilterMyTask } from "../actions/DashboardAactionCallApi";
 import { CircularProgress } from "@mui/material";
 import { useHistory } from "react-router-dom";
+import { showDetailProject } from "../../Workplace/actions/WorkplaceActionRedux";
 
 function MyIssue(props) {
   const [isZoomIn, setIsZoomIn] = useState(false);
@@ -34,7 +35,7 @@ function MyIssue(props) {
   }, [filterUser, filterTime]);
 
   const handleShowDetailTask = (e) => {
-    console.log("check vao day a");
+    dispatch(showDetailProject(e?.project_id));
     dispatch({
       type: "UPDATE_TASK_DETAIL",
       item: e,
@@ -133,7 +134,7 @@ function MyIssue(props) {
                 style={{ height: "200px" }}
               >
                 <div className="list-empty">
-                  <p>No issue to display</p>
+                  <p>No task to display</p>
                 </div>
               </div>
             ) : (

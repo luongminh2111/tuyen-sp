@@ -13,10 +13,7 @@ function EditTaskModal(props) {
   const {
     open,
     handleClose,
-    members,
     milestoneId,
-    milestones,
-    setTaskItem,
     taskItem,
     memberOptions,
     priorityOptions,
@@ -70,11 +67,16 @@ function EditTaskModal(props) {
       estimate_time: est
     };
     dispatch(updateTask(request)).then((res) => {
+      console.log("check res:", res);
       if (res?.status === 200 && res?.data?.data) {
+        console.log("check ooooooooooooo");
         setOpenAlert(true);
         setStatusAlert("success");
         setTextAlert(res.data?.message);
-        setTaskItem(res?.data?.data);
+        dispatch({
+          type: "UPDATE_TASK_DETAIL",
+          item: res?.data?.data
+        });
         setTimeout(() => {
           handleClose();
         }, 1000);

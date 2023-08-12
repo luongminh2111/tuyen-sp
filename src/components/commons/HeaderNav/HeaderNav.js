@@ -69,6 +69,10 @@ function HeaderNav(props) {
 
   useOutsideAccount(userRef);
 
+  const handleRedirectToMember = () => {
+    history.push("workplace-setting?id=staff");
+  };
+
   return (
     <div className="header-nav-wrapper">
       <div
@@ -81,7 +85,7 @@ function HeaderNav(props) {
         <div className="dashboard d-flex align-items-center">Dashboard</div>
       </div>
       <div className="nav-bar right d-flex">
-        <div className="member">
+        <div className="member" onClick={() => handleRedirectToMember()}>
           <i
             className="fa-solid fa-users"
             data-tip=""
@@ -105,8 +109,8 @@ function HeaderNav(props) {
             onClick={() => setShowNoti(true)}
           ></i>
           {count > 0 ? (
-            <div className="count">
-              <i className={`fa-solid fa-${count}`}></i>{" "}
+            <div className="count" style={{fontSize: '11px'}}>
+              {count}
             </div>
           ) : null}
           {showNoti ? <NotificationPopup setShowNoti={setShowNoti} count={count} setCount={setCount} /> : null}

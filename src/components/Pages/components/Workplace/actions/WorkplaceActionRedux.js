@@ -40,6 +40,11 @@ export const getListMemberOfWorkspace = (items) => ({
   items
 });
 
+export const updateListMemberOfWorkspace = (id) => ({
+  type: actionType.UPDATE_LIST_MEMBER_IN_WORKSPACE,
+  id
+});
+
 export const updateFilterStaff = (key, value) => ({
   type: actionType.UPDATE_FILTER_STAFF,
   key,

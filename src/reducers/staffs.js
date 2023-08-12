@@ -17,6 +17,13 @@ const staffs = (state = initState, action) => {
         ...state,
         items: action.items,
       };
+    case actionsType.UPDATE_LIST_MEMBER_IN_WORKSPACE:
+      const items = state.items;
+      const newItems = items?.filter(e => e.id !== action.id);
+      return {
+        ...state,
+        items: newItems,
+      };
     case actionsType.UPDATE_FILTER_STAFF: 
       return {
         ...state,

@@ -2,6 +2,7 @@ import React from "react";
 import "../styles/SubMenu.scss";
 import { useHistory } from "react-router-dom";
 import { PATH_WORKPLACE_SETTING } from "../../../../../contains/pathDefault";
+import { useDispatch } from "react-redux";
 
 
 function SubMenu(props) {

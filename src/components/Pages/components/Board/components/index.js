@@ -23,7 +23,7 @@ function Board(props) {
   useEffect(() => {
     dispatch(getListTask());
     dispatch(getListMemberInWorkspace(curProject?.id));
-    dispatch(getListMileStoneInProject(curProject?.id));
+    dispatch(getListMileStoneInProject());
   }, []);
 
   return (

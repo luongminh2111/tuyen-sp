@@ -14,8 +14,15 @@ export const updateProject = (request, id) => (dispatch) => {
   })
 };
 
-export const getListMileStoneInProject = (projectId) => (dispatch) => {
-  const endPoint = `${BASE_URL}/api/project/${projectId}/milestones`;
+export const getListMileStoneInProject = () => (dispatch, getState) => {
+  const {
+    projects: {
+      itemDetail: {
+        id
+      }
+    }
+  } = getState();
+  const endPoint = `${BASE_URL}/api/project/${id}/milestones`;
   const options = {
     method: 'GET',
   }
@@ -29,7 +36,6 @@ export const getListMileStoneInProject = (projectId) => (dispatch) => {
 };
 
 export const createNewMileStone = (request, milestoneId) => (dispatch) => {
-
 
   let endPoint = `${BASE_URL}/api/milestone`;
 
@@ -113,3 +119,21 @@ export const getListMemberOfProject = (projectId, name, role) => (dispatch) => {
     } 
   })
 };
+
+export const deleteUserInProject = (userId) => (dispatch, getState) => {
+  const {
+    projects: {
+      itemDetail: {
+        id
+      }
+    }
+  } = getState();
+  const endPoint = `${BASE_URL}/api/delete_user_project/${id}`;
+  const options = {
+    method: 'DELETE',
+    data: JSON.stringify({userId})
+  }
+  return callApi(endPoint, options).then( res => {
+    return res;
+  })
+}

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Button, TextField, Box, FormControlLabel } from "@mui/material";
+import { Button, TextField, Box, CircularProgress } from "@mui/material";
 import { useDispatch } from "react-redux";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 import "../styles/Reminder.scss";
 import { forgotPassword, login } from "../../actions/AccountActionCallApi";
 import { useHistory } from "react-router-dom";
@@ -11,21 +9,17 @@ import Alerts from "../../../../commons/Alert";
 
 function Reminder(props) {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [errorMail, setErrorMail] = useState(false);
-  const [errorPass, setErrorPass] = useState(false);
   const [messageMail, setMessageMail] = useState("");
-  const [messagePass, setMessagePass] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
-  const [showInputPass, setShowInputPass] = useState(false);
 
   const [textAlert, setTextAlert] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
   const [statusAlert, setStatusAlert] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const dispatch = useDispatch();
   const history = useHistory();
-
 
   const handleValidateEmail = (mail) => {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -49,16 +43,17 @@ function Reminder(props) {
     } else {
       setErrorMail(false);
       setMessageMail("");
+      setLoading(true);
       const request = {
-        email
-      }
-      dispatch(forgotPassword(request)).then(res => {
-        if(res){
+        email,
+      };
+      dispatch(forgotPassword(request)).then((res) => {
+        setLoading(false);
+        if (res) {
           setOpenAlert(true);
-          setStatusAlert('success');
+          setStatusAlert("success");
           setTextAlert(res);
         }
-
       });
     }
   };
@@ -85,10 +80,17 @@ function Reminder(props) {
               onChange={(e) => handleChangeMail(e.target.value)}
             />
           </Box>
+          <Box className="txt-alert mt-2 mb-2">{textAlert}</Box>
           <div className="send-email-btn">
-            <Button variant="outlined" onClick={() => handleGetPassWord()}>
-              Send Email
-            </Button>
+            {!loading ? (
+              <Button variant="outlined" onClick={() => handleGetPassWord()}>
+                Send Email
+              </Button>
+            ) : (
+              <Button variant="outlined" className="loading">
+                <CircularProgress />
+              </Button>
+            )}
           </div>
           <div className="back-to-login-btn">
             <Button variant="text" onClick={() => history.push("/sign-in")}>
@@ -97,13 +99,13 @@ function Reminder(props) {
           </div>
         </Box>
         {openAlert ? (
-        <Alerts
-          text={textAlert}
-          status={statusAlert}
-          open={openAlert}
-          setOpen={setOpenAlert}
-        />
-      ) : null}
+          <Alerts
+            text={textAlert}
+            status={statusAlert}
+            open={openAlert}
+            setOpen={setOpenAlert}
+          />
+        ) : null}
       </div>
       <Footer />
     </Box>

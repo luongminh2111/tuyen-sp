@@ -24,7 +24,7 @@ function Milestone(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getListMileStoneInProject(projectId));
+    dispatch(getListMileStoneInProject());
   }, []);
 
   const handleEdit = (milestone) => {

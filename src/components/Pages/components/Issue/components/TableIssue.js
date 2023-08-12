@@ -7,7 +7,7 @@ import { getListTask } from "../actions/TaskCallApi";
 import { CircularProgress } from "@mui/material";
 
 function TableIssue(props) {
-  const { tasks, setId, setShowDetail, milestones, setSubId } = props;
+  const { tasks, milestones } = props;
   const dispatch = useDispatch();
   const members = useSelector((state) => state.projects.members);
   const filterTask = useSelector((state) => state.projects.filterTask);
@@ -37,13 +37,11 @@ function TableIssue(props) {
     return milestones?.find((e) => e.id === id)?.name;
   };
 
-  const handleShowDetail = (id, isSubTask) => {
-    setShowDetail(true);
-    if (isSubTask) {
-      setSubId(id);
-    } else {
-      setId(id);
-    }
+  const handleShowDetail = (item) => {
+    dispatch({
+      type: "UPDATE_TASK_DETAIL",
+      item
+    });
   };
 
   const renderEmptyList = () => {
@@ -57,7 +55,6 @@ function TableIssue(props) {
   };
 
   const handleChangeShowDetailIds = (value) => {
-    setId(value);
     if (showDetailIds?.includes(value)) {
       setShowDetailIds(showDetailIds?.filter((e) => e !== value));
     } else {
@@ -82,13 +79,13 @@ function TableIssue(props) {
     );
   };
 
-  const renderItem = (e, index, isSubTask, parentId) => {
+  const renderItem = (e, index, isSubTask) => {
     return (
       <>
         <div className="issue-item" key={index}>
           <div
             className="item_key"
-            onClick={() => handleChangeShowDetailIds(e?.id)}
+            onClick={() => handleChangeShowDetailIds(e.id)}
           >
             {e?.sub_tasks?.length > 0 ? (
               <span style={{ marginRight: "6px" }}>
@@ -112,7 +109,7 @@ function TableIssue(props) {
           <div
             className="item_subject"
             onClick={() => {
-              handleShowDetail(e.id, isSubTask);
+              handleShowDetail(e);
             }}
           >
             <div data-for={`item_subject_${index}`} data-tip="">
@@ -185,7 +182,7 @@ function TableIssue(props) {
                 {renderItem(e, index)}
                 {e?.sub_tasks?.length > 0 && showDetailIds?.includes(e.id)
                   ? e?.sub_tasks?.map((et, index1) => {
-                      return renderItem(et, index1, true, e.id);
+                      return renderItem(et, index1, true);
                     })
                   : null}
               </>

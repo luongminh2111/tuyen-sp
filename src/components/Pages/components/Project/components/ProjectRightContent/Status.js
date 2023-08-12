@@ -69,7 +69,7 @@ function Status(props) {
               </div>
             )}
             <div className="graph--bar__numbers">
-              {Math.ceil(closeValue / total)}% closed
+              {Math.ceil(closeValue / total * 100)}% closed
             </div>
           </div>
         </div>

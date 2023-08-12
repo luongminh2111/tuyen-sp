@@ -126,4 +126,15 @@ export const getAllUpdateItem = () => (dispatch, getState) => {
       return json.data.data;
     }
   })
+};
+
+
+export const deleteUserInWorkspace = (id) => dispatch => {
+  const endPoint = `${BASE_URL}/api/delete_user_workspace/${id}`;
+  const options = {
+    method: 'DELETE',
+  }
+  return callApi(endPoint, options).then( res => {
+    return res;
+  })
 }

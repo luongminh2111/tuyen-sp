@@ -102,7 +102,7 @@ function Milestones(props) {
                       )}
                     </div>
                     <div className="graph--bar__numbers">
-                      {total === 0 ? total : Math.ceil(e?.[1]?.Closed / total)}%
+                      {total === 0 ? total : Math.ceil(e?.[1]?.Closed / total * 100)}%
                       closed
                     </div>
                   </div>

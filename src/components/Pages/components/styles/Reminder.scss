@@ -54,6 +54,11 @@
           margin-top: 24px;
           text-transform: capitalize;
         }
+        .loading {
+          background-color: #FFF !important;
+          border: 1px solid #d3d5d7;
+          border-radius: 4px;
+        }
       }
       .back-to-login-btn {
         display: flex;
@@ -68,5 +73,11 @@
         }
       }
     }
+  }
+  .txt-alert {
+    color: #28a745!important;
+    font-weight: 600;
+    text-decoration: underline;
+    margin: 16px;
   }
 }

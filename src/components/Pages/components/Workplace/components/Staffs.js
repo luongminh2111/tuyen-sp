@@ -5,12 +5,16 @@ import { EMPTY_USER } from "../../../../../commons/image";
 import { useHistory } from "react-router-dom";
 import { USER_ROLE, USER_ROLE_TEXT } from "../../../../../commons/Commons";
 import { useDispatch, useSelector } from "react-redux";
-import { createMemberForWorkspace } from "../actions/WorkplaceActionCallApi";
+import {
+  createMemberForWorkspace,
+  deleteUserInWorkspace,
+} from "../actions/WorkplaceActionCallApi";
 import Alerts from "../../../../../commons/Alert";
 import { useEffect } from "react";
 import {
   createNewMember,
   updateFilterStaff,
+  updateListMemberOfWorkspace,
 } from "../actions/WorkplaceActionRedux";
 import { getListMemberInWorkspace } from "../../ProjectSetting/actions/ProjectActionCallApi";
 import { CircularProgress } from "@mui/material";
@@ -23,6 +27,8 @@ function Staffs(props) {
   const staffs = useSelector((state) => state.staffs.items);
   const account = useSelector((state) => state.auth.account);
   const filterStaff = useSelector((state) => state.staffs.filterStaff);
+
+  const [items, setItems] = useState(staffs);
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -86,7 +92,7 @@ function Staffs(props) {
       email,
       password,
       role,
-      avatar: url || EMPTY_USER
+      avatar: url || EMPTY_USER,
     };
 
     dispatch(createMemberForWorkspace(request)).then((res) => {
@@ -123,10 +129,10 @@ function Staffs(props) {
     setLoading(true);
     const storageRef = ref(storages, `/avatars/${file.name}`);
     uploadBytesResumable(storageRef, file).then(() => {
-      getDownloadURL(ref(storages, `/avatars/${file.name}`)).then(res => {
+      getDownloadURL(ref(storages, `/avatars/${file.name}`)).then((res) => {
         handleAddUser(res);
-    })});
-
+      });
+    });
   };
   const handleChangeEdit = (value) => {
     if (account?.role !== 1) {
@@ -134,9 +140,30 @@ function Staffs(props) {
       setStatusAlert("error");
       setTextAlert("You do not have permission to perform this operation");
       return;
-    };
+    }
     setIsEdit(value);
-  }
+  };
+
+  const handleDeleteUser = (id) => {
+    if (account?.role !== 1) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("You do not have permission to perform this operation");
+      return;
+    }
+    dispatch(deleteUserInWorkspace(id)).then((res) => {
+      if (res?.status === 200 && res?.data?.data) {
+        setOpenAlert(true);
+        setStatusAlert("success");
+        setTextAlert(res.data?.message);
+        dispatch(updateListMemberOfWorkspace(id));
+      } else {
+        setOpenAlert(true);
+        setStatusAlert("error");
+        setTextAlert(res.data?.message);
+      }
+    });
+  };
 
   const renderEditUser = () => {
     return loading ? (
@@ -273,7 +300,7 @@ function Staffs(props) {
   const handleShowDetailUser = (id) => {
     dispatch(getMyProfile(id));
     history.push(`/my-profile?id=${id}`);
-  }
+  };
 
   if (isEdit) {
     return renderEditUser();
@@ -321,13 +348,19 @@ function Staffs(props) {
         <div className="body">
           {staffs?.map((e, index) => {
             return (
-              <div
-                className="item"
-                onClick={() => handleShowDetailUser(e.id)}
-                key={index}
-              >
-                <div className="name">{e?.name}</div>
-                <div className="mail">{e?.email}</div>
+              <div className="item" key={index}>
+                <div
+                  className="name"
+                  onClick={() => handleShowDetailUser(e.id)}
+                >
+                  {e?.name}
+                </div>
+                <div
+                  className="mail"
+                  onClick={() => handleShowDetailUser(e.id)}
+                >
+                  {e?.email}
+                </div>
                 <div className="role">{USER_ROLE_TEXT[e?.role]}</div>
                 <div
                   className={e?.is_active === 1 ? "activated" : "unactivated"}
@@ -336,7 +369,10 @@ function Staffs(props) {
                 </div>
                 <div className="join">{e?.created_at?.substring(0, 10)}</div>
                 <div className="remove">
-                  <i className="fa-solid fa-x"></i>
+                  <i
+                    className="fa-solid fa-x"
+                    onClick={() => handleDeleteUser(e?.id)}
+                  ></i>
                 </div>
               </div>
             );
@@ -363,7 +399,7 @@ const roleOptions = [
   },
   {
     id: 1,
-    value: "Admin",
+    value: "Workspace Admin",
   },
   {
     id: 2,

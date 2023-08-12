@@ -59,7 +59,7 @@ function AddIssue(props) {
 
   useEffect(()=> {
     dispatch(getListMemberOfProject(curProject.id));
-    dispatch(getListMileStoneInProject(curProject.id));
+    dispatch(getListMileStoneInProject());
   }, []);
 
   const handleCreateTask = () => {

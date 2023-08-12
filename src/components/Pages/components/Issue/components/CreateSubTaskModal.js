@@ -10,7 +10,7 @@ import { createTask } from "../../AddIssue/actions/CreateTaskCallApi";
 import Alerts from "../../../../../commons/Alert";
 
 function CreateSubTaskModal(props) {
-  const { open, handleClose, members, milestoneId, milestones, parentTask, setTaskItem, taskItem } = props;
+  const { open, handleClose, members, milestoneId, milestones, parentTask, taskItem } = props;
 
   const curProject = useSelector((state) => state.projects.itemDetail);
 
@@ -49,7 +49,10 @@ function CreateSubTaskModal(props) {
         setTextAlert(res.data?.message);
         const newSubTask = taskItem?.sub_tasks?.concat(res?.data?.data);
         const newTask = {...taskItem, sub_tasks: newSubTask};
-        setTaskItem(newTask);
+        dispatch({
+          type: "UPDATE_TASK_DETAIL",
+          item: newTask
+        });
         setName('');
         setDescription('');
         setStartTime(parseDateToString(new Date()));

@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/Member.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getListMemberInWorkspace, getListMemberOfProject } from "../actions/ProjectActionCallApi";
+import { deleteUserInProject, getListMemberInWorkspace, getListMemberOfProject } from "../actions/ProjectActionCallApi";
 import { useState } from "react";
 import AddMemberModal from "./AddMemberModal";
 import { USER_ROLE_TEXT } from "../../../../../commons/Commons";
@@ -49,6 +49,19 @@ function MemberSetting(props) {
     dispatch(getListMemberOfProject(projectId, query, roleOption.id));
   }, [query, roleOption]);
 
+  const handleDeleteUser = (id) => {
+    dispatch(deleteUserInProject(id)).then(res => {
+      if (res?.status === 200 && res?.data?.data) {
+        setOpenAlert(true);
+        setStatusAlert("success");
+        setTextAlert(res.data?.message);
+      } else {
+        setOpenAlert(true);
+        setStatusAlert("error");
+        setTextAlert(res.data?.message);
+      }
+    });
+  }
 
   return (
     <div className="member-content-wrapper">
@@ -97,7 +110,7 @@ function MemberSetting(props) {
                 <div className="role">{USER_ROLE_TEXT[e?.role]}</div>
                 <div className="join">{e?.created_at?.substring(0, 10)}</div>
                 <div className="remove">
-                  <i className="fa-solid fa-x"></i>
+                  <i className="fa-solid fa-x" onClick={() => handleDeleteUser(e?.id)}></i>
                 </div>
               </div>
             );
@@ -127,7 +140,7 @@ const roleOptions = [
   },
   {
     id: 1,
-    value: "Admin",
+    value: "Workspace Admin",
   },
   {
     id: 2,

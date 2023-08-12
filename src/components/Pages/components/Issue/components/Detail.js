@@ -19,29 +19,21 @@ import {
   createNewComment,
   updateComment,
 } from "../../ProjectSetting/actions/ProjectActionRedux";
-import { useHistory } from "react-router-dom";
 import { EMPTY_USER } from "../../../../../commons/image";
 
 function TaskDetail(props) {
   const {
-    task,
-    setShowDetail,
+    taskItem,
     milestones,
-    isExpand,
-    isSubTask,
-    setId,
-    setSubId,
-    tasks,
+    isExpand
   } = props;
-  const curProject = useSelector((state) => state.projects.itemDetail);
+  const tasks = useSelector((state) => state.projects.tasks);
   const account = useSelector((state) => state.auth.account);
   const listComment = useSelector((state) => state.projects.comments);
-  const isReset = useSelector((state) => state.global.isReset);
   const [comment, setComment] = useState("");
   const [showComment, setShowComment] = useState(false);
   const [userSelect, setUserSelect] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-  const [taskItem, setTaskItem] = useState(task);
   const [isEdit, setIsEdit] = useState(false);
   const [editComment, setEditComment] = useState({});
 
@@ -50,8 +42,6 @@ function TaskDetail(props) {
   const [statusAlert, setStatusAlert] = useState(false);
 
   const [parentTask, setParentTask] = useState({});
-
-  const history = useHistory();
 
   const dispatch = useDispatch();
 
@@ -98,10 +88,8 @@ function TaskDetail(props) {
   };
 
   useEffect(() => {
-    dispatch(getListMileStoneInProject(curProject?.id));
-    if (isSubTask === "par") {
-      dispatch(getListCommentInTask(taskItem.id, 1));
-    }
+    dispatch(getListMileStoneInProject());
+    dispatch(getListCommentInTask(taskItem.id, 1));
     if (taskItem?.parent_task_id) {
       setParentTask(getParentTask(taskItem?.parent_task_id));
     }
@@ -109,6 +97,10 @@ function TaskDetail(props) {
 
   useEffect(() => {
     dispatch(getListCommentInTask(taskItem.id, 1));
+    
+    if (taskItem?.parent_task_id) {
+      setParentTask(getParentTask(taskItem?.parent_task_id));
+    }
   }, [taskItem]);
 
   const handleEditComment = () => {
@@ -217,8 +209,10 @@ function TaskDetail(props) {
               data-for={`item_subject_${index}`}
               data-tip=""
               onClick={() => {
-                setSubId(e.id);
-                setTaskItem(e);
+                dispatch({
+                  type: "UPDATE_TASK_DETAIL",
+                  item: e
+                });
               }}
             >
               {e?.name}
@@ -235,7 +229,7 @@ function TaskDetail(props) {
           <div className="item_assignee text-align-center">
             {getCurrentMember(e?.assignee_id)}
           </div>
-          <div className="item_status">
+          <div className={`item_status ${e?.status}`}>
             <div>{e?.status}</div>
           </div>
           <div className="item_priority">
@@ -324,7 +318,7 @@ function TaskDetail(props) {
                       {getCurrentMember(taskItem?.created_by)}
                     </div>
                     <div className="time">
-                      Created at: {e?.created_at?.substring(0, 10)}
+                      Created at: {e?.created_at?.substring(0, 10)}&nbsp; {e?.created_at?.substring(11, 19)}
                     </div>
                   </div>
                 </div>
@@ -393,9 +387,6 @@ function TaskDetail(props) {
         <div
           className="col-md-6 col-lg-6 col-sm-6 d-flex"
           onClick={() => {
-            setShowDetail(false);
-            setId("");
-            setSubId("");
             dispatch({ type: "RESET_TASK_DETAIL" });
           }}
         >
@@ -410,7 +401,10 @@ function TaskDetail(props) {
         {taskItem?.parent_task_id ? (
           <div
             className="d-flex"
-            onClick={() => setTaskItem(parentTask)}
+            onClick={() => { dispatch({
+              type: "UPDATE_TASK_DETAIL",
+              item: parentTask
+            });}}
             style={{
               paddingLeft: "16px",
               fontSize: "13px",
@@ -520,7 +514,7 @@ function TaskDetail(props) {
             </div>
           </div>
         </div>
-        {isSubTask === "par" ? (
+        {!taskItem?.parent_task_id ? (
           <div className="col-12 d-flex mb-1">
             <div
               className="col-10"
@@ -543,7 +537,7 @@ function TaskDetail(props) {
             </div>
           </div>
         ) : null}
-        {isSubTask === "par" ? (
+        {!taskItem?.parent_task_id ? (
           <div className="list-subtask">
             <div className="table-header">
               <div className="key">Key</div>
@@ -571,7 +565,7 @@ function TaskDetail(props) {
         <div className="list-comment-wrapper" style={{ marginTop: "24px" }}>
           <div className="title" style={{ marginBottom: "8px" }}>
             <span style={{ fontWeight: "600" }}>Comments</span>
-            <span style={{ marginLeft: "10px" }}>({listComment?.total})</span>
+            <span style={{ marginLeft: "10px" }}>({listComment?.total || 0})</span>
           </div>
           {renderListComment()}
         </div>
@@ -595,10 +589,9 @@ function TaskDetail(props) {
           members={members}
           milestoneId={taskItem?.milestone_id}
           milestones={milestones}
-          parentTask={task}
+          parentTask={taskItem}
           open={openModal}
           handleClose={() => setOpenModal(false)}
-          setTaskItem={setTaskItem}
           taskItem={taskItem}
         />
       ) : null}
@@ -610,10 +603,9 @@ function TaskDetail(props) {
           priorityOptions={priorityOptions}
           milestones={milestones}
           mileStoneOptions={mileStoneOptions}
-          parentTask={task}
+          parentTask={taskItem}
           open={isEdit}
           handleClose={() => setIsEdit(false)}
-          setTaskItem={setTaskItem}
           taskItem={taskItem}
         />
       ) : null}
