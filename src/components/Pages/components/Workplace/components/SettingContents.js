@@ -4,7 +4,7 @@ import { ORG_IMAGE_DEFAULT } from "../../../../../commons/image";
 import "../styles/SettingContents.scss";
 import Staffs from "./Staffs";
 import ListProject from "./ListProjects";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateWorkSpace } from "../actions/WorkplaceActionCallApi";
 import Alerts from "../../../../../commons/Alert";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -14,7 +14,7 @@ import { CircularProgress } from "@mui/material";
 function SettingContent(props) {
   const history = useHistory();
   const dispatch = useDispatch();
-
+  const account = useSelector((state) => state.auth.account);
   const { settingSelect, workspace } = props;
 
   const [name, setName] = useState(workspace?.name || "");
@@ -142,17 +142,19 @@ function SettingContent(props) {
                     alt="avatar"
                   />
                 </div>
-                <div className="upload">
-                  <label for="files" className="btn">
-                    Select avatar
-                  </label>
-                  <input
-                    id="files"
-                    style={{ visibility: "hidden", display: "none" }}
-                    type="file"
-                    onChange={(e) => handleChangeFile(e.target.files)}
-                  />
-                </div>
+                {account?.role === 1 ? (
+                  <div className="upload">
+                    <label for="files" className="btn">
+                      Select avatar
+                    </label>
+                    <input
+                      id="files"
+                      style={{ visibility: "hidden", display: "none" }}
+                      type="file"
+                      onChange={(e) => handleChangeFile(e.target.files)}
+                    />
+                  </div>
+                ) : null}
               </div>
             </div>
             <div className="label d-flex">
