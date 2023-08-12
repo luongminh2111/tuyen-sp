@@ -1,11 +1,10 @@
 import React from "react";
 import { Button } from "@mui/material";
-import { useHistory } from "react-router-dom";
 import MemberSetting from "./Members";
 import IssueType from "./IssueType";
 import Milestone from "./Milestone";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateProject } from "../actions/ProjectActionCallApi";
 import Alerts from "../../../../../commons/Alert";
 import { parseDateToString } from "../../../../../ulti/dateTime";
@@ -15,19 +14,24 @@ function SettingContent(props) {
 
   const dispatch = useDispatch();
 
-  const { settingSelect, project } = props;
+  const { settingSelect, project, account } = props;
   const [name, setName] = useState(project.name);
   const [key, setKey] = useState(project.project_key);
   const [description, setDescription] = useState(project?.description);
   const [startDate, setStartDate] = useState( parseDateToString(project?.start_date));
   const [dueDate, setDueDate] = useState(parseDateToString(project?.due_date));
 
-
   const [textAlert, setTextAlert] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
   const [statusAlert, setStatusAlert] = useState(false);
 
   const handleUpdateProject = () => {
+    if (account?.role === 3) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("You do not have permission to perform this operation");
+      return;
+    }
     const request = {
       name,
       description,
@@ -137,11 +141,11 @@ function SettingContent(props) {
       {!settingSelect ? (
         renderGeneralSetting()
       ) : settingSelect === "Members" ? (
-        <MemberSetting projectId={project.id} />
+        <MemberSetting projectId={project.id} account={account} />
       ) : settingSelect === "Issue Type" ? (
         <IssueType />
       ) : (
-        <Milestone projectId={project.id} />
+        <Milestone projectId={project.id} account={account} />
       )}
       {openAlert ? (
         <Alerts

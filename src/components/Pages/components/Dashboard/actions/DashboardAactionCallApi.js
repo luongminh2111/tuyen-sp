@@ -21,4 +21,18 @@ export const getFilterMyTask = (user, time) => dispatch => {
       return res?.data
     }
   )
-}
+};
+
+export const getAllUpdateInProject = () => dispatch => {
+
+  let url = `${BASE_URL}/api/dashboard_update`
+
+  const options = {
+    method: 'GET'
+  }
+  return callApi(url, options).then(
+    res => {
+      return res?.data
+    }
+  )
+};

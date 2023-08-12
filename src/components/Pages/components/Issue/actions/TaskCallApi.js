@@ -4,7 +4,7 @@ import { deleteComment, getListComment, getListTaskForProject } from "../../Proj
 
 
 export const getListTask = (statusSelect, milestoneId, assigneeId, key) => (dispatch, getState) => {
-
+  console.log("Check co vao day");
   const {
     projects: {
       itemDetail: {

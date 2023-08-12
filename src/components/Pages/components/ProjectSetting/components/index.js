@@ -12,7 +12,8 @@ import SettingContent from "./SettingContent";
 function ProjectSetting(props) {
   const isExpand = useSelector((state) => state.global.isExpand);
   const curProject = useSelector(state => state.projects.itemDetail);
-  
+  const account = useSelector((state) => state.auth.account);
+
   const [settingSelect, setSettingSelect] = useState('');
 
   return (
@@ -36,7 +37,7 @@ function ProjectSetting(props) {
         </div>
         <div className="project-setting-container d-flex">
           <SubMenu settingSelect={settingSelect} setSettingSelect={setSettingSelect}/>
-          <SettingContent settingSelect={settingSelect} project={curProject}/>
+          <SettingContent settingSelect={settingSelect} project={curProject} account={account}/>
         </div>
       </div>
     </>

@@ -12,7 +12,6 @@ import storages from "../../../../../contains/firebaseConfig";
 import { CircularProgress } from "@mui/material";
 
 function SettingContent(props) {
-  const history = useHistory();
   const dispatch = useDispatch();
   const account = useSelector((state) => state.auth.account);
   const { settingSelect, workspace } = props;
@@ -62,6 +61,12 @@ function SettingContent(props) {
   };
 
   const handleUpload = () => {
+    if (account?.role !== 1) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("You do not have permission to perform this operation");
+      return;
+    }
     if (!file) return;
     if (description?.trim()?.length === 0) {
       setOpenAlert(true);

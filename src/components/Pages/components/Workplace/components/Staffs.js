@@ -21,7 +21,7 @@ import { getMyProfile } from "../../MyProfile/actions/MyProflesActionsCallApi";
 
 function Staffs(props) {
   const staffs = useSelector((state) => state.staffs.items);
-
+  const account = useSelector((state) => state.auth.account);
   const filterStaff = useSelector((state) => state.staffs.filterStaff);
 
   const history = useHistory();
@@ -128,6 +128,15 @@ function Staffs(props) {
     })});
 
   };
+  const handleChangeEdit = (value) => {
+    if (account?.role !== 1) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("You do not have permission to perform this operation");
+      return;
+    };
+    setIsEdit(value);
+  }
 
   const renderEditUser = () => {
     return loading ? (
@@ -276,7 +285,7 @@ function Staffs(props) {
         <div>Staffs ({staffs?.length || 0} members)</div>
       </div>
       <div className="btn-add-user">
-        <button onClick={() => setIsEdit(true)}>Add User</button>
+        <button onClick={() => handleChangeEdit(true)}>Add User</button>
       </div>
       <div className="filter-member d-flex">
         <div className="text-1">Filter staff</div>

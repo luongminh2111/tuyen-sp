@@ -5,15 +5,21 @@ import EditMilestone from "./EditMilestone";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getListMileStoneInProject } from "../actions/ProjectActionCallApi";
+import Alerts from "../../../../../commons/Alert";
 
 function Milestone(props) {
 
-  const {projectId} = props;
+  const {projectId, account} = props;
 
   const milestones = useSelector(state => state.projects.milestone) || [];
 
   const [edit, setEdit] = useState(false);
   const [currentMileStone, setCurrentMileStone] = useState({});
+
+  const [textAlert, setTextAlert] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [statusAlert, setStatusAlert] = useState(false);
+
 
   const dispatch = useDispatch();
 
@@ -22,6 +28,12 @@ function Milestone(props) {
   }, []);
 
   const handleEdit = (milestone) => {
+    if (account?.role === 3) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("You do not have permission to perform this operation");
+      return;
+    }
     setCurrentMileStone(milestone);
     setEdit(true);
   }
@@ -65,6 +77,14 @@ function Milestone(props) {
           })}
         </div>
       </div>
+      {openAlert ? (
+        <Alerts
+          text={textAlert}
+          status={statusAlert}
+          open={openAlert}
+          setOpen={setOpenAlert}
+        />
+      ) : null}
     </div>
   );
 }

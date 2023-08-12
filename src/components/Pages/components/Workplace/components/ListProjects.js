@@ -10,15 +10,20 @@ import {
   clearFilterProject,
   updateFilterProject,
 } from "../../ProjectSetting/actions/ProjectActionRedux";
+import Alerts from "../../../../../commons/Alert";
 
 function ListProject(props) {
   const projects = useSelector((state) => state.projects.items);
   const filter = useSelector((state) => state.projects.filterProject);
+  const account = useSelector((state) => state.auth.account);
   const [query, setQuery] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
 
   const [openModal, setOpenModal] = useState(false);
+  const [textAlert, setTextAlert] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [statusAlert, setStatusAlert] = useState(false);
 
   useEffect(() => {
     dispatch(getListProject());
@@ -38,6 +43,15 @@ function ListProject(props) {
       }, 600);
     }
   };
+  const handleChangeOpenModal = (value) => {
+    if (account?.role !== 1) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("You do not have permission to perform this operation");
+      return;
+    };
+    setOpenModal(value);
+  }
 
   const handleClear = () => {
     setQuery("");
@@ -59,7 +73,7 @@ function ListProject(props) {
         </div>
       </div>
       <div className="btn-add-project">
-        <button onClick={() => setOpenModal(true)}>Add Project</button>
+        <button onClick={() => handleChangeOpenModal(true)}>Add Project</button>
       </div>
       <div className="filter-project d-flex">
         <div className="text-1">Filter project</div>
@@ -104,6 +118,14 @@ function ListProject(props) {
         <CreateNewProject
           open={openModal}
           handleClose={() => setOpenModal(false)}
+        />
+      ) : null}
+       {openAlert ? (
+        <Alerts
+          text={textAlert}
+          status={statusAlert}
+          open={openAlert}
+          setOpen={setOpenAlert}
         />
       ) : null}
     </div>

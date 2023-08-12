@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { ORG_IMAGE_DEFAULT } from "../../../../../commons/image";
 import "./style/index.scss";
+import { useDispatch } from "react-redux";
+import { getAllUpdateInProject } from "../actions/DashboardAactionCallApi";
+import { CircularProgress } from "@mui/material";
+import { EMPTY_USER } from "../../../../../commons/image";
 
 function DashboardRight(props) {
   const { handleChangeRightRoom, isRightZoomOut } = props;
 
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    
+    setLoading(true);
+    dispatch(getAllUpdateInProject()).then((res) => {
+      setItems(res?.data);
+      setLoading(false);
+    });
   }, []);
 
   return (
@@ -25,51 +36,93 @@ function DashboardRight(props) {
           </div>
           <div className="title"> Recent Updates</div>
         </div>
-        {!isRightZoomOut ?
-        <div className="header-right">
-          <div className="filter-project">Filter: PMA_web</div>
-          <div className="options">
-            <span></span>
-            <span>View options</span>
+        {!isRightZoomOut ? (
+          <div className="header-right">
+            <div className="filter-project">Filter: PMA_web</div>
+            <div className="options">
+              <span></span>
+              <span>View options</span>
+            </div>
           </div>
-        </div> : null }
+        ) : null}
       </div>
       {!isRightZoomOut ? (
         <div className="list-updates">
-          <div className="current-time">Thu Jun. 22, 2023</div>
           <div className="updates">
-            {fakeList?.map((item, index) => {
-              return (
-                <div className="update-item" key={index}>
-                  <div className="top-content">
-                    <div className="user">
-                      <div className="avatar">
-                        <img src={ORG_IMAGE_DEFAULT}></img>
-                      </div>
-                      <div className="name">
-                        <span>{item?.fullName}</span> 
-                        <span>add a</span>
-                        <span>file</span>
-                      </div>
-                    </div>
-                    <div className="time">{item?.time}</div>
-                  </div>
-
-                  <div className="update-info">
-                    <div className="info-top">
-                      <div className="update-name">PMA_web</div>
-                    </div>
-                    <div className="sub-name">PMA_web</div>
-                    <div className="info-bottom">
-                      <div className="add-issue">Add issue</div>
-                      <div className="issues">Issues</div>
-                      <div className="board">Board</div>
-                      <div className="file">Files</div>
-                    </div>
+            <div className="list-timeline">
+              {loading ? (
+                <div>
+                  <div
+                    className="w-100 d-flex justify-content-center align-items-center"
+                    style={{ height: "400px" }}
+                  >
+                    <CircularProgress />
                   </div>
                 </div>
-              );
-            })}
+              ) : (
+                items?.map((e) => {
+                  return (
+                    <div className="timeline-item">
+                      <div className="timelịne-date">
+                        {e?.updated_at?.substring(0, 10)}
+                      </div>
+                      <div className="timeline__stream">
+                        <div className="avatar">
+                          <img
+                            src={e?.creator?.avatar || EMPTY_USER}
+                            alt="avatar"
+                          />
+                        </div>
+                        <div className="right-content">
+                          <div className="stream-update__text">
+                            <div>
+                              <span
+                                style={{
+                                  fontWeight: "600",
+                                  marginRight: "16px",
+                                }}
+                              >
+                                {e?.creator?.name}
+                              </span>
+                              {e?.type === "NORMAL" ? (
+                                <span>posted a comment on the task</span>
+                              ) : null}
+                              {e?.type === "ADD" ? (
+                                <span>added a new task</span>
+                              ) : null}
+                              {e?.type === "UPDATE" ? (
+                                <span>updated a task</span>
+                              ) : null}
+                            </div>
+                          </div>
+                          <div className="stream-update__title">
+                            <span
+                              className="project-name"
+                              style={{
+                                fontWeight: "600",
+                                marginRight: "10px",
+                                color: "#0088FF",
+                                cursor: "pointer",
+                              }}
+                            >
+                              {e?.task?.task_key}
+                            </span>
+                            <span>{e?.task?.name}</span>
+                          </div>
+                          {e?.type === "NORMAL" || e?.type === "UPDATE" ? (
+                            <div className="stream-update__content d-flex justify-content-between mt-2">
+                              <div className="">
+                                <div>{e?.content}</div>
+                              </div>
+                            </div>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
           </div>
         </div>
       ) : null}
@@ -77,55 +130,3 @@ function DashboardRight(props) {
   );
 }
 export default DashboardRight;
-
-const fakeList = [
-  {
-    image: "",
-    fullName: "Vu Duc Tuyen",
-    projectName: "PMA_web (PMA_WEB)",
-    filename: "ừtừ vựng thuyết trình.docx",
-    time: "2 ngày trước",
-  },
-  {
-    image: "",
-    fullName: "Vu Duc Tuyen",
-    projectName: "PMA_web (PMA_WEB)",
-    filename: "ừtừ vựng thuyết trình.docx",
-    time: "2 ngày trước",
-  },
-  {
-    image: "",
-    fullName: "Vu Duc Tuyen",
-    projectName: "PMA_web (PMA_WEB)",
-    filename: "ừtừ vựng thuyết trình.docx",
-    time: "2 ngày trước",
-  },
-  {
-    image: "",
-    fullName: "Vu Duc Tuyen",
-    projectName: "PMA_web (PMA_WEB)",
-    filename: "ừtừ vựng thuyết trình.docx",
-    time: "2 ngày trước",
-  },
-  {
-    image: "",
-    fullName: "Vu Duc Tuyen",
-    projectName: "PMA_web (PMA_WEB)",
-    filename: "ừtừ vựng thuyết trình.docx",
-    time: "2 ngày trước",
-  },
-  {
-    image: "",
-    fullName: "Vu Duc Tuyen",
-    projectName: "PMA_web (PMA_WEB)",
-    filename: "ừtừ vựng thuyết trình.docx",
-    time: "2 ngày trước",
-  },
-  {
-    image: "",
-    fullName: "Vu Duc Tuyen",
-    projectName: "PMA_web (PMA_WEB)",
-    filename: "ừtừ vựng thuyết trình.docx",
-    time: "2 ngày trước",
-  },
-];

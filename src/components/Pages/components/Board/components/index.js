@@ -11,7 +11,6 @@ import {
   getListMemberInWorkspace,
   getListMileStoneInProject,
 } from "../../ProjectSetting/actions/ProjectActionCallApi";
-import { useState } from "react";
 
 function Board(props) {
   const isExpand = useSelector((state) => state.global.isExpand);

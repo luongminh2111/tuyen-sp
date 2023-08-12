@@ -7,10 +7,11 @@ import { useState } from "react";
 import AddMemberModal from "./AddMemberModal";
 import { USER_ROLE_TEXT } from "../../../../../commons/Commons";
 import ButtonDropDown from "../../../../../commons/Button/ButtonDropdown";
+import Alerts from "../../../../../commons/Alert";
 
 function MemberSetting(props) {
 
-  const { projectId } = props;
+  const { projectId, account } = props;
 
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
@@ -18,6 +19,12 @@ function MemberSetting(props) {
   const [roleOption, setRoleOption] = useState({});
   const members = useSelector(state => state.projects.members);
   const hasIds = members?.map(e => e.id);
+
+  
+  const [textAlert, setTextAlert] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [statusAlert, setStatusAlert] = useState(false);
+
 
   useEffect(() => {
     dispatch(getListMemberInWorkspace());
@@ -27,6 +34,16 @@ function MemberSetting(props) {
   const handleChangeQuery = (value) => {
     setQuery(value);
   };
+
+  const handleChangeOpen = (value) => {
+    if (account?.role === 3) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("You do not have permission to perform this operation");
+      return;
+    }
+    setOpenModal(value);
+  }
 
   useEffect(() => {
     dispatch(getListMemberOfProject(projectId, query, roleOption.id));
@@ -39,7 +56,7 @@ function MemberSetting(props) {
         <div>Project Members ({members?.length} members)</div>
       </div>
       <div className="add-member-btn">
-        <button onClick={() => setOpenModal(true)}>Add member</button>
+        <button onClick={() => handleChangeOpen(true)}>Add member</button>
       </div>
       <div className="filter-member d-flex">
         <div className="text-1">Filter staff</div>
@@ -87,6 +104,14 @@ function MemberSetting(props) {
           })}
         </div>
       </div>
+      {openAlert ? (
+        <Alerts
+          text={textAlert}
+          status={statusAlert}
+          open={openAlert}
+          setOpen={setOpenAlert}
+        />
+      ) : null}
       {openModal ? 
       <AddMemberModal open={openModal} handleClose={() => setOpenModal(false)} projectId={projectId} hasIds={hasIds} /> : null}
     </div>

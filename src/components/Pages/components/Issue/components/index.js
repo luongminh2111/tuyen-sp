@@ -74,6 +74,7 @@ function Issues(props) {
               isSubTask={subId > 0 ? 'sub' : 'par'}
               setId={setId}
               setSubId={setSubId}
+              tasks={tasks}
             />
           ) : (
             <>

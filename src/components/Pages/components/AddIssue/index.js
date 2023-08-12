@@ -18,6 +18,7 @@ function AddIssue(props) {
   const curProject = useSelector(state => state.projects.itemDetail);
   const members = useSelector(state => state.projects.members);
   const milestones = useSelector(state => state.projects.milestone);
+  const account = useSelector((state) => state.auth.account);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [startTime, setStartTime] = useState(parseDateToString(new Date()));
@@ -62,6 +63,12 @@ function AddIssue(props) {
   }, []);
 
   const handleCreateTask = () => {
+    if (account?.role === 3) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("You do not have permission to perform this operation");
+      return;
+    }
     const request = {
       name,
       description,
@@ -191,7 +198,6 @@ function AddIssue(props) {
             </div>
           </div>
           <div className="list-btn">
-            <Button className="preview-btn">Preview</Button>
             <Button className="add-btn" onClick={() => handleCreateTask()}>Add</Button>
           </div>
         </div> }

@@ -11,7 +11,6 @@ import {
   DeleteComment,
   EditComment,
   getListCommentInTask,
-  getListTask,
   submitComment,
 } from "../actions/TaskCallApi";
 import { priorityOptions } from "../../AddIssue/commons/DataCommon";
@@ -32,6 +31,7 @@ function TaskDetail(props) {
     isSubTask,
     setId,
     setSubId,
+    tasks,
   } = props;
   const curProject = useSelector((state) => state.projects.itemDetail);
   const account = useSelector((state) => state.auth.account);
@@ -48,6 +48,8 @@ function TaskDetail(props) {
   const [textAlert, setTextAlert] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
   const [statusAlert, setStatusAlert] = useState(false);
+
+  const [parentTask, setParentTask] = useState({});
 
   const history = useHistory();
 
@@ -91,10 +93,17 @@ function TaskDetail(props) {
     return milestones?.find((e) => e.id === id)?.name;
   };
 
+  const getParentTask = (parentId) => {
+    return tasks?.find((e) => e.id === parentId);
+  };
+
   useEffect(() => {
     dispatch(getListMileStoneInProject(curProject?.id));
     if (isSubTask === "par") {
       dispatch(getListCommentInTask(taskItem.id, 1));
+    }
+    if (taskItem?.parent_task_id) {
+      setParentTask(getParentTask(taskItem?.parent_task_id));
     }
   }, []);
 
@@ -160,7 +169,7 @@ function TaskDetail(props) {
       />
     );
   };
-  console.log("check taskItem :", taskItem);
+
   const handleSubmitComment = () => {
     if (comment?.trim() === "" || comment == null) {
       setOpenAlert(true);
@@ -319,7 +328,6 @@ function TaskDetail(props) {
                     </div>
                   </div>
                 </div>
-                {console.log("check commentContents :", commentContents)}
                 <div className="comment-content">
                   {e.id !== editComment?.id ? (
                     commentContents?.map((it) => {
@@ -388,6 +396,7 @@ function TaskDetail(props) {
             setShowDetail(false);
             setId("");
             setSubId("");
+            dispatch({ type: "RESET_TASK_DETAIL" });
           }}
         >
           <div>
@@ -396,6 +405,27 @@ function TaskDetail(props) {
           <div className="text"> Back to list task</div>
         </div>
         <hr />
+      </div>
+      <div className="col-12 d-flex">
+        {taskItem?.parent_task_id ? (
+          <div
+            className="d-flex"
+            onClick={() => setTaskItem(parentTask)}
+            style={{
+              paddingLeft: "16px",
+              fontSize: "13px",
+              textDecoration: "underline",
+              cursor: "pointer",
+              color: "#0088FF",
+            }}
+          >
+            <div style={{ paddingRight: "8px" }}>
+              <i className="fa-solid fa-folder"></i>
+            </div>
+            <div style={{ marginRight: "4px" }}>{parentTask?.task_key} /</div>
+            <div>{parentTask?.name}</div>
+          </div>
+        ) : null}
       </div>
       <div className="content-wrapper">
         <div className="task-name col-12 d-flex mt-2">

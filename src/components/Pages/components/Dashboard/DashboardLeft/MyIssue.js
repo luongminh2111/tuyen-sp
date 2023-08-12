@@ -34,6 +34,7 @@ function MyIssue(props) {
   }, [filterUser, filterTime]);
 
   const handleShowDetailTask = (e) => {
+    console.log("check vao day a");
     dispatch({
       type: "UPDATE_TASK_DETAIL",
       item: e,
