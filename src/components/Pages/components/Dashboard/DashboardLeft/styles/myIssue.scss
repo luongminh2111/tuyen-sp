@@ -74,12 +74,15 @@
           display: flex;
           .item {
             cursor: pointer;
-            color: #fff;
+            color: #0f1824;
             margin-right: 16px;
             width: fit-content;
             padding: 4px 12px;
-            background: #2c9a7a;
             border-radius: 20px;
+            &.active {
+              background: #2c9a7a;
+              color: #fff;
+            }
           }
         }
         &.time {
@@ -89,41 +92,89 @@
     }
     .list-issue-table {
       background-color: #fff;
-      padding: 12px;
       .list-issue-header {
         display: flex;
-        height: 50px;
+        height: 40px;
+        padding: 4px 12px;
         border-bottom: 1px solid #d3d5d7;
-        .text-key {
-          width: calc(100% / 4);
-          text-align: center;
-        }
-        .text-subject {
-          width: calc(100% / 4);
-          text-align: center;
-        }
-        .text-priority {
-          width: calc(100% / 6);
-          text-align: center;
-        }
-        .text-status {
-          width: calc(100% / 6);
-          text-align: center;
-        }
-        .text-due {
-          width: calc(100% / 6);
-          text-align: center;
-        }
+        align-items: center;
       }
       .list-issue-content {
-        display: flex;
-        .list-empty {
-          width: 100%;
-          height: 100px;
+        max-height: 250px;
+        overflow-y: auto;
+        .item-task {
           display: flex;
-          justify-content: center;
+          height: 40px;
           align-items: center;
+          border-bottom: 1px solid #d3d5d7;
+          &:last-child {
+            border-bottom: unset;
+          }
         }
+      }
+      .text-key {
+        width: calc(100% / 6);
+        max-width: calc(100% / 6);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: break-word;
+        text-align: center;
+      }
+      .text-subject {
+        width: calc(100% / 3);
+        max-width: calc(100% / 3);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: break-word;
+        text-align: center;
+        &.name {
+          &:hover {
+            cursor: pointer;
+            color: #0088ff;
+            text-decoration: underline;
+          }
+        }
+      }
+      .text-priority {
+        width: calc(100% / 6);
+        text-align: center;
+      }
+      .text-status {
+        width: calc(100% / 6);
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        > div {
+          width: max-content;
+          padding: 2px 4px;
+          background-color: #ed8077;
+          color: #fff;
+          border-radius: 10px;
+          text-align: center;
+          min-width: 60px;
+        }
+        &.Progress {
+          > div {
+            background-color: #4488c5;
+          }
+        }
+        &.Resolved {
+          > div {
+            background-color: #5eb5a6;
+          }
+        }
+        &.Closed {
+          > div {
+            background-color: #a1af2f;
+          }
+        }
+      }
+      .text-due {
+        width: calc(100% / 6);
+        text-align: center;
       }
     }
   }

@@ -56,7 +56,7 @@ export const getListMemberInWorkspace = (filterStaff) => (dispatch, getState) =>
     }
   } = getState();
 
-  let endPoint = `${BASE_URL}/api/get_members_by_workspace/${id}?.language=vi`;
+  let endPoint = `${BASE_URL}/api/get_members_by_workspace/${id}?language=vi`;
   if (filterStaff) {
     if(Object.keys(filterStaff).length){
       if(filterStaff?.query?.trim() !== '' && filterStaff?.query?.length > 0) {
@@ -94,15 +94,22 @@ export const addMemberToProject = (userIds, projectId) => (dispatch) => {
     })
 };
 
-export const getListMemberOfProject = (projectId) => (dispatch) => {
-  const endPoint = `${BASE_URL}/api/members_of_project/${projectId}`;
+export const getListMemberOfProject = (projectId, name, role) => (dispatch) => {
+  let endPoint = `${BASE_URL}/api/members_of_project/${projectId}?language=vi`;
+
+  if(!!name) {
+    endPoint += `&name=${name}`;
+  } 
+  if(!!role && role !== 0) {
+    endPoint += `&role=${role}`;
+  }
+
   const options = {
     method: 'GET',
   }
   return callApi(endPoint, options).then( res => {
     if(res?.status === 200 && res?.data) {
       dispatch(getListMemberForProject(res.data));
-    }
-
+    } 
   })
-}
+};

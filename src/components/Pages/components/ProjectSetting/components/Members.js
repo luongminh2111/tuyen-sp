@@ -6,6 +6,7 @@ import { getListMemberInWorkspace, getListMemberOfProject } from "../actions/Pro
 import { useState } from "react";
 import AddMemberModal from "./AddMemberModal";
 import { USER_ROLE_TEXT } from "../../../../../commons/Commons";
+import ButtonDropDown from "../../../../../commons/Button/ButtonDropdown";
 
 function MemberSetting(props) {
 
@@ -13,6 +14,8 @@ function MemberSetting(props) {
 
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
+  const [query, setQuery] = useState("");
+  const [roleOption, setRoleOption] = useState({});
   const members = useSelector(state => state.projects.members);
   const hasIds = members?.map(e => e.id);
 
@@ -20,6 +23,14 @@ function MemberSetting(props) {
     dispatch(getListMemberInWorkspace());
     dispatch(getListMemberOfProject(projectId));
   }, []);
+
+  const handleChangeQuery = (value) => {
+    setQuery(value);
+  };
+
+  useEffect(() => {
+    dispatch(getListMemberOfProject(projectId, query, roleOption.id));
+  }, [query, roleOption]);
 
 
   return (
@@ -31,11 +42,25 @@ function MemberSetting(props) {
         <button onClick={() => setOpenModal(true)}>Add member</button>
       </div>
       <div className="filter-member d-flex">
-        <div className="text-1">Filter users</div>
+        <div className="text-1">Filter staff</div>
         <div className="search-input d-flex">
           <i className="fa-solid fa-magnifying-glass"></i>
-          <input type="text" />
-          <i className="fa-solid fa-x"></i>
+          <input
+            type="text"
+            placeholder="Search in userId, Name, Email"
+            value={query}
+            onChange={(e) => handleChangeQuery(e.target.value)}
+          />
+          <i
+            className="fa-solid fa-x"
+            onClick={() => handleChangeQuery("")}
+          ></i>
+        </div>
+        <div className="text-2">
+          <ButtonDropDown
+            options={roleOptions}
+            onChangeOption={setRoleOption}
+          ></ButtonDropDown>
         </div>
       </div>
       <div className="filter-result-table">
@@ -68,3 +93,23 @@ function MemberSetting(props) {
   );
 }
 export default MemberSetting;
+
+
+const roleOptions = [
+  {
+    id: 0,
+    value: "All",
+  },
+  {
+    id: 1,
+    value: "Admin",
+  },
+  {
+    id: 2,
+    value: "PM",
+  },
+  {
+    id: 3,
+    value: "member",
+  },
+];

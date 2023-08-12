@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, TextField, Box } from "@mui/material";
+import { Button, TextField, Box, CircularProgress } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import "../styles/Login.scss";
 import { login } from "../../actions/AccountActionCallApi";
@@ -8,13 +8,12 @@ import CryptoJS from "crypto-js";
 import Footer from "../../../commons/Footer";
 import { updateUser } from "../../actions/AccountActionRedux";
 import Alerts from "../../../../commons/Alert";
-import { getWorkSpace} from "../Workplace/actions/WorkplaceActionCallApi";
+import { getWorkSpace } from "../Workplace/actions/WorkplaceActionCallApi";
 import { secretPass } from "../../../../commons/Commons";
 import { useEffect } from "react";
 
 function Login() {
-
-  const account = useSelector(state => state.auth.account);
+  const account = useSelector((state) => state.auth.account);
   const [isLoading, setIsLoading] = useState(true);
 
   const [remember, setRemember] = useState(false);
@@ -29,18 +28,19 @@ function Login() {
   const [openAlert, setOpenAlert] = useState(false);
   const [statusAlert, setStatusAlert] = useState(false);
 
+  const [fetching, setFetching] = useState(false);
+
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
-    if(account.id){
+    if (account.id) {
       history.push("/");
       return;
     } else {
       setIsLoading(false);
     }
   }, []);
-  
 
   const handleChangePass = (value) => {
     setPassword(value);
@@ -83,17 +83,22 @@ function Login() {
         email,
         password,
       };
+      setFetching(true);
       dispatch(login(loginRequest)).then((json) => {
+        setFetching(false);
         if (json?.data) {
           setOpenAlert(true);
           setTextAlert(json?.data?.message);
           if (json?.data?.user && json?.data?.token && json?.status === 201) {
-            if(remember){
+            if (remember) {
               const saveUser = {
                 user: json.data.user,
                 token: json.data.token,
               };
-              const secretUser = CryptoJS.AES.encrypt(JSON.stringify(saveUser), secretPass).toString();
+              const secretUser = CryptoJS.AES.encrypt(
+                JSON.stringify(saveUser),
+                secretPass
+              ).toString();
               localStorage.setItem("user", secretUser);
             }
             sessionStorage.setItem("token_admin", json.data.token);
@@ -114,17 +119,27 @@ function Login() {
   if (isLoading) {
     return (
       <div className="d-flex justify-content-center align-items-center w-100 h-100">
-          <div className="loader"></div>
+        <div className="loader"></div>
       </div>
     );
-  };
+  }
 
   return (
     <Box className="signin-wrapper">
       <Box className="head">
         <div className="title-1">Welcome to Project M</div>
       </Box>
-
+      {fetching ?
+      (
+        <div>
+        <div
+          className="w-100 d-flex justify-content-center align-items-center"
+          style={{ height: "300px" }}
+        >
+          <CircularProgress />
+        </div>
+      </div>
+      ) :
       <div className="login-container">
         <Box className="login-form">
           {!showInputPass ? (
@@ -165,7 +180,11 @@ function Login() {
               </Box>
               <div className="d-flex justify-content-between form-field">
                 <div className="remember-inp d-flex">
-                  <input type="checkbox" checked={remember} onChange={(e) => setRemember(!remember)} ></input>
+                  <input
+                    type="checkbox"
+                    checked={remember}
+                    onChange={(e) => setRemember(!remember)}
+                  ></input>
                   <div className="label">Remember me</div>
                 </div>
                 <div className="forgot-pass">
@@ -193,7 +212,7 @@ function Login() {
             </>
           )}
         </Box>
-      </div>
+      </div> }
       <Footer />
       {openAlert ? (
         <Alerts

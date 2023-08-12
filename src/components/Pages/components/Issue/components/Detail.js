@@ -93,11 +93,14 @@ function TaskDetail(props) {
 
   useEffect(() => {
     dispatch(getListMileStoneInProject(curProject?.id));
-    console.log("check isSubTask :", isSubTask);
     if (isSubTask === "par") {
       dispatch(getListCommentInTask(taskItem.id, 1));
     }
   }, []);
+
+  useEffect(() => {
+    dispatch(getListCommentInTask(taskItem.id, 1));
+  }, [taskItem]);
 
   const handleEditComment = () => {
     if (comment?.trim() === "" || comment == null) {
@@ -108,7 +111,7 @@ function TaskDetail(props) {
     }
     const request = {
       content: comment,
-      task_id: task.id,
+      task_id: taskItem.id,
       created_by: account.userId,
       type: "NORMAL",
     };
@@ -141,6 +144,23 @@ function TaskDetail(props) {
     );
   };
 
+  const InputArea = () => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Enter") {
+        handleEditComment();
+      }
+    };
+
+    return (
+      <textarea
+        id="comment-area"
+        value={comment}
+        onKeyDown={handleKeyDown}
+        onChange={(e) => setComment(e.target.value)}
+      />
+    );
+  };
+  console.log("check taskItem :", taskItem);
   const handleSubmitComment = () => {
     if (comment?.trim() === "" || comment == null) {
       setOpenAlert(true);
@@ -150,7 +170,7 @@ function TaskDetail(props) {
     }
     const request = {
       content: comment,
-      task_id: task.id,
+      task_id: taskItem.id,
       created_by: account.userId,
     };
     dispatch(submitComment(request)).then((res) => {
@@ -178,7 +198,6 @@ function TaskDetail(props) {
       </div>
     );
   };
-
   const renderItem = (e, index) => {
     return (
       <>
@@ -188,7 +207,10 @@ function TaskDetail(props) {
             <div
               data-for={`item_subject_${index}`}
               data-tip=""
-              onClick={() => setSubId(e.id)}
+              onClick={() => {
+                setSubId(e.id);
+                setTaskItem(e);
+              }}
             >
               {e?.name}
             </div>
@@ -268,84 +290,83 @@ function TaskDetail(props) {
   const renderListComment = () => {
     return (
       <div className="list-comment">
-        {listComment?.data?.map((e, index) => {
-          return (
-            <div className="comment-item" key={index}>
-              <div className="created_by d-flex">
-                <div className="image">
-                  <div>
-                    <img
-                      src={account?.avatar || EMPTY_USER}
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "50%",
-                      }}
-                      alt="avatar-cmt"
-                    />
+        {listComment?.data
+          ?.filter((e) => e.task_id === taskItem?.id)
+          ?.map((e, index) => {
+            const commentContents = e?.content?.split("/n");
+            return (
+              <div className="comment-item" key={index}>
+                <div className="created_by d-flex">
+                  <div className="image">
+                    <div>
+                      <img
+                        src={account?.avatar || EMPTY_USER}
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                        }}
+                        alt="avatar-cmt"
+                      />
+                    </div>
+                  </div>
+                  <div className="user">
+                    <div className="name">
+                      {getCurrentMember(taskItem?.created_by)}
+                    </div>
+                    <div className="time">
+                      Created at: {e?.created_at?.substring(0, 10)}
+                    </div>
                   </div>
                 </div>
-                <div className="user">
-                  <div className="name">
-                    {getCurrentMember(taskItem?.created_by)}
-                  </div>
-                  <div className="time">
-                    Created at: {e?.created_at?.substring(0, 10)}
-                  </div>
+                {console.log("check commentContents :", commentContents)}
+                <div className="comment-content">
+                  {e.id !== editComment?.id ? (
+                    commentContents?.map((it) => {
+                      return <p>{it}</p>;
+                    })
+                  ) : (
+                    <div className="d-flex">
+                      {InputArea()}
+                      <span>
+                        <i
+                          class="fa-sharp fa-solid fa-circle-check"
+                          style={{ color: "#0088FF" }}
+                          onClick={() => handleEditComment()}
+                        ></i>
+                      </span>
+                      <span>
+                        <i
+                          class="fa-solid fa-xmark"
+                          style={{ color: "#FF4d4d" }}
+                          onClick={() => setEditComment({})}
+                        ></i>
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className="edit-comment">
+                  <i
+                    className="fa-solid fa-pen-to-square"
+                    style={
+                      e?.type !== "NORMAL"
+                        ? { color: "#d3d5d7", marginRight: "12px" }
+                        : { marginRight: "12px" }
+                    }
+                    onClick={() => {
+                      if (e?.type !== "NORMAL") return;
+                      setEditComment(e);
+                      setComment(e.content);
+                    }}
+                  ></i>
+                  <i
+                    className="fa-solid fa-trash"
+                    onClick={() => handleDeleteComment(e.id)}
+                  ></i>
                 </div>
               </div>
-              <div className="comment-content">
-                {e.id !== editComment?.id ? (
-                  <p> {e?.content}</p>
-                ) : (
-                  <div className="d-flex">
-                    <input
-                      type="text"
-                      value={comment}
-                      onChange={(e) => {
-                        setComment(e.target.value);
-                      }}
-                    />
-                    <span>
-                      <i
-                        class="fa-sharp fa-solid fa-circle-check"
-                        style={{ color: "#0088FF" }}
-                        onClick={() => handleEditComment()}
-                      ></i>
-                    </span>
-                    <span>
-                      <i
-                        class="fa-solid fa-xmark"
-                        style={{ color: "#FF4d4d" }}
-                        onClick={() => setEditComment({})}
-                      ></i>
-                    </span>
-                  </div>
-                )}
-              </div>
-              <div className="edit-comment">
-                <i
-                  className="fa-solid fa-pen-to-square"
-                  style={
-                    (
-                    e?.type !== "NORMAL"
-                      ? { color: "#d3d5d7", marginRight: "12px" }
-                      : { marginRight: "12px" })
-                  }
-                  onClick={() => {
-                    if (e?.type !== "NORMAL") return;
-                    setEditComment(e);
-                    setComment(e.content);
-                  }}
-                ></i>
-                <i
-                  className="fa-solid fa-trash"
-                  onClick={() => handleDeleteComment(e.id)}
-                ></i>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
         {listComment?.current_page * listComment?.per_page <
           listComment?.total && listComment?.total > 0 ? (
           <div className="view-more d-flex justify-content-center align-items-center">
@@ -410,7 +431,9 @@ function TaskDetail(props) {
             </div>
             <div className="line-item d-flex">
               <div className="text-1">Status</div>
-              <div className="value">{taskItem?.status}</div>
+              <div className={` value text-status ${taskItem?.status}`}>
+                <div>{taskItem?.status}</div>
+              </div>
             </div>
             <div className="line-item d-flex">
               <div className="text-1">Priority</div>
@@ -540,7 +563,7 @@ function TaskDetail(props) {
       {openModal ? (
         <CreateSubTaskModal
           members={members}
-          milestoneId={task?.milestone_id}
+          milestoneId={taskItem?.milestone_id}
           milestones={milestones}
           parentTask={task}
           open={openModal}
@@ -552,7 +575,7 @@ function TaskDetail(props) {
       {isEdit ? (
         <EditTaskModal
           members={members}
-          milestoneId={task?.milestone_id}
+          milestoneId={taskItem?.milestone_id}
           memberOptions={memberOptions}
           priorityOptions={priorityOptions}
           milestones={milestones}

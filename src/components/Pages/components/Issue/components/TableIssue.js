@@ -4,16 +4,19 @@ import ReactTooltip from "react-tooltip";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getListTask } from "../actions/TaskCallApi";
+import { CircularProgress } from "@mui/material";
 
 function TableIssue(props) {
   const { tasks, setId, setShowDetail, milestones, setSubId } = props;
   const dispatch = useDispatch();
   const members = useSelector((state) => state.projects.members);
   const filterTask = useSelector((state) => state.projects.filterTask);
+  const [loading, setLoading] = useState(false);
 
   const [showDetailIds, setShowDetailIds] = useState([]);
 
   useEffect(() => {
+    setLoading(true);
     dispatch(
       getListTask(
         filterTask?.status,
@@ -21,7 +24,9 @@ function TableIssue(props) {
         filterTask?.assignee_id,
         filterTask?.key
       )
-    );
+    ).then((res) => {
+      setLoading(false);
+    });
   }, [filterTask]);
 
   const getCurrentMember = (id) => {
@@ -161,7 +166,16 @@ function TableIssue(props) {
     <div className="issues-table-wrapper">
       <div className="pagination"></div>
       {renderHeader()}
-      {tasks?.length === 0 ? (
+      {loading ? (
+        <div>
+          <div
+            className="w-100 d-flex justify-content-center align-items-center"
+            style={{ height: "300px" }}
+          >
+            <CircularProgress />
+          </div>
+        </div>
+      ) : tasks?.length === 0 ? (
         renderEmptyList()
       ) : (
         <div className="table-content">

@@ -19,6 +19,7 @@ function Issues(props) {
   const tasks = useSelector((state) => state.projects.tasks);
   const curProject = useSelector((state) => state.projects.itemDetail);
   const milestones = useSelector((state) => state.projects.milestone);
+  const taskDetail = useSelector(state => state.tasks.detail);
 
   const [showDetail, setShowDetail] = useState(false);
 
@@ -41,6 +42,15 @@ function Issues(props) {
     dispatch(getListTask());
     dispatch(getListMemberOfProject(curProject?.id));
     dispatch(getListMileStoneInProject(curProject?.id));
+    if (taskDetail) {
+      if (taskDetail?.parent_task_id) {
+        setSubId(taskDetail?.id);
+        setId(taskDetail?.parent_task_id);
+      } else {
+        setId(taskDetail?.id);
+      }
+      setShowDetail(true);
+    }
   }, []);
 
   // useEffect(() => {

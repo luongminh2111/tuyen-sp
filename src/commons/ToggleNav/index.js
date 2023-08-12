@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 function ToggleNav(props) {
 
   const isExpand = useSelector(state => state.global.isExpand);
+  const curProject = useSelector(state => state.projects.itemDetail);
 
   const menuBarRef = useRef();
   const dispatch = useDispatch();
@@ -50,7 +51,7 @@ function ToggleNav(props) {
           )}
         </span>
       </div>
-      <div className="menu-item home d-flex" onClick={() => history.push("/")}>
+      <div className="menu-item home d-flex" onClick={() =>  history.push(`/project?name=${curProject?.name}`)}>
         <span className="icon">
           <i className="fa-solid fa-house"></i>
         </span>
