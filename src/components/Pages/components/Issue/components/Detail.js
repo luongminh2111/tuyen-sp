@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import "../styles/Detail.scss";
 import { useDispatch, useSelector } from "react-redux";
 import ReactTooltip from "react-tooltip";
@@ -33,6 +33,7 @@ function TaskDetail(props) {
     setId,
     setSubId,
   } = props;
+
   const curProject = useSelector((state) => state.projects.itemDetail);
   const account = useSelector((state) => state.auth.account);
   const listComment = useSelector((state) => state.projects.comments);
@@ -108,7 +109,7 @@ function TaskDetail(props) {
     }
     const request = {
       content: comment,
-      task_id: task.id,
+      task_id: taskItem.id,
       created_by: account.userId,
       type: "NORMAL",
     };
@@ -150,7 +151,7 @@ function TaskDetail(props) {
     }
     const request = {
       content: comment,
-      task_id: task.id,
+      task_id: taskItem.id,
       created_by: account.userId,
     };
     dispatch(submitComment(request)).then((res) => {
@@ -188,7 +189,7 @@ function TaskDetail(props) {
             <div
               data-for={`item_subject_${index}`}
               data-tip=""
-              onClick={() => setSubId(e.id)}
+              onClick={() => setTaskItem(e)}
             >
               {e?.name}
             </div>
@@ -540,7 +541,7 @@ function TaskDetail(props) {
       {openModal ? (
         <CreateSubTaskModal
           members={members}
-          milestoneId={task?.milestone_id}
+          milestoneId={taskItem?.milestone_id}
           milestones={milestones}
           parentTask={task}
           open={openModal}
@@ -552,7 +553,7 @@ function TaskDetail(props) {
       {isEdit ? (
         <EditTaskModal
           members={members}
-          milestoneId={task?.milestone_id}
+          milestoneId={taskItem?.milestone_id}
           memberOptions={memberOptions}
           priorityOptions={priorityOptions}
           milestones={milestones}
@@ -575,4 +576,4 @@ function TaskDetail(props) {
     </div>
   );
 }
-export default TaskDetail;
+export default memo(TaskDetail);
