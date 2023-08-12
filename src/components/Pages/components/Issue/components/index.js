@@ -31,9 +31,12 @@ function Issues(props) {
   }, [id]);
 
   const getCurrentSubTask = useMemo(() => {
-    return tasks
+    if(subId) {
+      return tasks
       ?.find((e) => e.id === id)
       ?.sub_tasks?.find((e) => e.id === subId);
+    }
+    return null;
   }, [subId, id]);
 
   const dispatch = useDispatch();
@@ -42,7 +45,8 @@ function Issues(props) {
     dispatch(getListTask());
     dispatch(getListMemberOfProject(curProject?.id));
     dispatch(getListMileStoneInProject(curProject?.id));
-    if (taskDetail) {
+   
+    if (taskDetail?.id) {
       if (taskDetail?.parent_task_id) {
         setSubId(taskDetail?.id);
         setId(taskDetail?.parent_task_id);
@@ -53,11 +57,6 @@ function Issues(props) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   console.log("check vao day nay");
-  //   dispatch(getListTask());
-  // }, [showDetail]);
-
   return (
     <>
       <ToggleNav />
@@ -65,9 +64,10 @@ function Issues(props) {
         <HeaderNav />
         <div className="issues-content">
           <HeaderIssue item={curProject} />
+          { console.log("check  taskDetail :", taskDetail)}
           {showDetail ? (
             <TaskDetail
-              task={subId > 0 ? getCurrentSubTask : getCurrentTask}
+              task={ taskDetail?.id > 0 ? taskDetail : subId > 0 ? getCurrentSubTask : getCurrentTask}
               setShowDetail={setShowDetail}
               milestones={milestones}
               isExpand={isExpand}

@@ -3,9 +3,8 @@ const initState = {
 };
 
 const tasks = (state = initState, action) => {
-  console.log("check action: ", action);
   switch (action.type) {
-    case "RESET_DETAIL":
+    case "RESET_TASK_DETAIL":
       return initState;
     case "UPDATE_TASK_DETAIL":
       return {

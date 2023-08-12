@@ -37,7 +37,6 @@ function Milestones(props) {
       ) : (
         <>
           {result?.map((e, index) => {
-            console.log("check e :", e);
             let total =
               e?.[1]?.Open +
               e?.[1]?.In_Progress +

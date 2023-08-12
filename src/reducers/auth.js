@@ -5,7 +5,6 @@ const initState = {
 };
 
 const auth = (state = initState, action) => {
-  console.log("check action: ", action);
   switch (action.type) {
     case "RESET_AUTH":
       return initState;
