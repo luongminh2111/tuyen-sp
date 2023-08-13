@@ -14,6 +14,10 @@ export const saveNewMilestone = (item) => ({
   type: actionType.CREATE_NEW_MILESTONE,
   item
 });
+export const updateMilestone = (item) => ({
+  type: actionType.UPDATE_MILESTONE,
+  item
+});
 
 export const updateMemberForProject = (members) => ({
   type: actionType.UPDATE_MEMBER_IN_PROJECT,
@@ -28,6 +32,10 @@ export const getListMemberForProject = (members) => ({
 export const getListTaskForProject = (items) => ({
   type: actionType.GET_LIST_TASK_IN_PROJECT,
   items
+});
+export const updateListTaskForProject = (item) => ({
+  type: actionType.UPDATE_LIST_TASK_IN_PROJECT,
+  item
 });
 
 export const createTaskForProject = (item) => ({

@@ -8,7 +8,6 @@ export const createTask = (request) => (dispatch) => {
     method: "POST",
     data: JSON.stringify(request)
   };
-  console.log("check JSON.stringify(request) :", JSON.stringify(request));
   return callApi(url, options).then( 
     (response) => { 
       return response}, 

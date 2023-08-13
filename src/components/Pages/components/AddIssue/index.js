@@ -74,7 +74,7 @@ function AddIssue(props) {
       setTextAlert("You do not have permission to perform this operation");
       return;
     }
-    if (compareTime(startTime, endTime)) {
+    if (compareTime(new Date(endTime), new Date(startTime))) {
       setOpenAlert(true);
       setStatusAlert("error");
       setTextAlert("Start time can not be after End time");

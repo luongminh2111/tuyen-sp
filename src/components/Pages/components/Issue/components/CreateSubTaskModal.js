@@ -8,9 +8,18 @@ import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createTask } from "../../AddIssue/actions/CreateTaskCallApi";
 import Alerts from "../../../../../commons/Alert";
+import { updateListTaskForProject } from "../../ProjectSetting/actions/ProjectActionRedux";
 
 function CreateSubTaskModal(props) {
-  const { open, handleClose, members, milestoneId, milestones, parentTask, taskItem } = props;
+  const {
+    open,
+    handleClose,
+    members,
+    milestoneId,
+    milestones,
+    parentTask,
+    taskItem,
+  } = props;
 
   const curProject = useSelector((state) => state.projects.itemDetail);
 
@@ -18,7 +27,7 @@ function CreateSubTaskModal(props) {
   const [description, setDescription] = useState("");
   const [startTime, setStartTime] = useState(parseDateToString(new Date()));
   const [endTime, setEndTime] = useState(parseDateToString(new Date()));
-  const [est , setEst] = useState(0);
+  const [est, setEst] = useState(0);
   const [priority, setPriority] = useState({});
   const [assignee, setAssignee] = useState({});
   const [textAlert, setTextAlert] = useState("");
@@ -46,21 +55,26 @@ function CreateSubTaskModal(props) {
       assignee_id: assignee?.id,
       is_child: true,
       parent_task_id: parentTask?.id,
-      estimate_time: est
+      estimate_time: est,
     };
     dispatch(createTask(request)).then((res) => {
       if (res?.status === 200 && res?.data?.data) {
         setOpenAlert(true);
         setStatusAlert("success");
         setTextAlert(res.data?.message);
-        const newSubTask = taskItem?.sub_tasks?.concat(res?.data?.data);
-        const newTask = {...taskItem, sub_tasks: newSubTask};
+        let newSubTask = taskItem;
+        if (!newSubTask?.sub_tasks) {
+          newSubTask = {...taskItem, sub_tasks: [res?.data?.data]}
+        } else {
+          newSubTask = {...taskItem, sub_tasks: [...taskItem.sub_tasks, res?.data?.data]}
+        }
         dispatch({
           type: "UPDATE_TASK_DETAIL",
-          item: newTask
+          item: newSubTask,
         });
-        setName('');
-        setDescription('');
+        dispatch(updateListTaskForProject(newSubTask));
+        setName("");
+        setDescription("");
         setStartTime(parseDateToString(new Date()));
         setEndTime(parseDateToString(new Date()));
         setPriority({});
@@ -96,14 +110,10 @@ function CreateSubTaskModal(props) {
         </DialogTitle>
         <DialogContent>
           <div className="contents-add">
-          <div className="text-input-sbj">
+            <div className="text-input-sbj">
               <div className="label">Task parent</div>
               <div className="input-text">
-                <input
-                  type="text"
-                  value={parentTask?.name}
-                  disabled
-                />
+                <input type="text" value={parentTask?.name} disabled />
               </div>
             </div>
             <div className="text-input-sbj">
@@ -180,10 +190,14 @@ function CreateSubTaskModal(props) {
                       {getCurrentMilestone()}
                     </div>
                   </div>
-                   <div className="ticket__properties-item -milestones">
+                  <div className="ticket__properties-item -milestones">
                     <label>Estimate Time</label>
                     <div className="ticket__properties-value">
-                      <input type="number" value={est} onChange={(e) => setEst(e.target.value)} />
+                      <input
+                        type="number"
+                        value={est}
+                        onChange={(e) => setEst(e.target.value)}
+                      />
                     </div>
                   </div>
                 </div>
@@ -199,15 +213,15 @@ function CreateSubTaskModal(props) {
             </button>
           </div>
         </DialogContent>
+        {openAlert ? (
+          <Alerts
+            text={textAlert}
+            status={statusAlert}
+            open={openAlert}
+            setOpen={setOpenAlert}
+          />
+        ) : null}
       </Dialog>
-      {openAlert ? (
-        <Alerts
-          text={textAlert}
-          status={statusAlert}
-          open={openAlert}
-          setOpen={setOpenAlert}
-        />
-      ) : null}
     </>
   );
 }

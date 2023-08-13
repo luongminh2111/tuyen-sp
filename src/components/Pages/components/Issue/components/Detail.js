@@ -105,7 +105,6 @@ function TaskDetail(props) {
 
   const handleDeleteTask = (task) => {
     dispatch(deleteTaskInProject(task.id)).then(res => {
-      console.log("check res :",res);
       if(res?.status === 200) {
         setOpenAlert(true);
         setStatusAlert("success");

@@ -45,6 +45,12 @@ const projects = (state = initState, action) => {
         ...state,
         milestone: [action.item, ...state.milestone],
       };
+    case projectType.UPDATE_MILESTONE:
+      const milestones = state.milestone?.filter(e => e.id !== action.item.id)?.concat(action.item);
+      return {
+        ...state,
+        milestone: milestones,
+      };
     case projectType.GET_LIST_MEMBER_IN_PROJECT:
       return {
         ...state,
@@ -62,6 +68,12 @@ const projects = (state = initState, action) => {
         ...state,
         tasks: action.items,
       };
+      case projectType.UPDATE_LIST_TASK_IN_PROJECT:
+        const newTasks = state.tasks?.filter(e => e.id !== action?.item?.id)?.concat(action?.item);
+        return {
+          ...state,
+          tasks: newTasks,
+        };
     case projectType.CREATE_TASK_IN_PROJECT:
       return {
         ...state,

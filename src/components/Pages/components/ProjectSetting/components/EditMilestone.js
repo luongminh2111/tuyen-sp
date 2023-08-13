@@ -3,7 +3,7 @@ import "../styles/EditMilestone.scss";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createNewMileStone } from "../actions/ProjectActionCallApi";
-import { saveNewMilestone } from "../actions/ProjectActionRedux";
+import { saveNewMilestone, updateMilestone } from "../actions/ProjectActionRedux";
 import Alerts from "../../../../../commons/Alert";
 import { compareTime, parseDateToString } from "../../../../../ulti/dateTime";
 
@@ -39,7 +39,7 @@ function EditMilestone(props) {
         setOpenAlert(true);
         setStatusAlert("success");
         setTextAlert(res.data?.message);
-        dispatch(saveNewMilestone(res.data.data));
+        dispatch(updateMilestone(res.data.data));
         setTimeout(() => {
           setEdit(false);
         }, [1500]);
