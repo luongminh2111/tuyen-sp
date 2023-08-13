@@ -4,8 +4,9 @@ import { useState } from "react";
 import EditMilestone from "./EditMilestone";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getListMileStoneInProject } from "../actions/ProjectActionCallApi";
+import { deleteMilestoneInProject, getListMileStoneInProject } from "../actions/ProjectActionCallApi";
 import Alerts from "../../../../../commons/Alert";
+import { DialogContent, Dialog } from "@mui/material";
 
 function Milestone(props) {
   const { projectId, account } = props;
@@ -18,6 +19,9 @@ function Milestone(props) {
   const [textAlert, setTextAlert] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
   const [statusAlert, setStatusAlert] = useState(false);
+
+  const [open1, setOpen1] = useState(false);
+  const [idSelect, setIdSelect] = useState("");
 
   const dispatch = useDispatch();
 
@@ -44,6 +48,41 @@ function Milestone(props) {
     );
   }
 
+  
+  const handleDeleteMilestone = (id) => {
+    dispatch(deleteMilestoneInProject(id)).then(res => {
+      if (res?.status === 200 && res?.data?.data) {
+        setOpenAlert(true);
+        setStatusAlert("success");
+        setTextAlert(res.data?.message);
+        setOpen1(false);
+        setIdSelect("");
+        dispatch({type: "DELETE_MILESTONE", id: idSelect});
+      } else {
+        setOpenAlert(true);
+        setStatusAlert("error");
+        setTextAlert(res.data?.message);
+      }
+    });
+  };
+
+  const renderAlert = () => {
+    return (
+      <Dialog open={open1} className="dialog-delete-member" maxWidth="lg">
+        <DialogContent>
+          <div className="contents-add d-flex justify-content-between">
+          All information related to this milestone in this project will be deleted. Are you sure delete?
+          </div>
+          <div className="list-action-member d-flex justify-content-end" style={{marginTop: '16px'}}>
+            <button style={{background: '#FF4d4d', marginRight: '16px'}} onClick={() => setOpen1(false)}>Cancel</button>
+            <button onClick={() => handleDeleteMilestone(idSelect)}>Delete</button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+
   return (
     <div className="milestone-content-wrapper">
       <div className="title d-flex">
@@ -64,23 +103,25 @@ function Milestone(props) {
           <div className="delete">Delete</div>
         </div>
         <div className="body">
+          {console.log("check milestones :", milestones)}
           {milestones?.map((e, index) => {
             return (
               <div className="item" key={index}>
                 <div className="name" onClick={() => handleChangeEdit(true, e)}>
                   {e?.name}
                 </div>
-                <div className="from">{e?.start_date}</div>
-                <div className="to">{e?.due_date}</div>
+                <div className="from">{e?.start_date?.substring(0, 10)}</div>
+                <div className="to">{e?.due_date?.substring(0, 10)}</div>
                 <div className="ml-desc">{e?.description}</div>
                 <div className="delete">
-                  <i className="fa-solid fa-x"></i>
+                  <i className="fa-solid fa-x " onClick={() => {setOpen1(true); setIdSelect(e.id)}}></i>
                 </div>
               </div>
             );
           })}
         </div>
       </div>
+      {open1 ? renderAlert() : null}
       {openAlert ? (
         <Alerts
           text={textAlert}

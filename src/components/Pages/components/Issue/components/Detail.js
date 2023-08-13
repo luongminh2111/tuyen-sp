@@ -314,6 +314,8 @@ function TaskDetail(props) {
     );
   };
 
+  console.log("check members :", members);
+
   const renderListComment = () => {
     return (
       <div className="list-comment">
@@ -327,7 +329,7 @@ function TaskDetail(props) {
                   <div className="image">
                     <div>
                       <img
-                        src={account?.avatar || EMPTY_USER}
+                        src={members?.find((e) => e.id === e?.created_by)?.avatar || EMPTY_USER}
                         style={{
                           width: "40px",
                           height: "40px",
@@ -339,7 +341,7 @@ function TaskDetail(props) {
                   </div>
                   <div className="user">
                     <div className="name">
-                      <span>{getCurrentMember(taskItem?.created_by)}</span>
+                      <span>{getCurrentMember(e?.created_by)}</span>
                       <span style={{ marginLeft: "12px" }}>
                         {e?.created_at !== e?.updated_at ? "(edited)" : ""}
                       </span>

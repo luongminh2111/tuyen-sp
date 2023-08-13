@@ -140,3 +140,24 @@ export const deleteUserInProject = (userId) => (dispatch, getState) => {
     return res;
   })
 }
+
+export const deleteMilestoneInProject = (milestoneId) => (dispatch, getState) => {
+  const {
+    projects: {
+      itemDetail: {
+        id
+      }
+    }
+  } = getState();
+  const request = {
+    milestone_id: milestoneId
+  }
+  const endPoint = `${BASE_URL}/api/milestone/${milestoneId}`;
+  const options = {
+    method: 'DELETE',
+    // data: JSON.stringify(request)
+  }
+  return callApi(endPoint, options).then( res => {
+    return res;
+  })
+}

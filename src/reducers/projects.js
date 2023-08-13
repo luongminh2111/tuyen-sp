@@ -51,6 +51,13 @@ const projects = (state = initState, action) => {
         ...state,
         milestone: milestones,
       };
+    case "DELETE_MILESTONE": {
+      const milestones1 = state.milestone?.filter(e => e.id !== action.id)
+      return {
+        ...state,
+        milestone: milestones1,
+      };
+    }
     case projectType.GET_LIST_MEMBER_IN_PROJECT:
       return {
         ...state,
