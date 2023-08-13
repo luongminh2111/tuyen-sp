@@ -104,21 +104,20 @@ function TaskDetail(props) {
   }, [taskItem]);
 
   const handleDeleteTask = (task) => {
-    dispatch(deleteTaskInProject(task.id)).then(res => {
-      if(res?.status === 200) {
+    dispatch(deleteTaskInProject(task.id)).then((res) => {
+      if (res?.status === 200) {
         setOpenAlert(true);
         setStatusAlert("success");
         setTextAlert(res?.data?.message);
         setTimeout(() => {
-          dispatch({type :"RESET_TASK_DETAIL"});
-          dispatch({type: "DELETE_TASK", id: task.id});
+          dispatch({ type: "RESET_TASK_DETAIL" });
+          dispatch({ type: "DELETE_TASK", id: task.id });
         }, 1500);
       } else {
         setOpenAlert(true);
         setStatusAlert("error");
         setTextAlert(res?.data?.message);
       }
-
     });
   };
 
@@ -151,8 +150,14 @@ function TaskDetail(props) {
     });
   };
 
-  const handleDeleteComment = (id) => {
-    dispatch(DeleteComment(id));
+  const handleDeleteComment = (e) => {
+    if(e?.created_by !== account?.id && account?.role === 3) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("You do not have permission to perform this operation");
+    return;
+    }
+    dispatch(DeleteComment(e?.id));
     setOpenAlert(true);
     setStatusAlert("success");
     setTextAlert("Delete comment success!");
@@ -374,19 +379,19 @@ function TaskDetail(props) {
                   <i
                     className="fa-solid fa-pen-to-square"
                     style={
-                      e?.type !== "NORMAL"
+                      e?.type !== "NORMAL" || e?.created_by !== account?.id
                         ? { color: "#d3d5d7", marginRight: "12px" }
                         : { marginRight: "12px" }
                     }
                     onClick={() => {
-                      if (e?.type !== "NORMAL") return;
+                      if (e?.type !== "NORMAL" || e?.created_by !== account?.id) return;
                       setEditComment(e);
                       setComment(e.content);
                     }}
                   ></i>
                   <i
                     className="fa-solid fa-trash"
-                    onClick={() => handleDeleteComment(e.id)}
+                    onClick={() => handleDeleteComment(e)}
                   ></i>
                 </div>
               </div>
@@ -480,19 +485,24 @@ function TaskDetail(props) {
             <div>{taskItem?.name}</div>
           </div>
           <div className="col-6 d-flex justify-content-end btn-edit-task">
-            {account?.role === 2 || (taskItem?.parent_task_id && account?.role ===1 )? (
-              <button
-                style={{
-                  marginRight: "16px",
-                  background: "#FF4d4d",
-                  color: "#FFF",
-                }}
-                onClick={() => setOpen1(true)}
-              >
-                Delete
-              </button>
+            {account?.role === 2 ? (
+              <>
+                <button
+                  style={{
+                    marginRight: "16px",
+                    background: "#FF4d4d",
+                    color: "#FFF",
+                  }}
+                  onClick={() => setOpen1(true)}
+                >
+                  Delete
+                </button>
+              </>
             ) : null}
-            <button onClick={() => setIsEdit(true)}>Edit</button>
+            {account?.role === 2 ||
+            (taskItem?.parent_task_id && account?.role === 3) ? (
+              <button onClick={() => setIsEdit(true)}>Edit</button>
+            ) : null}
           </div>
         </div>
         <div className="task-info d-flex">
@@ -570,14 +580,16 @@ function TaskDetail(props) {
               <div className="value">
                 <span
                   style={
-                    compareTime(new Date(taskItem?.end_time), new Date()) && taskItem?.status !== 'Closed'
+                    compareTime(new Date(taskItem?.end_time), new Date()) &&
+                    taskItem?.status !== "Closed"
                       ? { fontWeight: "600", color: "#FF4d4d" }
                       : {}
                   }
                 >
                   {taskItem?.end_time?.substring(0, 10)}
                 </span>
-                {compareTime(new Date(taskItem?.end_time), new Date())  && taskItem?.status !== 'Closed' ? (
+                {compareTime(new Date(taskItem?.end_time), new Date()) &&
+                taskItem?.status !== "Closed" ? (
                   <span>
                     <i
                       style={{

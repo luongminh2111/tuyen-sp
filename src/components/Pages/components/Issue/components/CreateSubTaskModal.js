@@ -20,7 +20,7 @@ function CreateSubTaskModal(props) {
     parentTask,
     taskItem,
   } = props;
-
+  const account = useSelector((state) => state.auth.account);
   const curProject = useSelector((state) => state.projects.itemDetail);
 
   const [name, setName] = useState("");
@@ -37,6 +37,12 @@ function CreateSubTaskModal(props) {
   const dispatch = useDispatch();
 
   const handleCreateTask = () => {
+    if (account?.role === 1) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("You do not have permission to perform this operation");
+      return;
+    }
     if (compareTime(new Date(endTime), new Date(startTime))) {
       setOpenAlert(true);
       setStatusAlert("error");

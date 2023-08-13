@@ -68,7 +68,7 @@ function AddIssue(props) {
   }, []);
 
   const handleCreateTask = () => {
-    if (account?.role === 3) {
+    if (!account?.role === 2) {
       setOpenAlert(true);
       setStatusAlert("error");
       setTextAlert("You do not have permission to perform this operation");

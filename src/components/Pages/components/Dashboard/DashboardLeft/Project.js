@@ -7,13 +7,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { showDetailProject } from "../../Workplace/actions/WorkplaceActionRedux";
 import CreateNewProject from "../../Workplace/components/modals/CreateProjectModal";
 import { getListProject } from "../../Workplace/actions/WorkplaceActionCallApi";
+import Alerts from "../../../../../commons/Alert";
 
 function Project(props) {
 
   const [isZoomIn, setIsZoomIn] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [textAlert, setTextAlert] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [statusAlert, setStatusAlert] = useState(false);
+
 
   const projects = useSelector(state => state.projects.items);
+  const account = useSelector((state) => state.auth.account);
 
   const dispatch = useDispatch();
 
@@ -28,6 +34,16 @@ function Project(props) {
     history.push(`/project?name=${item?.name}`)
   }
 
+  const handleChangeOpenModal = (value) => {
+    if (account?.role !== 1) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("You do not have permission to perform this operation");
+      return;
+    }
+    setOpenModal(value);
+  }
+
   return (
     <>
         <div className="project-wrapper">
@@ -39,7 +55,7 @@ function Project(props) {
           <div className="title">Projects</div>
         </div>
         <div className="header-right">
-          <div className="add-project" data-tip="" data-for="icon-add-project" onClick={() => setOpenModal(true)}>
+          <div className="add-project" data-tip="" data-for="icon-add-project" onClick={() => handleChangeOpenModal(true)}>
             <i className="fa-solid fa-plus"></i>
           </div>
           <div className="search">
@@ -89,6 +105,14 @@ function Project(props) {
       ): null}
     </div>
     {openModal ? <CreateNewProject open={openModal} handleClose={() => setOpenModal(false)} /> : null}
+    {openAlert ? (
+        <Alerts
+          text={textAlert}
+          status={statusAlert}
+          open={openAlert}
+          setOpen={setOpenAlert}
+        />
+      ) : null}
     </>
 
   );

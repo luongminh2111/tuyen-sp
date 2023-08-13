@@ -3,11 +3,9 @@ import React, { useState } from "react";
 import "../styles/CreateSubTaskModal.scss";
 import ButtonDropDown from "../../../../../commons/Button/ButtonDropdown";
 import { compareTime, parseDateToString } from "../../../../../ulti/dateTime";
-import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTask } from "../../AddIssue/actions/CreateTaskCallApi";
 import Alerts from "../../../../../commons/Alert";
-import { useEffect } from "react";
 import { updateListTaskForProject } from "../../ProjectSetting/actions/ProjectActionRedux";
 
 function EditTaskModal(props) {
@@ -20,7 +18,7 @@ function EditTaskModal(props) {
     priorityOptions,
     mileStoneOptions,
   } = props;
-
+  const account = useSelector((state) => state.auth.account);
   const curProject = useSelector((state) => state.projects.itemDetail);
   const [name, setName] = useState(taskItem?.name);
   const [description, setDescription] = useState(taskItem?.description);
@@ -54,6 +52,12 @@ function EditTaskModal(props) {
 
 
   const handleUpdateTask = () => {
+    if (account?.role === 1) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("You do not have permission to perform this operation");
+      return;
+    }
     if (compareTime(new Date(endTime), new Date(startTime))) {
       setOpenAlert(true);
       setStatusAlert("error");

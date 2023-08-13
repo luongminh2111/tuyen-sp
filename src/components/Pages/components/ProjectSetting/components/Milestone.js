@@ -8,10 +8,9 @@ import { getListMileStoneInProject } from "../actions/ProjectActionCallApi";
 import Alerts from "../../../../../commons/Alert";
 
 function Milestone(props) {
+  const { projectId, account } = props;
 
-  const {projectId, account} = props;
-
-  const milestones = useSelector(state => state.projects.milestone) || [];
+  const milestones = useSelector((state) => state.projects.milestone) || [];
 
   const [edit, setEdit] = useState(false);
   const [currentMileStone, setCurrentMileStone] = useState({});
@@ -20,7 +19,6 @@ function Milestone(props) {
   const [openAlert, setOpenAlert] = useState(false);
   const [statusAlert, setStatusAlert] = useState(false);
 
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,20 +26,22 @@ function Milestone(props) {
   }, []);
 
   const handleChangeEdit = (value, milestone) => {
-    if (account?.role !== 2) {
-      setOpenAlert(true);
-      setStatusAlert("error");
-      setTextAlert("You do not have permission to perform this operation");
-      return;
-    }
-    if(milestone){
+    if (milestone) {
       setCurrentMileStone(milestone);
     }
     setEdit(value);
-  }
+  };
 
   if (edit) {
-    return <EditMilestone setEdit={setEdit} projectId={projectId} milestone={currentMileStone} setCurrentMileStone={setCurrentMileStone} />;
+    return (
+      <EditMilestone
+        setEdit={setEdit}
+        account={account}
+        projectId={projectId}
+        milestone={currentMileStone}
+        setCurrentMileStone={setCurrentMileStone}
+      />
+    );
   }
 
   return (
@@ -67,7 +67,9 @@ function Milestone(props) {
           {milestones?.map((e, index) => {
             return (
               <div className="item" key={index}>
-                <div className="name" onClick={() => handleChangeEdit(true, e)} >{e?.name}</div>
+                <div className="name" onClick={() => handleChangeEdit(true, e)}>
+                  {e?.name}
+                </div>
                 <div className="from">{e?.start_date}</div>
                 <div className="to">{e?.due_date}</div>
                 <div className="ml-desc">{e?.description}</div>

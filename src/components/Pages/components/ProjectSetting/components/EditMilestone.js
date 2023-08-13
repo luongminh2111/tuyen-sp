@@ -8,9 +8,8 @@ import Alerts from "../../../../../commons/Alert";
 import { compareTime, parseDateToString } from "../../../../../ulti/dateTime";
 
 function EditMilestone(props) {
-  const { setEdit, projectId, milestone, setCurrentMileStone } = props;
+  const { setEdit, projectId, milestone, setCurrentMileStone, account } = props;
   const dispatch = useDispatch();
-
   const [title, setTitle] = useState(milestone?.name || "");
   const [description, setDescription] = useState(milestone?.description || "");
   const [startDate, setStartDate] = useState(milestone?.start_date?.substring(0,10) || parseDateToString (new Date()));
@@ -21,6 +20,12 @@ function EditMilestone(props) {
   const [statusAlert, setStatusAlert] = useState(false);
 
   const handleCreateMileStone = () => {
+    if (account?.role !== 2) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("You do not have permission to perform this operation");
+      return;
+    }
     if (compareTime(new Date(dueDate), new Date(startDate))) {
       setOpenAlert(true);
       setStatusAlert("error");
@@ -40,6 +45,11 @@ function EditMilestone(props) {
         setStatusAlert("success");
         setTextAlert(res.data?.message);
         dispatch(updateMilestone(res.data.data));
+        setTitle("");
+        setDescription("");
+        setStartDate(parseDateToString (new Date()));
+        setDueDate(parseDateToString (new Date()));
+        setCurrentMileStone("");
         setTimeout(() => {
           setEdit(false);
         }, [1500]);
