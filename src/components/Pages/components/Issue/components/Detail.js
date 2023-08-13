@@ -510,12 +510,12 @@ function TaskDetail(props) {
             <div className="created_by d-flex">
               <div className="image">
                 <div>
-                  <img src={account?.avatar || EMPTY_USER} alt="avatar" />
+                  <img src={members?.find((e) => e.id === taskItem?.created_by)?.avatar || EMPTY_USER} alt="avatar" />
                 </div>
               </div>
               <div className="user">
                 <div className="name">
-                  {getCurrentMember(taskItem?.assignee_id)}
+                  {getCurrentMember(taskItem?.created_by)}
                 </div>
                 <div className="time">
                   Created at: {taskItem?.created_at?.substring(0, 10)} &nbsp;
