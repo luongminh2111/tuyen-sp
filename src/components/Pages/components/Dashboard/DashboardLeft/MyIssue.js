@@ -6,6 +6,7 @@ import { getFilterMyTask } from "../actions/DashboardAactionCallApi";
 import { CircularProgress } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import { showDetailProject } from "../../Workplace/actions/WorkplaceActionRedux";
+import { compareTime } from "../../../../../ulti/dateTime";
 
 function MyIssue(props) {
   const [isZoomIn, setIsZoomIn] = useState(false);
@@ -170,7 +171,27 @@ function MyIssue(props) {
                         <div>{e?.status}</div>
                       </div>
                       <div className="text-due">
-                        {e?.end_time?.substring(0, 10)}
+                        <span
+                          style={
+                            compareTime(new Date(e?.end_time), new Date())
+                              ? { fontWeight: "600", color: "#FF4d4d" }
+                              : {}
+                          }
+                        >
+                          {e?.end_time?.substring(0, 10)}
+                        </span>
+                        {compareTime(new Date(e?.end_time), new Date()) ? (
+                          <span>
+                            <i
+                              style={{
+                                color: "red",
+                                marginLeft: "6px",
+                                fontSize: "16px",
+                              }}
+                              className="fa-solid fa-fire"
+                            ></i>
+                          </span>
+                        ) : null}
                       </div>
                     </div>
                   );

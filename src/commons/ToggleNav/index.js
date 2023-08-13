@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import "./index.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { clearFilterTask } from "../../components/Pages/components/ProjectSetting/actions/ProjectActionRedux";
 
 function ToggleNav(props) {
   const isExpand = useSelector((state) => state.global.isExpand);
@@ -86,6 +87,7 @@ function ToggleNav(props) {
         }`}
         onClick={() => {
           dispatch({ type: "RESET_TASK_DETAIL" });
+          dispatch(clearFilterTask());
           handleChangeMenu(true);
         }}
       >
@@ -98,7 +100,7 @@ function ToggleNav(props) {
         className={`menu-item board d-flex ${
           pathName === "/board" ? "active" : ""
         }`}
-        onClick={() => { dispatch({ type: "RESET_TASK_DETAIL" }); history.push("/board")}}
+        onClick={() => { dispatch({ type: "RESET_TASK_DETAIL" }); dispatch(clearFilterTask()); history.push("/board")}}
       >
         <span className="icon">
           <i className="fa-solid fa-chart-simple"></i>

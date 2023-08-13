@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getListTask } from "../actions/TaskCallApi";
 import { CircularProgress } from "@mui/material";
+import { compareTime } from "../../../../../ulti/dateTime";
 
 function TableIssue(props) {
   const { tasks, milestones } = props;
@@ -40,7 +41,7 @@ function TableIssue(props) {
   const handleShowDetail = (item) => {
     dispatch({
       type: "UPDATE_TASK_DETAIL",
-      item
+      item,
     });
   };
 
@@ -151,7 +152,29 @@ function TableIssue(props) {
             {getCurrentMilestone(e?.milestone_id)}
           </div>
           <div className="item_created">{e?.created_at?.substring(0, 10)}</div>
-          <div className="item_due-date">{e?.end_time?.substring(0, 10)}</div>
+          <div className="item_due-date">
+            <span
+              style={
+                compareTime(new Date(e?.end_time), new Date())
+                  ? { fontWeight: "600", color: "#FF4d4d" }
+                  : {}
+              }
+            >
+              {e?.end_time?.substring(0, 10)}
+            </span>
+            {compareTime(new Date(e?.end_time), new Date()) ? (
+              <span>
+                <i
+                  style={{
+                    color: "red",
+                    marginLeft: "6px",
+                    fontSize: "16px",
+                  }}
+                  className="fa-solid fa-fire"
+                ></i>
+              </span>
+            ) : null}
+          </div>
           <div className="item_updateAt">{e?.updated_at?.substring(0, 10)}</div>
           <div className="item_register">{getCurrentMember(e?.created_by)}</div>
         </div>

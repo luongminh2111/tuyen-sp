@@ -9,7 +9,7 @@ import { EMPTY_USER } from "../../../../../commons/image";
 function DragTaskItem(props) {
   const { members, tasks } = props;
 
-  const filterTask = useSelector(state => state.projects.filterTask);
+  const filterTask = useSelector((state) => state.projects.filterTask);
 
   const [groupTask, setGroupTask] = useState([
     // { title: "Open", items: [], status: 'Open'},
@@ -42,7 +42,7 @@ function DragTaskItem(props) {
             priority: e.priority,
             status: e.status,
             task_key: e.task_key,
-            end_time: e.end_time
+            end_time: e.end_time,
           };
         });
         const arrSub = new Array();
@@ -57,7 +57,7 @@ function DragTaskItem(props) {
                 priority: e3.priority,
                 status: e3.status,
                 task_key: e3.task_key,
-                end_time: e3.end_time
+                end_time: e3.end_time,
               })
             )
           );
@@ -108,9 +108,13 @@ function DragTaskItem(props) {
   };
 
   useEffect(() => {
-    handleGetListTask(filterTask?.status, filterTask?.milestone_id, filterTask?.assignee_id, filterTask?.key);
+    handleGetListTask(
+      filterTask?.status,
+      filterTask?.milestone_id,
+      filterTask?.assignee_id,
+      filterTask?.key
+    );
   }, [filterTask]);
-
 
   const dragItem = useRef();
   const dragItemNode = useRef();
@@ -170,10 +174,6 @@ function DragTaskItem(props) {
     dragItemNode.current = null;
   };
 
-  const getCurrentMember = (id) => {
-    return members?.find((e) => e.id === id)?.name || "";
-  };
-
   const getStyles = (item) => {
     if (
       dragItem.current.grpI === item.grpI &&
@@ -184,13 +184,20 @@ function DragTaskItem(props) {
     return "dnd-item";
   };
 
+  const compareTime = (d1, d2) => {
+    if (d1.getTime() <= d2.getTime()) {
+      return true;
+    }
+    return false;
+  };
+
   if (groupTask?.length === 0) return null;
 
   return (
     <div className="drag-n-drop">
       {groupTask.map((item, grpI) => {
         return (
-          <div className="drag-item" key={`${grpI}-${grpI*3}`}>
+          <div className="drag-item" key={`${grpI}-${grpI * 3}`}>
             <div
               className={`status-title ${item?.status}`}
               style={{ marginBottom: "16px" }}
@@ -232,7 +239,10 @@ function DragTaskItem(props) {
                       <div className="_right col-2">
                         {item?.assignee_id ? (
                           <div className="avatar">
-                            <img src={item?.avatar || EMPTY_USER} alt="avatar" />
+                            <img
+                              src={item?.avatar || EMPTY_USER}
+                              alt="avatar"
+                            />
                           </div>
                         ) : null}
                       </div>
@@ -245,42 +255,71 @@ function DragTaskItem(props) {
                     </div>
                     <div className="row-2 mt-1">
                       <div className="item_priority">
+                        <span style={{ marginRight: "12px" }}>Priority: </span>
                         {item?.priority === "LOW" ? (
-                          <>
-                            <span>Priority: </span>
-                            <span>
-                              {" "}
-                              <i
-                                className="fa-solid fa-arrow-down"
-                                style={{ color: "#2c9a7a" }}
-                              ></i>
-                            </span>
-                          </>
+                          <span>
+                            <i
+                              className="fa-solid fa-arrow-down"
+                              style={{ color: "#2c9a7a" }}
+                            ></i>
+                          </span>
                         ) : null}
                         {item?.priority === "HIGH" ? (
-                          <>
-                            <span>Priority:</span>
-                            <span>
-                              <i
-                                className="fa-solid fa-arrow-up"
-                                style={{ color: "#FF4D4D" }}
-                              ></i>
-                            </span>
-                          </>
+                          <span>
+                            <i
+                              className="fa-solid fa-arrow-up"
+                              style={{ color: "#FF4D4D" }}
+                            ></i>
+                          </span>
                         ) : null}
                         {item?.priority === "NORMAL" ? (
-                          <>
-                            <span>Priority: </span>
-                            <span>
-                              <i className="fa-solid fa-arrow-right"></i>
-                            </span>
-                          </>
+                          <span>
+                            <i className="fa-solid fa-arrow-right"></i>
+                          </span>
                         ) : null}
                       </div>
                     </div>
-                    <div className="row-2 mt-1 mb-2 d-flex" style={{fontSize: '13px', fontWeight: '400'}}>
-                      <div style={{marginRight: '12px'}}>End time:</div>
-                      <div>{item?.end_time?.substring(0, 10)}&nbsp;{item?.end_time?.substring(11, 19)}</div>
+                    <div
+                      className="row-2 mt-1 mb-2 d-flex"
+                      style={{ fontSize: "13px", fontWeight: "400" }}
+                    >
+                      <div
+                        style={
+                          compareTime(new Date(item?.end_time), new Date())
+                            ? {
+                                marginRight: "12px",
+                                fontWeight: "600",
+                                color: "#FF4d4d",
+                              }
+                            : { marginRight: "12px" }
+                        }
+                      >
+                        End time:
+                      </div>
+                      <div
+                        style={
+                          compareTime(new Date(item?.end_time), new Date())
+                            ? {
+                                fontWeight: "600",
+                                color: "#FF4d4d",
+                              }
+                            : {}
+                        }
+                      >
+                        {item?.end_time?.substring(0, 10)}
+                      </div>
+                      {compareTime(new Date(item?.end_time), new Date()) ? (
+                        <div>
+                          <i
+                            style={{
+                              color: "red",
+                              marginLeft: "6px",
+                              fontSize: "16px",
+                            }}
+                            className="fa-solid fa-fire"
+                          ></i>
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 </div>

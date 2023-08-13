@@ -7,3 +7,10 @@ export const parseDateToString = (day) => {
   const curDay = new Date(day).getDate() > 9 ? new Date(day).getDate() : `0${new Date(day).getDate()}`;
   return `${fullYear}-${month}-${curDay}`
 }
+
+export const compareTime = (d1, d2) => {
+  if (d1.getTime() <= d2.getTime()) {
+    return true;
+  }
+  return false;
+};

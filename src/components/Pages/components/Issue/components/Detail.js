@@ -20,13 +20,10 @@ import {
   updateComment,
 } from "../../ProjectSetting/actions/ProjectActionRedux";
 import { EMPTY_USER } from "../../../../../commons/image";
+import { compareTime } from "../../../../../ulti/dateTime";
 
 function TaskDetail(props) {
-  const {
-    taskItem,
-    milestones,
-    isExpand
-  } = props;
+  const { taskItem, milestones, isExpand } = props;
   const tasks = useSelector((state) => state.projects.tasks);
   const account = useSelector((state) => state.auth.account);
   const listComment = useSelector((state) => state.projects.comments);
@@ -97,7 +94,7 @@ function TaskDetail(props) {
 
   useEffect(() => {
     dispatch(getListCommentInTask(taskItem.id, 1));
-    
+
     if (taskItem?.parent_task_id) {
       setParentTask(getParentTask(taskItem?.parent_task_id));
     }
@@ -211,7 +208,7 @@ function TaskDetail(props) {
               onClick={() => {
                 dispatch({
                   type: "UPDATE_TASK_DETAIL",
-                  item: e
+                  item: e,
                 });
               }}
             >
@@ -316,10 +313,13 @@ function TaskDetail(props) {
                   <div className="user">
                     <div className="name">
                       <span>{getCurrentMember(taskItem?.created_by)}</span>
-                      <span style={{marginLeft: "12px"}}>{e?.created_at !== e?.updated_at ? '(edited)' : ''}</span>
+                      <span style={{ marginLeft: "12px" }}>
+                        {e?.created_at !== e?.updated_at ? "(edited)" : ""}
+                      </span>
                     </div>
                     <div className="time">
-                      Created at: {e?.updated_at?.substring(0, 10)}&nbsp; {e?.updated_at?.substring(11, 19)}
+                      Created at: {e?.updated_at?.substring(0, 10)}&nbsp;{" "}
+                      {e?.updated_at?.substring(11, 19)}
                     </div>
                   </div>
                 </div>
@@ -402,10 +402,12 @@ function TaskDetail(props) {
         {taskItem?.parent_task_id ? (
           <div
             className="d-flex"
-            onClick={() => { dispatch({
-              type: "UPDATE_TASK_DETAIL",
-              item: parentTask
-            });}}
+            onClick={() => {
+              dispatch({
+                type: "UPDATE_TASK_DETAIL",
+                item: parentTask,
+              });
+            }}
             style={{
               paddingLeft: "16px",
               fontSize: "13px",
@@ -447,7 +449,8 @@ function TaskDetail(props) {
                   {getCurrentMember(taskItem?.assignee_id)}
                 </div>
                 <div className="time">
-                  Created at: {taskItem?.created_at?.substring(0, 10)}
+                  Created at: {taskItem?.created_at?.substring(0, 10)} &nbsp;
+                  {taskItem?.created_at?.substring(11, 19)}
                 </div>
               </div>
             </div>
@@ -506,7 +509,27 @@ function TaskDetail(props) {
             <div className="line-item d-flex">
               <div className="text-1">Due date</div>
               <div className="value">
-                {taskItem?.end_time?.substring(0, 10)}
+                <span
+                  style={
+                    compareTime(new Date(taskItem?.end_time), new Date())
+                      ? { fontWeight: "600", color: "#FF4d4d" }
+                      : {}
+                  }
+                >
+                  {taskItem?.end_time?.substring(0, 10)}
+                </span>
+                {compareTime(new Date(taskItem?.end_time), new Date()) ? (
+                  <span>
+                    <i
+                      style={{
+                        color: "red",
+                        marginLeft: "6px",
+                        fontSize: "16px",
+                      }}
+                      className="fa-solid fa-fire"
+                    ></i>
+                  </span>
+                ) : null}
               </div>
             </div>
             <div className="line-item d-flex">
@@ -566,7 +589,9 @@ function TaskDetail(props) {
         <div className="list-comment-wrapper" style={{ marginTop: "24px" }}>
           <div className="title" style={{ marginBottom: "8px" }}>
             <span style={{ fontWeight: "600" }}>Comments</span>
-            <span style={{ marginLeft: "10px" }}>({listComment?.total || 0})</span>
+            <span style={{ marginLeft: "10px" }}>
+              ({listComment?.total || 0})
+            </span>
           </div>
           {renderListComment()}
         </div>
