@@ -19,7 +19,7 @@ export const getListTask = (statusSelect, milestoneId, assigneeId, key) => (disp
     url += `&key=${key}`
   }
   if(statusSelect && statusSelect?.length > 0){
-    url += `&status=${statusSelect?.toUpperCase()}`
+    url += `&status=${statusSelect}`
   }
   if(milestoneId){
     url += `&milestone_id=${milestoneId}`

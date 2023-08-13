@@ -118,4 +118,24 @@
         color: #fff;
       }
     }
+    .status-filter {
+      height: 100%;
+      div {
+        height: 30px;
+        margin-left: 20px;
+        width: 90px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        cursor: pointer;
+        &:hover {
+          color: #0088FF;
+        }
+        &.active {
+          background-color: #0088FF;
+          color: #fff;
+        }
+      }
+    }
 }

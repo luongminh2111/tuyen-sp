@@ -64,6 +64,10 @@ function MyProfile(props) {
         setOpenAlert(true);
         setTextAlert("Update profile success");
         setStatusAlert("success");
+        dispatch({
+          type: 'UPDATE_PROPERTIES_USER',
+          account: json.data.data
+        })
       } else {
         setOpenAlert(true);
         setTextAlert("Update profile failed");
@@ -77,8 +81,7 @@ function MyProfile(props) {
     const objectUrl = URL.createObjectURL(file[0]);
     setPreUrl(objectUrl);
   };
-
-  console.log("check account :", account);
+  
   const handleGoBack = () => {
     dispatch({ type: "RESET_CURRENT_USER" });
     history.push("/");

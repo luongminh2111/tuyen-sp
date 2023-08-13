@@ -12,6 +12,7 @@ function FilterIssue(props) {
   const [assignee, setAssignee] = useState({});
   const members = useSelector((state) => state.projects.members);
   const milestones = useSelector((state) => state.projects.milestone);
+  const [statusSelect, setStatusSelect] = useState("");
 
   const dispatch = useDispatch();
 
@@ -54,6 +55,11 @@ function FilterIssue(props) {
     return newMileStones;
   }, [milestones]);
 
+  const handleSelectStatus = (value) => {
+    setStatusSelect(value);
+    dispatch(updateFilterTask("status", value));
+  };
+
   const handleClear = () => {
     dispatch(clearFilterTask());
     setStatus({});
@@ -64,11 +70,46 @@ function FilterIssue(props) {
 
   return (
     <div className="issues-filter-wrapper">
+        <div className="filter-buttons d-flex">
+          <div style={{ fontWeight: "600", color: "#0F1824" }}>Status</div>
+          <div className="status-filter d-flex" style={{ marginLeft: "24px" }}>
+            <div
+              className={`${statusSelect === "Open" ? "active" : ""} `}
+              onClick={() => handleSelectStatus("Open")}
+            >
+              Open
+            </div>
+            <div
+              className={`${statusSelect === "In Progress" ? "active" : ""} `}
+              onClick={() => handleSelectStatus("In Progress")}
+            >
+              In Progress
+            </div>
+            <div
+              className={`${statusSelect === "Resolved" ? "active" : ""}`}
+              onClick={() => handleSelectStatus("Resolved")}
+            >
+              Resolved
+            </div>
+            <div
+              className={`${statusSelect === "Closed" ? "active" : ""}`}
+              onClick={() => handleSelectStatus("Closed")}
+            >
+              Closed
+            </div>
+            <div
+              className={`${statusSelect === "Not_Closed" ? "active" : ""}`}
+              onClick={() => handleSelectStatus("Not_Closed")}
+            >
+              Not Closed
+            </div>
+          </div>
+        </div>
       <div className="filter-select-list d-flex">
-        <div className="issue-type" style={{ marginRight: "16px" }}>
+        {/* <div className="issue-type" style={{ marginRight: "16px" }}>
           <div className="label mb-1">Status</div>
           <ButtonDropDown options={statusOptions} onChangeOption={setStatus} />
-        </div>
+        </div> */}
         <div className="milestone" style={{ marginRight: "16px" }}>
           <div className="label mb-1">Milestone</div>
           <ButtonDropDown

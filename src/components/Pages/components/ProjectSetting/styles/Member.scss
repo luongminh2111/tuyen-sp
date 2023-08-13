@@ -122,4 +122,17 @@
       }
     }
   }
+ 
+}
+.dialog-delete-member {
+  .list-action-member {
+    button {
+      width: 100px;
+      background-color: #0088FF;
+      height: 36px;
+      color: #fff;
+      border-radius: 4px;
+      border: 1px solid #d3d5d7;
+    }
+  }
 }

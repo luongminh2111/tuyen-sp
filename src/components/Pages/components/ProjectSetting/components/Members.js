@@ -8,6 +8,8 @@ import AddMemberModal from "./AddMemberModal";
 import { USER_ROLE_TEXT } from "../../../../../commons/Commons";
 import ButtonDropDown from "../../../../../commons/Button/ButtonDropdown";
 import Alerts from "../../../../../commons/Alert";
+import { DialogContent, Dialog } from "@mui/material";
+import { UPDATE_LIST_MEMBER_IN_PROJECT } from "../actions/ProjectActionType";
 
 function MemberSetting(props) {
 
@@ -20,6 +22,8 @@ function MemberSetting(props) {
   const members = useSelector(state => state.projects.members);
   const hasIds = members?.map(e => e.id);
 
+  const [open1, setOpen1] = useState(false);
+  const [idSelect, setIdSelect] = useState("");
   
   const [textAlert, setTextAlert] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
@@ -55,12 +59,31 @@ function MemberSetting(props) {
         setOpenAlert(true);
         setStatusAlert("success");
         setTextAlert(res.data?.message);
+        setOpen1(false);
+        setIdSelect("");
+        dispatch({type: UPDATE_LIST_MEMBER_IN_PROJECT, id: idSelect});
       } else {
         setOpenAlert(true);
         setStatusAlert("error");
         setTextAlert(res.data?.message);
       }
     });
+  };
+
+  const renderAlert = () => {
+    return (
+      <Dialog open={open1} className="dialog-delete-member" maxWidth="lg">
+        <DialogContent>
+          <div className="contents-add d-flex justify-content-between">
+          All information related to this user in this project will be deleted. Are you sure delete?
+          </div>
+          <div className="list-action-member d-flex justify-content-end" style={{marginTop: '16px'}}>
+            <button style={{background: '#FF4d4d', marginRight: '16px'}} onClick={() => setOpen1(false)}>Cancel</button>
+            <button onClick={() => handleDeleteUser(idSelect)}>Delete</button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
   }
 
   return (
@@ -110,13 +133,14 @@ function MemberSetting(props) {
                 <div className="role">{USER_ROLE_TEXT[e?.role]}</div>
                 <div className="join">{e?.created_at?.substring(0, 10)}</div>
                 <div className="remove">
-                  <i className="fa-solid fa-x" onClick={() => handleDeleteUser(e?.id)}></i>
+                  <i className="fa-solid fa-x" onClick={() => {setOpen1(true); setIdSelect(e.id)}}></i>
                 </div>
               </div>
             );
           })}
         </div>
       </div>
+      {open1 ? renderAlert() : null}
       {openAlert ? (
         <Alerts
           text={textAlert}

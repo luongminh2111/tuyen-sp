@@ -60,6 +60,17 @@ function DashboardRight(props) {
                   </div>
                 </div>
               ) : (
+                items?.length === 0 ? 
+                (
+                  <div
+                className="d-flex align-items-center justify-content-center w-100"
+                style={{ height: "300px", backgroundColor: '#FFF' }}
+              >
+                <div className="list-empty">
+                  <p>No update to display</p>
+                </div>
+              </div>
+                ) :
                 items?.map((e) => {
                   return (
                     <div className="timeline-item">

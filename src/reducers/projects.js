@@ -50,6 +50,13 @@ const projects = (state = initState, action) => {
         ...state,
         members: action.members,
       };
+      case projectType.UPDATE_LIST_MEMBER_IN_PROJECT:
+        const memberRedux = state.members;
+        const newMembers = memberRedux?.filter(e => e.id !== action.id);
+      return {
+        ...state,
+        members: newMembers,
+      };
     case projectType.GET_LIST_TASK_IN_PROJECT:
       return {
         ...state,
