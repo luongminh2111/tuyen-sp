@@ -36,15 +36,6 @@ function DashboardRight(props) {
           </div>
           <div className="title"> Recent Updates</div>
         </div>
-        {!isRightZoomOut ? (
-          <div className="header-right">
-            <div className="filter-project">Filter: PMA_web</div>
-            <div className="options">
-              <span></span>
-              <span>View options</span>
-            </div>
-          </div>
-        ) : null}
       </div>
       {!isRightZoomOut ? (
         <div className="list-updates">
