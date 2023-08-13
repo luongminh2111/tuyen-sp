@@ -10,6 +10,7 @@ import { getListMileStoneInProject } from "../../ProjectSetting/actions/ProjectA
 import {
   DeleteComment,
   EditComment,
+  deleteTaskInProject,
   getListCommentInTask,
   submitComment,
 } from "../actions/TaskCallApi";
@@ -21,6 +22,7 @@ import {
 } from "../../ProjectSetting/actions/ProjectActionRedux";
 import { EMPTY_USER } from "../../../../../commons/image";
 import { compareTime } from "../../../../../ulti/dateTime";
+import { Dialog, DialogContent } from "@mui/material";
 
 function TaskDetail(props) {
   const { taskItem, milestones, isExpand } = props;
@@ -39,6 +41,7 @@ function TaskDetail(props) {
   const [statusAlert, setStatusAlert] = useState(false);
 
   const [parentTask, setParentTask] = useState({});
+  const [open1, setOpen1] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -99,6 +102,26 @@ function TaskDetail(props) {
       setParentTask(getParentTask(taskItem?.parent_task_id));
     }
   }, [taskItem]);
+
+  const handleDeleteTask = (task) => {
+    dispatch(deleteTaskInProject(task.id)).then(res => {
+      console.log("check res :",res);
+      if(res?.status === 200) {
+        setOpenAlert(true);
+        setStatusAlert("success");
+        setTextAlert(res?.data?.message);
+        setTimeout(() => {
+          dispatch({type :"RESET_TASK_DETAIL"});
+          dispatch({type: "DELETE_TASK", id: task.id});
+        }, 1500);
+      } else {
+        setOpenAlert(true);
+        setStatusAlert("error");
+        setTextAlert(res?.data?.message);
+      }
+
+    });
+  };
 
   const handleEditComment = () => {
     if (comment?.trim() === "" || comment == null) {
@@ -382,6 +405,31 @@ function TaskDetail(props) {
     );
   };
 
+  const renderAlert = () => {
+    return (
+      <Dialog open={open1} className="dialog-delete-member" maxWidth="lg">
+        <DialogContent>
+          <div className="contents-add d-flex justify-content-between">
+            All information related to this user in this project will be
+            deleted. Are you sure delete?
+          </div>
+          <div
+            className="list-action-member d-flex justify-content-end"
+            style={{ marginTop: "16px" }}
+          >
+            <button
+              style={{ background: "#FF4d4d", marginRight: "16px" }}
+              onClick={() => setOpen1(false)}
+            >
+              Cancel
+            </button>
+            <button onClick={() => handleDeleteTask(taskItem)}>Delete</button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
   return (
     <div className="task-detail-wrapper">
       <div className="go-back d-flex w-100">
@@ -433,6 +481,18 @@ function TaskDetail(props) {
             <div>{taskItem?.name}</div>
           </div>
           <div className="col-6 d-flex justify-content-end btn-edit-task">
+            {account?.role === 2 || (taskItem?.parent_task_id && account?.role ===1 )? (
+              <button
+                style={{
+                  marginRight: "16px",
+                  background: "#FF4d4d",
+                  color: "#FFF",
+                }}
+                onClick={() => setOpen1(true)}
+              >
+                Delete
+              </button>
+            ) : null}
             <button onClick={() => setIsEdit(true)}>Edit</button>
           </div>
         </div>
@@ -610,6 +670,7 @@ function TaskDetail(props) {
           ></input>
         </div>
       )}
+      {open1 ? renderAlert() : null}
       {openModal ? (
         <CreateSubTaskModal
           members={members}

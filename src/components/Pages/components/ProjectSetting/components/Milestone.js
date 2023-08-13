@@ -27,15 +27,17 @@ function Milestone(props) {
     dispatch(getListMileStoneInProject());
   }, []);
 
-  const handleEdit = (milestone) => {
-    if (account?.role === 3) {
+  const handleChangeEdit = (value, milestone) => {
+    if (account?.role !== 2) {
       setOpenAlert(true);
       setStatusAlert("error");
       setTextAlert("You do not have permission to perform this operation");
       return;
     }
-    setCurrentMileStone(milestone);
-    setEdit(true);
+    if(milestone){
+      setCurrentMileStone(milestone);
+    }
+    setEdit(value);
   }
 
   if (edit) {
@@ -51,7 +53,7 @@ function Milestone(props) {
         </div>
       </div>
       <div className="edit-btn">
-        <button onClick={() => setEdit(true)}>Add Milestone</button>
+        <button onClick={() => handleChangeEdit(true)}>Add Milestone</button>
       </div>
       <div className="milestone-result-table">
         <div className="header">
@@ -65,7 +67,7 @@ function Milestone(props) {
           {milestones?.map((e, index) => {
             return (
               <div className="item" key={index}>
-                <div className="name" onClick={() => handleEdit(e)} >{e?.name}</div>
+                <div className="name" onClick={() => handleChangeEdit(true, e)} >{e?.name}</div>
                 <div className="from">{e?.start_date}</div>
                 <div className="to">{e?.due_date}</div>
                 <div className="ml-desc">{e?.description}</div>

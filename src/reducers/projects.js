@@ -67,6 +67,12 @@ const projects = (state = initState, action) => {
         ...state,
         tasks: [action?.item, ...state.tasks],
       };
+    case "DELETE_TASK":
+      const newTask = state.tasks?.filter(e => e.id !== action.id);
+      return {
+        ...state,
+        task: newTask
+      }
     case projectType.GET_LIST_COMMENT: 
       if(action?.isViewMore) {
         const preComments = state.comments;

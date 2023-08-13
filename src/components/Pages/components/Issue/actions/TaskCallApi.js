@@ -91,3 +91,19 @@ export const getListCommentInTask = (taskId, page, isViewMore) => (dispatch, get
     (error) => { return error?.response}
   )
 }
+
+export const deleteTaskInProject = (id) => dispatch => {
+  const url = `${BASE_URL}/api/task/${id}`;
+  const options = {
+    method: "DELETE",
+  };
+
+  return callApi(url, options).then( 
+    (response) => { 
+      dispatch({
+        type: 'DELETE_TASK',
+        id
+      });
+      return response}, 
+    (error) => { return error?.response})
+}
