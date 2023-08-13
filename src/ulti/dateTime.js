@@ -9,7 +9,7 @@ export const parseDateToString = (day) => {
 }
 
 export const compareTime = (d1, d2) => {
-  if (d1.getTime() <= d2.getTime()) {
+  if (d1.getTime() < d2.getTime()) {
     return true;
   }
   return false;

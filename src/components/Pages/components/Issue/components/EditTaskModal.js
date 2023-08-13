@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import React, { useState } from "react";
 import "../styles/CreateSubTaskModal.scss";
 import ButtonDropDown from "../../../../../commons/Button/ButtonDropdown";
-import { parseDateToString } from "../../../../../ulti/dateTime";
+import { compareTime, parseDateToString } from "../../../../../ulti/dateTime";
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTask } from "../../AddIssue/actions/CreateTaskCallApi";
@@ -53,6 +53,12 @@ function EditTaskModal(props) {
 
 
   const handleUpdateTask = () => {
+    if (compareTime(new Date(endTime), new Date(startTime))) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("Start time can not be after End time");
+      return;
+    }
     const request = {
       id: taskItem?.id,
       name,

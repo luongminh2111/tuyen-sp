@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProject } from "../actions/ProjectActionCallApi";
 import Alerts from "../../../../../commons/Alert";
-import { parseDateToString } from "../../../../../ulti/dateTime";
+import { compareTime, parseDateToString } from "../../../../../ulti/dateTime";
 import { updateProjectDetail } from "../actions/ProjectActionRedux";
 
 function SettingContent(props) {
@@ -30,6 +30,12 @@ function SettingContent(props) {
       setOpenAlert(true);
       setStatusAlert("error");
       setTextAlert("You do not have permission to perform this operation");
+      return;
+    }
+    if (compareTime(new Date(dueDate), new Date(startDate))) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("Start time can not be after End time");
       return;
     }
     const request = {

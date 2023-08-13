@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { createNewMileStone } from "../actions/ProjectActionCallApi";
 import { saveNewMilestone } from "../actions/ProjectActionRedux";
 import Alerts from "../../../../../commons/Alert";
-import { parseDateToString } from "../../../../../ulti/dateTime";
+import { compareTime, parseDateToString } from "../../../../../ulti/dateTime";
 
 function EditMilestone(props) {
   const { setEdit, projectId, milestone, setCurrentMileStone } = props;
@@ -21,6 +21,12 @@ function EditMilestone(props) {
   const [statusAlert, setStatusAlert] = useState(false);
 
   const handleCreateMileStone = () => {
+    if (compareTime(new Date(dueDate), new Date(startDate))) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("Start time can not be after End time");
+      return;
+    }
     const request = {
       name: title,
       description,

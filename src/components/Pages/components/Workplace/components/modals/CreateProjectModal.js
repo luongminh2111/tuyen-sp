@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import "../../styles/modals/CreateNewProjectStyle.scss";
 import { createProject } from "../../actions/WorkplaceActionCallApi";
 import Alerts from "../../../../../../commons/Alert";
-import { parseDateToString } from "../../../../../../ulti/dateTime";
+import { compareTime, parseDateToString } from "../../../../../../ulti/dateTime";
 
 function CreateNewProject(props) {
   const { open, handleClose } = props;
@@ -22,6 +22,12 @@ function CreateNewProject(props) {
   const [statusAlert, setStatusAlert] = useState(false);
 
   const handleCreate = () => {
+    if (compareTime(new Date(endDate), new Date(startDate))) {
+      setOpenAlert(true);
+      setStatusAlert("error");
+      setTextAlert("Start time can not be after End time");
+      return;
+    }
     const request = {
       name, 
       project_key: key,
