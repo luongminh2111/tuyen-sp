@@ -6,9 +6,11 @@ import { getAllUpdateItem } from "../../Workplace/actions/WorkplaceActionCallApi
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { EMPTY_USER } from "../../../../../commons/image";
+import { useHistory } from "react-router-dom";
 
 function ProjectLeftContent(props) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,6 +22,17 @@ function ProjectLeftContent(props) {
       }
     });
   }, []);
+
+  const handleShowTask = (item) => {
+    if(item?.task?.task_key || item?.task?.name) {
+      dispatch({
+        type: 'UPDATE_TASK_DETAIL',
+        item
+      });
+      history.push("/tasks");
+    }
+   
+  }
 
 
   return (
@@ -77,10 +90,11 @@ function ProjectLeftContent(props) {
                           color: "#0088FF",
                           cursor: "pointer",
                         }}
+                        onClick={() => handleShowTask(e)}
                       >
                         {e?.task?.task_key}
                       </span>
-                      <span>{e?.task?.name}</span>
+                      <span onClick={() => handleShowTask(e)}>{e?.task?.name}</span>
                     </div>
                     {e?.type === "NORMAL" || e?.type === "UPDATE" ? (
                       <div className="stream-update__content d-flex justify-content-between mt-2">

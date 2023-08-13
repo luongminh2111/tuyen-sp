@@ -314,8 +314,6 @@ function TaskDetail(props) {
     );
   };
 
-  console.log("check members :", members);
-
   const renderListComment = () => {
     return (
       <div className="list-comment">
