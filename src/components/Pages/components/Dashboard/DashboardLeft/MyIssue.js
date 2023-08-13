@@ -173,14 +173,14 @@ function MyIssue(props) {
                       <div className="text-due">
                         <span
                           style={
-                            compareTime(new Date(e?.end_time), new Date())
+                            compareTime(new Date(e?.end_time), new Date()) && e?.status !== 'Closed'
                               ? { fontWeight: "600", color: "#FF4d4d" }
                               : {}
                           }
                         >
                           {e?.end_time?.substring(0, 10)}
                         </span>
-                        {compareTime(new Date(e?.end_time), new Date()) ? (
+                        {compareTime(new Date(e?.end_time), new Date()) && e?.status !== 'Closed' ? (
                           <span>
                             <i
                               style={{

@@ -571,14 +571,14 @@ function TaskDetail(props) {
               <div className="value">
                 <span
                   style={
-                    compareTime(new Date(taskItem?.end_time), new Date())
+                    compareTime(new Date(taskItem?.end_time), new Date()) && taskItem?.status !== 'Closed'
                       ? { fontWeight: "600", color: "#FF4d4d" }
                       : {}
                   }
                 >
                   {taskItem?.end_time?.substring(0, 10)}
                 </span>
-                {compareTime(new Date(taskItem?.end_time), new Date()) ? (
+                {compareTime(new Date(taskItem?.end_time), new Date())  && taskItem?.status !== 'Closed' ? (
                   <span>
                     <i
                       style={{

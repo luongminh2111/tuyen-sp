@@ -24,6 +24,11 @@
               -webkit-box-orient: vertical;
               overflow: hidden;
               text-overflow: ellipsis;
+              &:hover {
+                color: #0088FF;
+                cursor: pointer;
+                text-decoration: underline;
+              }
           }
         }
         ._right {

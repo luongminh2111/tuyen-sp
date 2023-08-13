@@ -5,9 +5,11 @@ import { updateTask } from "../../AddIssue/actions/CreateTaskCallApi";
 import Alerts from "../../../../../commons/Alert";
 import { getListTask } from "../../Issue/actions/TaskCallApi";
 import { EMPTY_USER } from "../../../../../commons/image";
+import ReactTooltip from "react-tooltip";
+import { useHistory } from "react-router-dom";
 
 function DragTaskItem(props) {
-  const { members, tasks } = props;
+  const { tasks, members } = props;
 
   const filterTask = useSelector((state) => state.projects.filterTask);
 
@@ -24,6 +26,7 @@ function DragTaskItem(props) {
   const [statusAlert, setStatusAlert] = useState(false);
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleFilterTask = (status, listTask) => {
     return listTask?.filter(
@@ -174,6 +177,17 @@ function DragTaskItem(props) {
     dragItemNode.current = null;
   };
 
+  const handleShowDetailTask = (id) => {
+    const curTask = tasks?.find(e => e.id === id);
+    if(curTask?.id) {
+      dispatch({
+        type: 'UPDATE_TASK_DETAIL',
+        item: curTask
+      });
+      history.push("/tasks");
+    }
+  }
+
   const getStyles = (item) => {
     if (
       dragItem.current.grpI === item.grpI &&
@@ -234,15 +248,25 @@ function DragTaskItem(props) {
                   <div className="task-item" key={item?.task_key}>
                     <div className="row-1 mb-2 mt-2">
                       <div className="_left col-10">
-                        <div className="name">{item?.name}</div>
+                        <div className="name" onClick={() => handleShowDetailTask(item.id)}>{item?.name}</div>
                       </div>
                       <div className="_right col-2">
                         {item?.assignee_id ? (
                           <div className="avatar">
                             <img
+                            data-tip=""
+                            data-for={`icon-user-${item?.task_key}`}
                               src={item?.avatar || EMPTY_USER}
                               alt="avatar"
                             />
+                            <ReactTooltip
+                              type="dark"
+                              effect="solid"
+                              place="top"
+                              id={`icon-user-${item?.task_key}`}
+                            >
+                              {members?.find(e => e.id === item?.assignee_id)?.name || null}
+                            </ReactTooltip>
                           </div>
                         ) : null}
                       </div>
@@ -285,7 +309,7 @@ function DragTaskItem(props) {
                     >
                       <div
                         style={
-                          compareTime(new Date(item?.end_time), new Date())
+                          compareTime(new Date(item?.end_time), new Date()) && item?.status !== 'Closed'
                             ? {
                                 marginRight: "12px",
                                 fontWeight: "600",
@@ -298,7 +322,7 @@ function DragTaskItem(props) {
                       </div>
                       <div
                         style={
-                          compareTime(new Date(item?.end_time), new Date())
+                          compareTime(new Date(item?.end_time), new Date()) && item?.status !== 'Closed'
                             ? {
                                 fontWeight: "600",
                                 color: "#FF4d4d",
@@ -308,7 +332,7 @@ function DragTaskItem(props) {
                       >
                         {item?.end_time?.substring(0, 10)}
                       </div>
-                      {compareTime(new Date(item?.end_time), new Date()) ? (
+                      {compareTime(new Date(item?.end_time), new Date()) && item?.status !== 'Closed' ? (
                         <div>
                           <i
                             style={{
