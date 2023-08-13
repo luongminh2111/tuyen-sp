@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateTask } from "../../AddIssue/actions/CreateTaskCallApi";
 import Alerts from "../../../../../commons/Alert";
 import { useEffect } from "react";
+import { updateListTaskForProject } from "../../ProjectSetting/actions/ProjectActionRedux";
 
 function EditTaskModal(props) {
   const {
@@ -81,6 +82,7 @@ function EditTaskModal(props) {
           type: "UPDATE_TASK_DETAIL",
           item: res?.data?.data
         });
+        dispatch(updateListTaskForProject(res?.data?.data));
         setTimeout(() => {
           handleClose();
         }, 1000);
